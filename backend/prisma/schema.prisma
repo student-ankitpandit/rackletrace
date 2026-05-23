@@ -11,3 +11,42 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id                  String         @id @default(cuid())
+  email               String         @unique
+  name                String?
+  runs                Run[]    
+}
+
+model Run {
+  id                  String         @id @default(cuid())
+  userId              String
+  user                User           @relation(fields: [userId], references: [id])
+  agentName           String
+  status              String         // "running", "completed", "errored, retrying" 
+  createdAt           DateTime       @default(now())
+  steps               Step[]
+}
+
+enum StepType {
+  LLM_CALL
+  TOOL_CALL
+  ERROR
+}
+
+model Step {
+  id                  String         @id @default(cuid())
+  runId               String
+  run                 Run            @relation(fields: [runId], references: [id])
+  type                StepType
+  input               Json
+  output              Json
+  tokensUsage         Int?
+  latencyMs           Int?
+  reasoningStep       String?
+  executionTime       Int?
+  APIRequest          Int?
+  MemoryUsage         Int?
+  createdAt           DateTime       @default(now())
+}
