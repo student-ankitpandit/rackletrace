@@ -7,7 +7,7 @@
     "start": "tsx watch index.ts"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^3.0.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/bun": "latest",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.7",
