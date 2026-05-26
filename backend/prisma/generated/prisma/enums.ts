@@ -9,7 +9,10 @@
 * 🟢 You can import this file directly.
 */
 
+export const StepType = {
+  LLM_CALL: 'LLM_CALL',
+  TOOL_CALL: 'TOOL_CALL',
+  ERROR: 'ERROR'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type StepType = (typeof StepType)[keyof typeof StepType]

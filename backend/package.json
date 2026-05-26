@@ -4,12 +4,15 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "node --watch index.ts"
+    "start": "tsx watch index.ts"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/pg": "^8.20.0",
-    "prisma": "^7.8.0"
+    "prisma": "^7.8.0",
+    "tsx": "^4.19.2"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -19,8 +22,11 @@
     "@prisma/client": "^7.8.0",
     "@types/express": "^5.0.6",
     "@types/node": "^25.9.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "pg": "^8.21.0"
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.21.0",
+    "zod": "^4.4.3"
   }
 }
