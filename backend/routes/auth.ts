@@ -40,7 +40,7 @@ router.post("/signup", async (req, res) => {
             data: {
                 name: name || "",
                 email: email,
-                googleId: null
+                password: hashPassword
             }
         })
 
@@ -116,8 +116,6 @@ router.post("/login", async (req, res) => {
 })
 
 router.post("/logout", async(req, res) => {
-    // Invalidate the token on client side by deleting it
-
     try {
         res.setHeader("Set-Cookie", "token=; HttpOnly; Path=/; SameSite=Lax; Max-Age=0");
 
