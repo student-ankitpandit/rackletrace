@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Mail, Lock, User, Loader2, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, Loader2, ArrowRight, Eye, EyeOff} from 'lucide-react';
 
 type Tab = 'login' | 'signup';
 
@@ -35,6 +35,7 @@ export default function AuthPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -77,6 +78,8 @@ export default function AuthPage() {
         setForm({ name: '', email: '', password: '' });
         if (tab === 'signup') {
             switchTab('login');
+        } else if (tab === 'login') {
+            router.push('/dashboard');
         }
       } catch {
         setError('Could not reach the server.');
@@ -186,7 +189,7 @@ export default function AuthPage() {
                 </div>
                 <input
                   id="input-password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   name="password"
                   autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
                   placeholder="••••••••"
@@ -194,8 +197,20 @@ export default function AuthPage() {
                   onChange={handleChange}
                   required
                   minLength={6}
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 focus:bg-white/10 transition-all"
+                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 focus:bg-white/10 transition-all"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-zinc-500 hover:text-zinc-300 focus:outline-none focus:text-violet-400 transition-colors cursor-pointer"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
             </div>
 
