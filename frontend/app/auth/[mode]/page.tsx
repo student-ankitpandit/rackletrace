@@ -79,7 +79,7 @@ export default function AuthPage() {
             switchTab('login');
         }
       } catch {
-        setError('Could not reach the server. Is the backend running?');
+        setError('Could not reach the server.');
       }
     });
   };
