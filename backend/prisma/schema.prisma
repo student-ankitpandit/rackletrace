@@ -27,8 +27,10 @@ model Run {
   userId              String
   user                User           @relation(fields: [userId], references: [id])
   agentName           String
-  status              String         // "running", "completed", "errored, retrying" 
+  status              String         @default("running")
+  totalMs             Int?
   createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt 
   steps               Step[]
 }
 
@@ -45,11 +47,11 @@ model Step {
   type                StepType
   input               Json
   output              Json
-  tokensUsage         Int?
+  model               String?
+  tool                String?
+  tokens              Int?
   latencyMs           Int?
-  reasoningStep       String?
-  executionTime       Int?
-  APIRequest          Int?
-  MemoryUsage         Int?
+  message             String?
+  stack               String? 
   createdAt           DateTime       @default(now())
 }

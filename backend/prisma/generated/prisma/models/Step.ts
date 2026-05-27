@@ -27,31 +27,25 @@ export type AggregateStep = {
 }
 
 export type StepAvgAggregateOutputType = {
-  tokensUsage: number | null
+  tokens: number | null
   latencyMs: number | null
-  executionTime: number | null
-  APIRequest: number | null
-  MemoryUsage: number | null
 }
 
 export type StepSumAggregateOutputType = {
-  tokensUsage: number | null
+  tokens: number | null
   latencyMs: number | null
-  executionTime: number | null
-  APIRequest: number | null
-  MemoryUsage: number | null
 }
 
 export type StepMinAggregateOutputType = {
   id: string | null
   runId: string | null
   type: $Enums.StepType | null
-  tokensUsage: number | null
+  model: string | null
+  tool: string | null
+  tokens: number | null
   latencyMs: number | null
-  reasoningStep: string | null
-  executionTime: number | null
-  APIRequest: number | null
-  MemoryUsage: number | null
+  message: string | null
+  stack: string | null
   createdAt: Date | null
 }
 
@@ -59,12 +53,12 @@ export type StepMaxAggregateOutputType = {
   id: string | null
   runId: string | null
   type: $Enums.StepType | null
-  tokensUsage: number | null
+  model: string | null
+  tool: string | null
+  tokens: number | null
   latencyMs: number | null
-  reasoningStep: string | null
-  executionTime: number | null
-  APIRequest: number | null
-  MemoryUsage: number | null
+  message: string | null
+  stack: string | null
   createdAt: Date | null
 }
 
@@ -74,43 +68,37 @@ export type StepCountAggregateOutputType = {
   type: number
   input: number
   output: number
-  tokensUsage: number
+  model: number
+  tool: number
+  tokens: number
   latencyMs: number
-  reasoningStep: number
-  executionTime: number
-  APIRequest: number
-  MemoryUsage: number
+  message: number
+  stack: number
   createdAt: number
   _all: number
 }
 
 
 export type StepAvgAggregateInputType = {
-  tokensUsage?: true
+  tokens?: true
   latencyMs?: true
-  executionTime?: true
-  APIRequest?: true
-  MemoryUsage?: true
 }
 
 export type StepSumAggregateInputType = {
-  tokensUsage?: true
+  tokens?: true
   latencyMs?: true
-  executionTime?: true
-  APIRequest?: true
-  MemoryUsage?: true
 }
 
 export type StepMinAggregateInputType = {
   id?: true
   runId?: true
   type?: true
-  tokensUsage?: true
+  model?: true
+  tool?: true
+  tokens?: true
   latencyMs?: true
-  reasoningStep?: true
-  executionTime?: true
-  APIRequest?: true
-  MemoryUsage?: true
+  message?: true
+  stack?: true
   createdAt?: true
 }
 
@@ -118,12 +106,12 @@ export type StepMaxAggregateInputType = {
   id?: true
   runId?: true
   type?: true
-  tokensUsage?: true
+  model?: true
+  tool?: true
+  tokens?: true
   latencyMs?: true
-  reasoningStep?: true
-  executionTime?: true
-  APIRequest?: true
-  MemoryUsage?: true
+  message?: true
+  stack?: true
   createdAt?: true
 }
 
@@ -133,12 +121,12 @@ export type StepCountAggregateInputType = {
   type?: true
   input?: true
   output?: true
-  tokensUsage?: true
+  model?: true
+  tool?: true
+  tokens?: true
   latencyMs?: true
-  reasoningStep?: true
-  executionTime?: true
-  APIRequest?: true
-  MemoryUsage?: true
+  message?: true
+  stack?: true
   createdAt?: true
   _all?: true
 }
@@ -235,12 +223,12 @@ export type StepGroupByOutputType = {
   type: $Enums.StepType
   input: runtime.JsonValue
   output: runtime.JsonValue
-  tokensUsage: number | null
+  model: string | null
+  tool: string | null
+  tokens: number | null
   latencyMs: number | null
-  reasoningStep: string | null
-  executionTime: number | null
-  APIRequest: number | null
-  MemoryUsage: number | null
+  message: string | null
+  stack: string | null
   createdAt: Date
   _count: StepCountAggregateOutputType | null
   _avg: StepAvgAggregateOutputType | null
@@ -273,12 +261,12 @@ export type StepWhereInput = {
   type?: Prisma.EnumStepTypeFilter<"Step"> | $Enums.StepType
   input?: Prisma.JsonFilter<"Step">
   output?: Prisma.JsonFilter<"Step">
-  tokensUsage?: Prisma.IntNullableFilter<"Step"> | number | null
+  model?: Prisma.StringNullableFilter<"Step"> | string | null
+  tool?: Prisma.StringNullableFilter<"Step"> | string | null
+  tokens?: Prisma.IntNullableFilter<"Step"> | number | null
   latencyMs?: Prisma.IntNullableFilter<"Step"> | number | null
-  reasoningStep?: Prisma.StringNullableFilter<"Step"> | string | null
-  executionTime?: Prisma.IntNullableFilter<"Step"> | number | null
-  APIRequest?: Prisma.IntNullableFilter<"Step"> | number | null
-  MemoryUsage?: Prisma.IntNullableFilter<"Step"> | number | null
+  message?: Prisma.StringNullableFilter<"Step"> | string | null
+  stack?: Prisma.StringNullableFilter<"Step"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Step"> | Date | string
   run?: Prisma.XOR<Prisma.RunScalarRelationFilter, Prisma.RunWhereInput>
 }
@@ -289,12 +277,12 @@ export type StepOrderByWithRelationInput = {
   type?: Prisma.SortOrder
   input?: Prisma.SortOrder
   output?: Prisma.SortOrder
-  tokensUsage?: Prisma.SortOrderInput | Prisma.SortOrder
+  model?: Prisma.SortOrderInput | Prisma.SortOrder
+  tool?: Prisma.SortOrderInput | Prisma.SortOrder
+  tokens?: Prisma.SortOrderInput | Prisma.SortOrder
   latencyMs?: Prisma.SortOrderInput | Prisma.SortOrder
-  reasoningStep?: Prisma.SortOrderInput | Prisma.SortOrder
-  executionTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  APIRequest?: Prisma.SortOrderInput | Prisma.SortOrder
-  MemoryUsage?: Prisma.SortOrderInput | Prisma.SortOrder
+  message?: Prisma.SortOrderInput | Prisma.SortOrder
+  stack?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   run?: Prisma.RunOrderByWithRelationInput
 }
@@ -308,12 +296,12 @@ export type StepWhereUniqueInput = Prisma.AtLeast<{
   type?: Prisma.EnumStepTypeFilter<"Step"> | $Enums.StepType
   input?: Prisma.JsonFilter<"Step">
   output?: Prisma.JsonFilter<"Step">
-  tokensUsage?: Prisma.IntNullableFilter<"Step"> | number | null
+  model?: Prisma.StringNullableFilter<"Step"> | string | null
+  tool?: Prisma.StringNullableFilter<"Step"> | string | null
+  tokens?: Prisma.IntNullableFilter<"Step"> | number | null
   latencyMs?: Prisma.IntNullableFilter<"Step"> | number | null
-  reasoningStep?: Prisma.StringNullableFilter<"Step"> | string | null
-  executionTime?: Prisma.IntNullableFilter<"Step"> | number | null
-  APIRequest?: Prisma.IntNullableFilter<"Step"> | number | null
-  MemoryUsage?: Prisma.IntNullableFilter<"Step"> | number | null
+  message?: Prisma.StringNullableFilter<"Step"> | string | null
+  stack?: Prisma.StringNullableFilter<"Step"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Step"> | Date | string
   run?: Prisma.XOR<Prisma.RunScalarRelationFilter, Prisma.RunWhereInput>
 }, "id">
@@ -324,12 +312,12 @@ export type StepOrderByWithAggregationInput = {
   type?: Prisma.SortOrder
   input?: Prisma.SortOrder
   output?: Prisma.SortOrder
-  tokensUsage?: Prisma.SortOrderInput | Prisma.SortOrder
+  model?: Prisma.SortOrderInput | Prisma.SortOrder
+  tool?: Prisma.SortOrderInput | Prisma.SortOrder
+  tokens?: Prisma.SortOrderInput | Prisma.SortOrder
   latencyMs?: Prisma.SortOrderInput | Prisma.SortOrder
-  reasoningStep?: Prisma.SortOrderInput | Prisma.SortOrder
-  executionTime?: Prisma.SortOrderInput | Prisma.SortOrder
-  APIRequest?: Prisma.SortOrderInput | Prisma.SortOrder
-  MemoryUsage?: Prisma.SortOrderInput | Prisma.SortOrder
+  message?: Prisma.SortOrderInput | Prisma.SortOrder
+  stack?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.StepCountOrderByAggregateInput
   _avg?: Prisma.StepAvgOrderByAggregateInput
@@ -347,12 +335,12 @@ export type StepScalarWhereWithAggregatesInput = {
   type?: Prisma.EnumStepTypeWithAggregatesFilter<"Step"> | $Enums.StepType
   input?: Prisma.JsonWithAggregatesFilter<"Step">
   output?: Prisma.JsonWithAggregatesFilter<"Step">
-  tokensUsage?: Prisma.IntNullableWithAggregatesFilter<"Step"> | number | null
+  model?: Prisma.StringNullableWithAggregatesFilter<"Step"> | string | null
+  tool?: Prisma.StringNullableWithAggregatesFilter<"Step"> | string | null
+  tokens?: Prisma.IntNullableWithAggregatesFilter<"Step"> | number | null
   latencyMs?: Prisma.IntNullableWithAggregatesFilter<"Step"> | number | null
-  reasoningStep?: Prisma.StringNullableWithAggregatesFilter<"Step"> | string | null
-  executionTime?: Prisma.IntNullableWithAggregatesFilter<"Step"> | number | null
-  APIRequest?: Prisma.IntNullableWithAggregatesFilter<"Step"> | number | null
-  MemoryUsage?: Prisma.IntNullableWithAggregatesFilter<"Step"> | number | null
+  message?: Prisma.StringNullableWithAggregatesFilter<"Step"> | string | null
+  stack?: Prisma.StringNullableWithAggregatesFilter<"Step"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Step"> | Date | string
 }
 
@@ -361,12 +349,12 @@ export type StepCreateInput = {
   type: $Enums.StepType
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: number | null
+  model?: string | null
+  tool?: string | null
+  tokens?: number | null
   latencyMs?: number | null
-  reasoningStep?: string | null
-  executionTime?: number | null
-  APIRequest?: number | null
-  MemoryUsage?: number | null
+  message?: string | null
+  stack?: string | null
   createdAt?: Date | string
   run: Prisma.RunCreateNestedOneWithoutStepsInput
 }
@@ -377,12 +365,12 @@ export type StepUncheckedCreateInput = {
   type: $Enums.StepType
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: number | null
+  model?: string | null
+  tool?: string | null
+  tokens?: number | null
   latencyMs?: number | null
-  reasoningStep?: string | null
-  executionTime?: number | null
-  APIRequest?: number | null
-  MemoryUsage?: number | null
+  message?: string | null
+  stack?: string | null
   createdAt?: Date | string
 }
 
@@ -391,12 +379,12 @@ export type StepUpdateInput = {
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  reasoningStep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  executionTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  APIRequest?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  MemoryUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   run?: Prisma.RunUpdateOneRequiredWithoutStepsNestedInput
 }
@@ -407,12 +395,12 @@ export type StepUncheckedUpdateInput = {
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  reasoningStep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  executionTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  APIRequest?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  MemoryUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -422,12 +410,12 @@ export type StepCreateManyInput = {
   type: $Enums.StepType
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: number | null
+  model?: string | null
+  tool?: string | null
+  tokens?: number | null
   latencyMs?: number | null
-  reasoningStep?: string | null
-  executionTime?: number | null
-  APIRequest?: number | null
-  MemoryUsage?: number | null
+  message?: string | null
+  stack?: string | null
   createdAt?: Date | string
 }
 
@@ -436,12 +424,12 @@ export type StepUpdateManyMutationInput = {
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  reasoningStep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  executionTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  APIRequest?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  MemoryUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -451,12 +439,12 @@ export type StepUncheckedUpdateManyInput = {
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  reasoningStep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  executionTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  APIRequest?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  MemoryUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -476,33 +464,30 @@ export type StepCountOrderByAggregateInput = {
   type?: Prisma.SortOrder
   input?: Prisma.SortOrder
   output?: Prisma.SortOrder
-  tokensUsage?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  tool?: Prisma.SortOrder
+  tokens?: Prisma.SortOrder
   latencyMs?: Prisma.SortOrder
-  reasoningStep?: Prisma.SortOrder
-  executionTime?: Prisma.SortOrder
-  APIRequest?: Prisma.SortOrder
-  MemoryUsage?: Prisma.SortOrder
+  message?: Prisma.SortOrder
+  stack?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type StepAvgOrderByAggregateInput = {
-  tokensUsage?: Prisma.SortOrder
+  tokens?: Prisma.SortOrder
   latencyMs?: Prisma.SortOrder
-  executionTime?: Prisma.SortOrder
-  APIRequest?: Prisma.SortOrder
-  MemoryUsage?: Prisma.SortOrder
 }
 
 export type StepMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  tokensUsage?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  tool?: Prisma.SortOrder
+  tokens?: Prisma.SortOrder
   latencyMs?: Prisma.SortOrder
-  reasoningStep?: Prisma.SortOrder
-  executionTime?: Prisma.SortOrder
-  APIRequest?: Prisma.SortOrder
-  MemoryUsage?: Prisma.SortOrder
+  message?: Prisma.SortOrder
+  stack?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -510,21 +495,18 @@ export type StepMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  tokensUsage?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  tool?: Prisma.SortOrder
+  tokens?: Prisma.SortOrder
   latencyMs?: Prisma.SortOrder
-  reasoningStep?: Prisma.SortOrder
-  executionTime?: Prisma.SortOrder
-  APIRequest?: Prisma.SortOrder
-  MemoryUsage?: Prisma.SortOrder
+  message?: Prisma.SortOrder
+  stack?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type StepSumOrderByAggregateInput = {
-  tokensUsage?: Prisma.SortOrder
+  tokens?: Prisma.SortOrder
   latencyMs?: Prisma.SortOrder
-  executionTime?: Prisma.SortOrder
-  APIRequest?: Prisma.SortOrder
-  MemoryUsage?: Prisma.SortOrder
 }
 
 export type StepCreateNestedManyWithoutRunInput = {
@@ -573,25 +555,17 @@ export type EnumStepTypeFieldUpdateOperationsInput = {
   set?: $Enums.StepType
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type StepCreateWithoutRunInput = {
   id?: string
   type: $Enums.StepType
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: number | null
+  model?: string | null
+  tool?: string | null
+  tokens?: number | null
   latencyMs?: number | null
-  reasoningStep?: string | null
-  executionTime?: number | null
-  APIRequest?: number | null
-  MemoryUsage?: number | null
+  message?: string | null
+  stack?: string | null
   createdAt?: Date | string
 }
 
@@ -600,12 +574,12 @@ export type StepUncheckedCreateWithoutRunInput = {
   type: $Enums.StepType
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: number | null
+  model?: string | null
+  tool?: string | null
+  tokens?: number | null
   latencyMs?: number | null
-  reasoningStep?: string | null
-  executionTime?: number | null
-  APIRequest?: number | null
-  MemoryUsage?: number | null
+  message?: string | null
+  stack?: string | null
   createdAt?: Date | string
 }
 
@@ -644,12 +618,12 @@ export type StepScalarWhereInput = {
   type?: Prisma.EnumStepTypeFilter<"Step"> | $Enums.StepType
   input?: Prisma.JsonFilter<"Step">
   output?: Prisma.JsonFilter<"Step">
-  tokensUsage?: Prisma.IntNullableFilter<"Step"> | number | null
+  model?: Prisma.StringNullableFilter<"Step"> | string | null
+  tool?: Prisma.StringNullableFilter<"Step"> | string | null
+  tokens?: Prisma.IntNullableFilter<"Step"> | number | null
   latencyMs?: Prisma.IntNullableFilter<"Step"> | number | null
-  reasoningStep?: Prisma.StringNullableFilter<"Step"> | string | null
-  executionTime?: Prisma.IntNullableFilter<"Step"> | number | null
-  APIRequest?: Prisma.IntNullableFilter<"Step"> | number | null
-  MemoryUsage?: Prisma.IntNullableFilter<"Step"> | number | null
+  message?: Prisma.StringNullableFilter<"Step"> | string | null
+  stack?: Prisma.StringNullableFilter<"Step"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Step"> | Date | string
 }
 
@@ -658,12 +632,12 @@ export type StepCreateManyRunInput = {
   type: $Enums.StepType
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: number | null
+  model?: string | null
+  tool?: string | null
+  tokens?: number | null
   latencyMs?: number | null
-  reasoningStep?: string | null
-  executionTime?: number | null
-  APIRequest?: number | null
-  MemoryUsage?: number | null
+  message?: string | null
+  stack?: string | null
   createdAt?: Date | string
 }
 
@@ -672,12 +646,12 @@ export type StepUpdateWithoutRunInput = {
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  reasoningStep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  executionTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  APIRequest?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  MemoryUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -686,12 +660,12 @@ export type StepUncheckedUpdateWithoutRunInput = {
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  reasoningStep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  executionTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  APIRequest?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  MemoryUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -700,12 +674,12 @@ export type StepUncheckedUpdateManyWithoutRunInput = {
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  tokensUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tool?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokens?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  reasoningStep?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  executionTime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  APIRequest?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  MemoryUsage?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -717,12 +691,12 @@ export type StepSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   type?: boolean
   input?: boolean
   output?: boolean
-  tokensUsage?: boolean
+  model?: boolean
+  tool?: boolean
+  tokens?: boolean
   latencyMs?: boolean
-  reasoningStep?: boolean
-  executionTime?: boolean
-  APIRequest?: boolean
-  MemoryUsage?: boolean
+  message?: boolean
+  stack?: boolean
   createdAt?: boolean
   run?: boolean | Prisma.RunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["step"]>
@@ -733,12 +707,12 @@ export type StepSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   input?: boolean
   output?: boolean
-  tokensUsage?: boolean
+  model?: boolean
+  tool?: boolean
+  tokens?: boolean
   latencyMs?: boolean
-  reasoningStep?: boolean
-  executionTime?: boolean
-  APIRequest?: boolean
-  MemoryUsage?: boolean
+  message?: boolean
+  stack?: boolean
   createdAt?: boolean
   run?: boolean | Prisma.RunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["step"]>
@@ -749,12 +723,12 @@ export type StepSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   type?: boolean
   input?: boolean
   output?: boolean
-  tokensUsage?: boolean
+  model?: boolean
+  tool?: boolean
+  tokens?: boolean
   latencyMs?: boolean
-  reasoningStep?: boolean
-  executionTime?: boolean
-  APIRequest?: boolean
-  MemoryUsage?: boolean
+  message?: boolean
+  stack?: boolean
   createdAt?: boolean
   run?: boolean | Prisma.RunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["step"]>
@@ -765,16 +739,16 @@ export type StepSelectScalar = {
   type?: boolean
   input?: boolean
   output?: boolean
-  tokensUsage?: boolean
+  model?: boolean
+  tool?: boolean
+  tokens?: boolean
   latencyMs?: boolean
-  reasoningStep?: boolean
-  executionTime?: boolean
-  APIRequest?: boolean
-  MemoryUsage?: boolean
+  message?: boolean
+  stack?: boolean
   createdAt?: boolean
 }
 
-export type StepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "runId" | "type" | "input" | "output" | "tokensUsage" | "latencyMs" | "reasoningStep" | "executionTime" | "APIRequest" | "MemoryUsage" | "createdAt", ExtArgs["result"]["step"]>
+export type StepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "runId" | "type" | "input" | "output" | "model" | "tool" | "tokens" | "latencyMs" | "message" | "stack" | "createdAt", ExtArgs["result"]["step"]>
 export type StepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   run?: boolean | Prisma.RunDefaultArgs<ExtArgs>
 }
@@ -796,12 +770,12 @@ export type $StepPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     type: $Enums.StepType
     input: runtime.JsonValue
     output: runtime.JsonValue
-    tokensUsage: number | null
+    model: string | null
+    tool: string | null
+    tokens: number | null
     latencyMs: number | null
-    reasoningStep: string | null
-    executionTime: number | null
-    APIRequest: number | null
-    MemoryUsage: number | null
+    message: string | null
+    stack: string | null
     createdAt: Date
   }, ExtArgs["result"]["step"]>
   composites: {}
@@ -1232,12 +1206,12 @@ export interface StepFieldRefs {
   readonly type: Prisma.FieldRef<"Step", 'StepType'>
   readonly input: Prisma.FieldRef<"Step", 'Json'>
   readonly output: Prisma.FieldRef<"Step", 'Json'>
-  readonly tokensUsage: Prisma.FieldRef<"Step", 'Int'>
+  readonly model: Prisma.FieldRef<"Step", 'String'>
+  readonly tool: Prisma.FieldRef<"Step", 'String'>
+  readonly tokens: Prisma.FieldRef<"Step", 'Int'>
   readonly latencyMs: Prisma.FieldRef<"Step", 'Int'>
-  readonly reasoningStep: Prisma.FieldRef<"Step", 'String'>
-  readonly executionTime: Prisma.FieldRef<"Step", 'Int'>
-  readonly APIRequest: Prisma.FieldRef<"Step", 'Int'>
-  readonly MemoryUsage: Prisma.FieldRef<"Step", 'Int'>
+  readonly message: Prisma.FieldRef<"Step", 'String'>
+  readonly stack: Prisma.FieldRef<"Step", 'String'>
   readonly createdAt: Prisma.FieldRef<"Step", 'DateTime'>
 }
     

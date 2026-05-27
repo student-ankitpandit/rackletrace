@@ -89,7 +89,9 @@ export const RunScalarFieldEnum = {
   userId: 'userId',
   agentName: 'agentName',
   status: 'status',
-  createdAt: 'createdAt'
+  totalMs: 'totalMs',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type RunScalarFieldEnum = (typeof RunScalarFieldEnum)[keyof typeof RunScalarFieldEnum]
@@ -101,12 +103,12 @@ export const StepScalarFieldEnum = {
   type: 'type',
   input: 'input',
   output: 'output',
-  tokensUsage: 'tokensUsage',
+  model: 'model',
+  tool: 'tool',
+  tokens: 'tokens',
   latencyMs: 'latencyMs',
-  reasoningStep: 'reasoningStep',
-  executionTime: 'executionTime',
-  APIRequest: 'APIRequest',
-  MemoryUsage: 'MemoryUsage',
+  message: 'message',
+  stack: 'stack',
   createdAt: 'createdAt'
 } as const
 

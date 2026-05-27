@@ -684,7 +684,9 @@ export const RunScalarFieldEnum = {
   userId: 'userId',
   agentName: 'agentName',
   status: 'status',
-  createdAt: 'createdAt'
+  totalMs: 'totalMs',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type RunScalarFieldEnum = (typeof RunScalarFieldEnum)[keyof typeof RunScalarFieldEnum]
@@ -696,12 +698,12 @@ export const StepScalarFieldEnum = {
   type: 'type',
   input: 'input',
   output: 'output',
-  tokensUsage: 'tokensUsage',
+  model: 'model',
+  tool: 'tool',
+  tokens: 'tokens',
   latencyMs: 'latencyMs',
-  reasoningStep: 'reasoningStep',
-  executionTime: 'executionTime',
-  APIRequest: 'APIRequest',
-  MemoryUsage: 'MemoryUsage',
+  message: 'message',
+  stack: 'stack',
   createdAt: 'createdAt'
 } as const
 
@@ -783,6 +785,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
  * Reference to a field of type 'StepType'
  */
 export type EnumStepTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StepType'>
@@ -807,20 +823,6 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 

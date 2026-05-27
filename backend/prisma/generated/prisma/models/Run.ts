@@ -20,8 +20,18 @@ export type RunModel = runtime.Types.Result.DefaultSelection<Prisma.$RunPayload>
 
 export type AggregateRun = {
   _count: RunCountAggregateOutputType | null
+  _avg: RunAvgAggregateOutputType | null
+  _sum: RunSumAggregateOutputType | null
   _min: RunMinAggregateOutputType | null
   _max: RunMaxAggregateOutputType | null
+}
+
+export type RunAvgAggregateOutputType = {
+  totalMs: number | null
+}
+
+export type RunSumAggregateOutputType = {
+  totalMs: number | null
 }
 
 export type RunMinAggregateOutputType = {
@@ -29,7 +39,9 @@ export type RunMinAggregateOutputType = {
   userId: string | null
   agentName: string | null
   status: string | null
+  totalMs: number | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type RunMaxAggregateOutputType = {
@@ -37,7 +49,9 @@ export type RunMaxAggregateOutputType = {
   userId: string | null
   agentName: string | null
   status: string | null
+  totalMs: number | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type RunCountAggregateOutputType = {
@@ -45,17 +59,29 @@ export type RunCountAggregateOutputType = {
   userId: number
   agentName: number
   status: number
+  totalMs: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
+
+export type RunAvgAggregateInputType = {
+  totalMs?: true
+}
+
+export type RunSumAggregateInputType = {
+  totalMs?: true
+}
 
 export type RunMinAggregateInputType = {
   id?: true
   userId?: true
   agentName?: true
   status?: true
+  totalMs?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type RunMaxAggregateInputType = {
@@ -63,7 +89,9 @@ export type RunMaxAggregateInputType = {
   userId?: true
   agentName?: true
   status?: true
+  totalMs?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type RunCountAggregateInputType = {
@@ -71,7 +99,9 @@ export type RunCountAggregateInputType = {
   userId?: true
   agentName?: true
   status?: true
+  totalMs?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -113,6 +143,18 @@ export type RunAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: RunAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: RunSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: RunMinAggregateInputType
@@ -143,6 +185,8 @@ export type RunGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   _count?: RunCountAggregateInputType | true
+  _avg?: RunAvgAggregateInputType
+  _sum?: RunSumAggregateInputType
   _min?: RunMinAggregateInputType
   _max?: RunMaxAggregateInputType
 }
@@ -152,8 +196,12 @@ export type RunGroupByOutputType = {
   userId: string
   agentName: string
   status: string
+  totalMs: number | null
   createdAt: Date
+  updatedAt: Date
   _count: RunCountAggregateOutputType | null
+  _avg: RunAvgAggregateOutputType | null
+  _sum: RunSumAggregateOutputType | null
   _min: RunMinAggregateOutputType | null
   _max: RunMaxAggregateOutputType | null
 }
@@ -181,7 +229,9 @@ export type RunWhereInput = {
   userId?: Prisma.StringFilter<"Run"> | string
   agentName?: Prisma.StringFilter<"Run"> | string
   status?: Prisma.StringFilter<"Run"> | string
+  totalMs?: Prisma.IntNullableFilter<"Run"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Run"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Run"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   steps?: Prisma.StepListRelationFilter
 }
@@ -191,7 +241,9 @@ export type RunOrderByWithRelationInput = {
   userId?: Prisma.SortOrder
   agentName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalMs?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   steps?: Prisma.StepOrderByRelationAggregateInput
 }
@@ -204,7 +256,9 @@ export type RunWhereUniqueInput = Prisma.AtLeast<{
   userId?: Prisma.StringFilter<"Run"> | string
   agentName?: Prisma.StringFilter<"Run"> | string
   status?: Prisma.StringFilter<"Run"> | string
+  totalMs?: Prisma.IntNullableFilter<"Run"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Run"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Run"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   steps?: Prisma.StepListRelationFilter
 }, "id">
@@ -214,10 +268,14 @@ export type RunOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder
   agentName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalMs?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.RunCountOrderByAggregateInput
+  _avg?: Prisma.RunAvgOrderByAggregateInput
   _max?: Prisma.RunMaxOrderByAggregateInput
   _min?: Prisma.RunMinOrderByAggregateInput
+  _sum?: Prisma.RunSumOrderByAggregateInput
 }
 
 export type RunScalarWhereWithAggregatesInput = {
@@ -228,14 +286,18 @@ export type RunScalarWhereWithAggregatesInput = {
   userId?: Prisma.StringWithAggregatesFilter<"Run"> | string
   agentName?: Prisma.StringWithAggregatesFilter<"Run"> | string
   status?: Prisma.StringWithAggregatesFilter<"Run"> | string
+  totalMs?: Prisma.IntNullableWithAggregatesFilter<"Run"> | number | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Run"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Run"> | Date | string
 }
 
 export type RunCreateInput = {
   id?: string
   agentName: string
-  status: string
+  status?: string
+  totalMs?: number | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutRunsInput
   steps?: Prisma.StepCreateNestedManyWithoutRunInput
 }
@@ -244,8 +306,10 @@ export type RunUncheckedCreateInput = {
   id?: string
   userId: string
   agentName: string
-  status: string
+  status?: string
+  totalMs?: number | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   steps?: Prisma.StepUncheckedCreateNestedManyWithoutRunInput
 }
 
@@ -253,7 +317,9 @@ export type RunUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   agentName?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRunsNestedInput
   steps?: Prisma.StepUpdateManyWithoutRunNestedInput
 }
@@ -263,7 +329,9 @@ export type RunUncheckedUpdateInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   agentName?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   steps?: Prisma.StepUncheckedUpdateManyWithoutRunNestedInput
 }
 
@@ -271,15 +339,19 @@ export type RunCreateManyInput = {
   id?: string
   userId: string
   agentName: string
-  status: string
+  status?: string
+  totalMs?: number | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RunUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   agentName?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RunUncheckedUpdateManyInput = {
@@ -287,7 +359,9 @@ export type RunUncheckedUpdateManyInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   agentName?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RunListRelationFilter = {
@@ -305,7 +379,13 @@ export type RunCountOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   agentName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalMs?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type RunAvgOrderByAggregateInput = {
+  totalMs?: Prisma.SortOrder
 }
 
 export type RunMaxOrderByAggregateInput = {
@@ -313,7 +393,9 @@ export type RunMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   agentName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalMs?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type RunMinOrderByAggregateInput = {
@@ -321,7 +403,13 @@ export type RunMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   agentName?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  totalMs?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type RunSumOrderByAggregateInput = {
+  totalMs?: Prisma.SortOrder
 }
 
 export type RunScalarRelationFilter = {
@@ -371,6 +459,14 @@ export type RunUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.RunScalarWhereInput | Prisma.RunScalarWhereInput[]
 }
 
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type RunCreateNestedOneWithoutStepsInput = {
   create?: Prisma.XOR<Prisma.RunCreateWithoutStepsInput, Prisma.RunUncheckedCreateWithoutStepsInput>
   connectOrCreate?: Prisma.RunCreateOrConnectWithoutStepsInput
@@ -388,16 +484,20 @@ export type RunUpdateOneRequiredWithoutStepsNestedInput = {
 export type RunCreateWithoutUserInput = {
   id?: string
   agentName: string
-  status: string
+  status?: string
+  totalMs?: number | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   steps?: Prisma.StepCreateNestedManyWithoutRunInput
 }
 
 export type RunUncheckedCreateWithoutUserInput = {
   id?: string
   agentName: string
-  status: string
+  status?: string
+  totalMs?: number | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   steps?: Prisma.StepUncheckedCreateNestedManyWithoutRunInput
 }
 
@@ -435,14 +535,18 @@ export type RunScalarWhereInput = {
   userId?: Prisma.StringFilter<"Run"> | string
   agentName?: Prisma.StringFilter<"Run"> | string
   status?: Prisma.StringFilter<"Run"> | string
+  totalMs?: Prisma.IntNullableFilter<"Run"> | number | null
   createdAt?: Prisma.DateTimeFilter<"Run"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Run"> | Date | string
 }
 
 export type RunCreateWithoutStepsInput = {
   id?: string
   agentName: string
-  status: string
+  status?: string
+  totalMs?: number | null
   createdAt?: Date | string
+  updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutRunsInput
 }
 
@@ -450,8 +554,10 @@ export type RunUncheckedCreateWithoutStepsInput = {
   id?: string
   userId: string
   agentName: string
-  status: string
+  status?: string
+  totalMs?: number | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RunCreateOrConnectWithoutStepsInput = {
@@ -474,7 +580,9 @@ export type RunUpdateWithoutStepsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   agentName?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutRunsNestedInput
 }
 
@@ -483,21 +591,27 @@ export type RunUncheckedUpdateWithoutStepsInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   agentName?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type RunCreateManyUserInput = {
   id?: string
   agentName: string
-  status: string
+  status?: string
+  totalMs?: number | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type RunUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   agentName?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   steps?: Prisma.StepUpdateManyWithoutRunNestedInput
 }
 
@@ -505,7 +619,9 @@ export type RunUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   agentName?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   steps?: Prisma.StepUncheckedUpdateManyWithoutRunNestedInput
 }
 
@@ -513,7 +629,9 @@ export type RunUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   agentName?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  totalMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -552,7 +670,9 @@ export type RunSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   userId?: boolean
   agentName?: boolean
   status?: boolean
+  totalMs?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   steps?: boolean | Prisma.Run$stepsArgs<ExtArgs>
   _count?: boolean | Prisma.RunCountOutputTypeDefaultArgs<ExtArgs>
@@ -563,7 +683,9 @@ export type RunSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extension
   userId?: boolean
   agentName?: boolean
   status?: boolean
+  totalMs?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["run"]>
 
@@ -572,7 +694,9 @@ export type RunSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extension
   userId?: boolean
   agentName?: boolean
   status?: boolean
+  totalMs?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["run"]>
 
@@ -581,10 +705,12 @@ export type RunSelectScalar = {
   userId?: boolean
   agentName?: boolean
   status?: boolean
+  totalMs?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type RunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "agentName" | "status" | "createdAt", ExtArgs["result"]["run"]>
+export type RunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "agentName" | "status" | "totalMs" | "createdAt" | "updatedAt", ExtArgs["result"]["run"]>
 export type RunInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   steps?: boolean | Prisma.Run$stepsArgs<ExtArgs>
@@ -608,7 +734,9 @@ export type $RunPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     userId: string
     agentName: string
     status: string
+    totalMs: number | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["run"]>
   composites: {}
 }
@@ -1038,7 +1166,9 @@ export interface RunFieldRefs {
   readonly userId: Prisma.FieldRef<"Run", 'String'>
   readonly agentName: Prisma.FieldRef<"Run", 'String'>
   readonly status: Prisma.FieldRef<"Run", 'String'>
+  readonly totalMs: Prisma.FieldRef<"Run", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Run", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Run", 'DateTime'>
 }
     
 
