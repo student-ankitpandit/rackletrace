@@ -2,7 +2,10 @@ import "dotenv/config"
 import express from "express"
 import authRoutes from "./routes/auth"
 import cors from "cors"
-import cookieParser from "cookie-parser"  
+import cookieParser from "cookie-parser"
+import ingestRoutes from "./routes/ingest"
+import runRoutes from "./routes/run"
+import { authMiddleware } from "./auth-middleware"
 
 const app = express();
 
@@ -21,7 +24,8 @@ app.get("/", (req, res) => {
 })
 
 app.use("/auth", authRoutes)
-
+app.use("/api/ingest", authMiddleware, ingestRoutes)
+app.use("/runs", authMiddleware, runRoutes)
 
 app.listen(PORT, () => {
     console.log("Server is Up and Listening on 8000")

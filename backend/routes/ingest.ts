@@ -49,7 +49,7 @@ router.post("/step", async (req, res) => {
   const step = await prisma.step.create({
     data: {
       runId,
-      type,
+      type: type.toUpperCase(),
       input    : input    ?? {},
       output   : output   ?? null,
       model    : model    ?? null,

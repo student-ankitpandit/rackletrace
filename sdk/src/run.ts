@@ -43,13 +43,15 @@ export class Run {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${this.options.apiKey}`
+          "Authorization": `Bearer ${this.options.secret}`
         },
         body: JSON.stringify(body)
       })
+      
       if (!res.ok) {
         console.warn(`Rackle SDK Warning: Ingest returned status ${res.status}`)
       }
+
     } catch (error) {
       console.error("Rackle SDK Error: Failed to ingest trace", error)
     }

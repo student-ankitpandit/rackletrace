@@ -26,7 +26,7 @@ export interface ErrorPayload {
 export type StepPayload = LLMCallPayload | ToolCallPayload | ErrorPayload
 
 export interface TracerOptions {
-  apiKey  : string
+  secret  : string
   baseUrl : string
 }
 

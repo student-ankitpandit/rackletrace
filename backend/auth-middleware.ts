@@ -10,8 +10,10 @@ interface customJWTPayload extends JwtPayload {
 }
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const authToken = req.headers.authorization?.split(' ')[1];
-    
+    // Try cookie first (browser dashboard), then Authorization header (SDK / API key)
+    const cookieToken: string | undefined = req.cookies?.token;
+    const headerToken = req.headers.authorization?.split(' ')[1];
+    const authToken = cookieToken ?? headerToken;
 
     if(!authToken) {
         res.status(403).send({
