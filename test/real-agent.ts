@@ -3,12 +3,12 @@ import { GoogleGenAI } from "@google/genai"
 
 // We initialize the Google Gen AI client. 
 // It will look for GEMINI_API_KEY in your environment variables.
-const ai = new GoogleGenAI({ apiKey: "AIzaSyDsVcrOOvUtc2JwG7hvBFG1j8Gtd4US0eo" })
+const ai = new GoogleGenAI({ apiKey: "your-api-key" })
 
 async function main() {
   // 1. Initialize Rackle Tracer
   const tracer = new Tracer({
-    secret : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbXBubDljczQwMDAwMjhnMDhxNzFwYmx2IiwiaWF0IjoxNzgwMDU5MTAxfQ.cdJFXka_S1y0Rkm1BrBl9UAYBI2V7t3HjJn37dz4DOk", 
+    secret : "your-secret", 
     baseUrl: "http://localhost:8000"
   })
 
@@ -16,7 +16,7 @@ async function main() {
   const run = await tracer.startRun({ agentName: "Gemini-Assistant" })
   console.log("🚀 Rackle trace started for real agent...")
 
-  const prompt = "Explain what an AI observability platform is in exactly one simple sentence."
+  const prompt = "Explain what AI observability platform is in exactly one simple sentence."
 
   try {
     console.log("🧠 Sending request to Gemini...")
