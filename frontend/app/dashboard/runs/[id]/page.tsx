@@ -17,7 +17,9 @@ import {
   Activity,
   Copy,
   Check,
+  DollarSign,
 } from 'lucide-react';
+import { calculateStepCost, formatCost } from '@/utils/pricing';
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
 
@@ -120,6 +122,12 @@ function StepCard({ step, index }: { step: Step; index: number }) {
               {step.tokens.toLocaleString()} tokens
             </span>
           )}
+          {step.tokens != null && step.model != null && calculateStepCost(step.model, step.tokens) > 0 && (
+            <span className="flex items-center gap-1">
+              <DollarSign className="w-3 h-3" />
+              {formatCost(calculateStepCost(step.model, step.tokens))}
+            </span>
+          )}
           {step.latencyMs != null && (
             <span className={`flex items-center gap-1 ${step.latencyMs > 5000 ? 'text-amber-400' : ''}`}>
               <Clock className="w-3 h-3" />
@@ -138,10 +146,15 @@ function StepCard({ step, index }: { step: Step; index: number }) {
       {expanded && (
         <div className="border-t border-white/10 divide-y divide-white/5">
           {/* Mobile metrics */}
-          <div className="flex sm:hidden gap-4 px-5 py-3 text-xs text-zinc-500">
+          <div className="flex sm:hidden gap-4 px-5 py-3 text-xs text-zinc-500 flex-wrap">
             {step.tokens != null && (
               <span className="flex items-center gap-1">
                 <Hash className="w-3 h-3" /> {step.tokens.toLocaleString()} tokens
+              </span>
+            )}
+            {step.tokens != null && step.model != null && calculateStepCost(step.model, step.tokens) > 0 && (
+              <span className="flex items-center gap-1">
+                <DollarSign className="w-3 h-3" /> {formatCost(calculateStepCost(step.model, step.tokens))}
               </span>
             )}
             {step.latencyMs != null && (
@@ -234,6 +247,7 @@ export default function TraceDetailPage() {
   }, [id]);
 
   const totalTokens = run?.steps.reduce((s, st) => s + (st.tokens ?? 0), 0) ?? 0;
+  const totalCost   = run?.steps.reduce((s, st) => s + calculateStepCost(st.model, st.tokens), 0) ?? 0;
   const errorSteps  = run?.steps.filter((s) => s.type === 'ERROR').length ?? 0;
 
   return (
@@ -281,11 +295,12 @@ export default function TraceDetailPage() {
               </div>
 
               {/* Run metrics */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mt-6">
                 {[
                   { icon: <Zap className="w-4 h-4" />, label: 'Steps', value: String(run.steps.length) },
                   { icon: <Clock className="w-4 h-4" />, label: 'Duration', value: run.totalMs ? `${(run.totalMs / 1000).toFixed(2)}s` : '—' },
                   { icon: <Hash className="w-4 h-4" />, label: 'Total Tokens', value: totalTokens > 0 ? totalTokens.toLocaleString() : '—' },
+                  { icon: <DollarSign className="w-4 h-4" />, label: 'Est. Cost', value: formatCost(totalCost) },
                   { icon: <AlertTriangle className="w-4 h-4" />, label: 'Errors', value: String(errorSteps) },
                 ].map(({ icon, label, value }) => (
                   <div key={label} className="bg-black/20 rounded-xl p-3 border border-white/5">

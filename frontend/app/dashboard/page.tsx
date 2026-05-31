@@ -12,7 +12,10 @@ import {
   ChevronRight,
   Zap,
   BarChart3,
+  DollarSign,
+  Filter,
 } from 'lucide-react';
+import { calculateStepCost, formatCost } from '@/utils/pricing';
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
 
@@ -22,6 +25,7 @@ interface Run {
   status: 'running' | 'completed' | 'failed';
   totalMs: number | null;
   createdAt: string;
+  steps?: { tokens: number | null; model: string | null }[];
   _count: { steps: number };
 }
 
@@ -29,6 +33,7 @@ interface Stats {
   totalRuns: number;
   avgLatencyMs: number;
   failedRuns: number;
+  totalCost: number;
 }
 
 function StatusBadge({ status }: { status: Run['status'] }) {
@@ -76,11 +81,27 @@ function StatCard({ icon, label, value, sub }: { icon: React.ReactNode; label: s
 export default function DashboardPage() {
   const router = useRouter();
   const [runs, setRuns] = useState<Run[]>([]);
+  const [agents, setAgents] = useState<string[]>([]);
+  const [selectedAgent, setSelectedAgent] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`${BACKEND}/runs`, { credentials: 'include' })
+    fetch(`${BACKEND}/runs/agents`, { credentials: 'include' })
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) setAgents(data);
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    const url = selectedAgent 
+      ? `${BACKEND}/runs?agentName=${encodeURIComponent(selectedAgent)}` 
+      : `${BACKEND}/runs`;
+
+    fetch(url, { credentials: 'include' })
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data)) setRuns(data);
@@ -88,7 +109,7 @@ export default function DashboardPage() {
       })
       .catch(() => setError('Could not reach the server.'))
       .finally(() => setLoading(false));
-  }, []);
+  }, [selectedAgent]);
 
   const stats: Stats = {
     totalRuns: runs.length,
@@ -96,6 +117,10 @@ export default function DashboardPage() {
       ? Math.round(runs.filter((r) => r.totalMs).reduce((s, r) => s + (r.totalMs ?? 0), 0) / (runs.filter((r) => r.totalMs).length || 1))
       : 0,
     failedRuns: runs.filter((r) => r.status === 'failed').length,
+    totalCost: runs.reduce((total, run) => {
+      const runCost = (run.steps || []).reduce((sum, step) => sum + calculateStepCost(step.model, step.tokens), 0);
+      return total + runCost;
+    }, 0),
   };
 
   return (
@@ -106,25 +131,50 @@ export default function DashboardPage() {
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-10">
         {/* Header */}
-        <div className="mb-10">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-xl bg-violet-500/10 border border-violet-500/20">
-              <Activity className="w-5 h-5 text-violet-400" />
+        <div className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 rounded-xl bg-violet-500/10 border border-violet-500/20">
+                <Activity className="w-5 h-5 text-violet-400" />
+              </div>
+              <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60">
+                Rackle Dashboard
+              </h1>
             </div>
-            <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60">
-              Rackle Dashboard
-            </h1>
+            <p className="text-sm text-zinc-500 ml-11">Monitor and inspect your AI agent runs in real-time.</p>
           </div>
-          <p className="text-sm text-zinc-500 ml-11">Monitor and inspect your AI agent runs in real-time.</p>
+          
+          {/* Agent Filter */}
+          {agents.length > 0 && (
+            <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg p-1">
+              <Filter className="w-4 h-4 text-zinc-400 ml-2 shrink-0" />
+              <select 
+                value={selectedAgent}
+                onChange={(e) => setSelectedAgent(e.target.value)}
+                className="bg-transparent text-sm text-zinc-300 outline-none pr-4 py-1.5 min-w-[140px]"
+              >
+                <option value="" className="bg-[#111]">All Agents</option>
+                {agents.map(a => (
+                  <option key={a} value={a} className="bg-[#111]">{a}</option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           <StatCard
             icon={<BarChart3 className="w-5 h-5" />}
             label="Total Runs"
             value={String(stats.totalRuns)}
-            sub="All time"
+            sub={selectedAgent || "All time"}
+          />
+          <StatCard
+            icon={<DollarSign className="w-5 h-5" />}
+            label="Est. Cost"
+            value={formatCost(stats.totalCost)}
+            sub="Based on token usage"
           />
           <StatCard
             icon={<Clock className="w-5 h-5" />}

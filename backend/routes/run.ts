@@ -3,15 +3,37 @@ import prisma from "../lib/prisma"
 
 const router = Router()
 
+// GET /runs/agents - list all unique agent names for filtering
+router.get("/agents", async (req, res) => {
+  const userId = req.userId
+  if (!userId) return res.status(401).json({ error: "Unauthorized" })
+
+  const agents = await prisma.run.findMany({
+    where: { userId },
+    select: { agentName: true },
+    distinct: ['agentName']
+  })
+
+  return res.json(agents.map(a => a.agentName))
+})
+
 // GET /runs - list all runs for the authenticated user
 router.get("/", async (req, res) => {
   const userId = req.userId
   if (!userId) return res.status(401).json({ error: "Unauthorized" })
 
+  const { agentName } = req.query
+
   const runs = await prisma.run.findMany({
-    where: { userId },
+    where: { 
+      userId,
+      ...(agentName ? { agentName: String(agentName) } : {})
+    },
     orderBy: { createdAt: "desc" },
     include: {
+      steps: {
+        select: { tokens: true, model: true }
+      },
       _count: { select: { steps: true } }
     }
   })
