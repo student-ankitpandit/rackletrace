@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc; /* Slate-50 for a nice crisp light mode */
+  --foreground: #0f172a; /* Slate-900 */
 }
 
 @theme inline {
@@ -29,11 +31,9 @@
   animation-delay: 4s;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #030305;
+  --foreground: #fafafa;
 }
 
 body {

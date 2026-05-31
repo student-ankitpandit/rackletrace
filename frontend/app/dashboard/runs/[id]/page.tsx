@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   ArrowLeft,
   CheckCircle2,
@@ -18,8 +19,14 @@ import {
   Copy,
   Check,
   DollarSign,
+  Fingerprint,
+  Layers,
+  Box,
+  ChevronUp,
+  Terminal,
 } from 'lucide-react';
 import { calculateStepCost, formatCost } from '@/utils/pricing';
+import { connectSocket } from '@/utils/socket';
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
 
@@ -183,31 +190,30 @@ function StepCard({ step, index }: { step: Step; index: number }) {
             </div>
           )}
 
-          {/* Input */}
-          {step.input != null && (
-            <div className="px-5 py-4">
+          <div className="px-6 py-4 bg-zinc-100/50 dark:bg-black/20 border-t border-black/5 dark:border-white/5 space-y-6">
+            <div className="relative group">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Input / Prompt</p>
-                <CopyButton text={inputStr} />
+                <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Input</h3>
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <CopyButton text={JSON.stringify(step.input, null, 2)} />
+                </div>
               </div>
-              <pre className="text-xs text-zinc-300 font-mono bg-black/30 rounded-lg p-4 overflow-x-auto whitespace-pre-wrap max-h-64 overflow-y-auto">
-                {inputStr}
+              <pre className="p-4 rounded-xl bg-white dark:bg-black/40 border border-black/5 dark:border-white/5 text-xs text-zinc-800 dark:text-zinc-300 font-mono overflow-x-auto whitespace-pre-wrap shadow-sm dark:shadow-none max-h-64 overflow-y-auto">
+                {JSON.stringify(step.input, null, 2)}
               </pre>
             </div>
-          )}
-
-          {/* Output */}
-          {step.output != null && (
-            <div className="px-5 py-4">
+            <div className="relative group">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Output / Response</p>
-                <CopyButton text={outputStr} />
+                <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Output</h3>
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                  <CopyButton text={JSON.stringify(step.output, null, 2)} />
+                </div>
               </div>
-              <pre className="text-xs text-zinc-300 font-mono bg-black/30 rounded-lg p-4 overflow-x-auto whitespace-pre-wrap max-h-64 overflow-y-auto">
-                {outputStr}
+              <pre className="p-4 rounded-xl bg-white dark:bg-black/40 border border-black/5 dark:border-white/5 text-xs text-zinc-800 dark:text-zinc-300 font-mono overflow-x-auto whitespace-pre-wrap shadow-sm dark:shadow-none max-h-64 overflow-y-auto">
+                {JSON.stringify(step.output, null, 2)}
               </pre>
             </div>
-          )}
+          </div>
         </div>
       )}
     </div>
@@ -216,9 +222,9 @@ function StepCard({ step, index }: { step: Step; index: number }) {
 
 function StatusBadge({ status }: { status: Run['status'] }) {
   const map: Record<Run['status'], { cls: string; icon: React.ReactNode; label: string }> = {
-    completed: { cls: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', icon: <CheckCircle2 className="w-3.5 h-3.5" />, label: 'Completed' },
-    failed: { cls: 'bg-red-500/10 text-red-400 border-red-500/20', icon: <AlertTriangle className="w-3.5 h-3.5" />, label: 'Failed' },
-    running: { cls: 'bg-blue-500/10 text-blue-400 border-blue-500/20', icon: <Loader2 className="w-3.5 h-3.5 animate-spin" />, label: 'Running' },
+    completed: { cls: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/20', icon: <CheckCircle2 className="w-3.5 h-3.5" />, label: 'Completed' },
+    failed: { cls: 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 border-red-200 dark:border-red-500/20', icon: <AlertTriangle className="w-3.5 h-3.5" />, label: 'Failed' },
+    running: { cls: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 border-blue-200 dark:border-blue-500/20', icon: <Loader2 className="w-3.5 h-3.5 animate-spin" />, label: 'Running' },
   };
   const s = map[status] ?? map.running;
   return (
@@ -228,97 +234,117 @@ function StatusBadge({ status }: { status: Run['status'] }) {
   );
 }
 
+function StatBox({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <div className="p-4 rounded-2xl bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 flex items-center gap-3 shadow-sm dark:shadow-none">
+      <div className="p-2 rounded-xl bg-violet-100 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400">
+        {icon}
+      </div>
+      <div>
+        <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium mb-0.5">{label}</p>
+        <p className="text-sm font-semibold text-zinc-900 dark:text-white">{value}</p>
+      </div>
+    </div>
+  );
+}
+
 export default function TraceDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const router = useRouter();
   const [run, setRun] = useState<Run | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [expandedStep, setExpandedStep] = useState<string | null>(null);
 
   useEffect(() => {
     fetch(`${BACKEND}/runs/${id}`, { credentials: 'include' })
-      .then((r) => {
-        if (!r.ok) throw new Error('Not found');
+      .then(async (r) => {
+        if (r.status === 401 || r.status === 403) {
+          window.location.href = '/auth/login';
+          throw new Error('Unauthorized');
+        }
         return r.json();
       })
       .then((data: Run) => setRun(data))
       .catch(() => setError('Could not load this run.'))
       .finally(() => setLoading(false));
+
+    const socket = connectSocket();
+    const handleRunEnded = ({ run: updatedRun }: { run: any }) => {
+      if (updatedRun.id !== id) return;
+      setRun(prev => prev ? { ...prev, status: updatedRun.status, totalMs: updatedRun.totalMs } : prev);
+    };
+    const handleStepAdded = ({ step }: { step: any }) => {
+      if (step.runId !== id) return;
+      setRun(prev => {
+        if (!prev) return prev;
+        if (prev.steps.some(s => s.id === step.id)) return prev;
+        return { ...prev, steps: [...prev.steps, step] };
+      });
+    };
+    socket.on("run_ended", handleRunEnded);
+    socket.on("step_added", handleStepAdded);
+    return () => {
+      socket.off("run_ended", handleRunEnded);
+      socket.off("step_added", handleStepAdded);
+    };
   }, [id]);
 
   const totalTokens = run?.steps.reduce((s, st) => s + (st.tokens ?? 0), 0) ?? 0;
   const totalCost   = run?.steps.reduce((s, st) => s + calculateStepCost(st.model, st.tokens), 0) ?? 0;
-  const errorSteps  = run?.steps.filter((s) => s.type === 'ERROR').length ?? 0;
 
   return (
-    <div className="min-h-screen bg-[#030305] text-white font-sans">
-      <div className="fixed top-0 left-1/4 w-[600px] h-[400px] bg-violet-600/10 rounded-full filter blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-zinc-50 dark:bg-[#030305] text-zinc-900 dark:text-white font-sans transition-colors duration-300">
+      <div className="fixed top-0 left-1/4 w-[600px] h-[400px] bg-violet-600/10 rounded-full filter blur-[120px] pointer-events-none mix-blend-multiply dark:mix-blend-screen" />
+      <div className="fixed bottom-0 right-1/4 w-[500px] h-[300px] bg-indigo-600/10 rounded-full filter blur-[120px] pointer-events-none mix-blend-multiply dark:mix-blend-screen" />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 py-10">
-        {/* Back */}
-        <button
-          id="back-to-dashboard"
-          onClick={() => router.push('/dashboard')}
-          className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back to Dashboard
-        </button>
+      <div className="relative z-10 max-w-5xl mx-auto px-6 py-10">
+        <div className="mb-10 flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <Link href="/dashboard" className="p-2 rounded-xl bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors shadow-sm dark:shadow-none">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <div className="p-2 rounded-xl bg-violet-100 dark:bg-violet-500/10 border border-violet-200 dark:border-violet-500/20">
+                <Terminal className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+              </div>
+              <h1 className="text-2xl font-bold text-zinc-900 dark:text-white truncate">
+                {run?.agentName ?? 'Trace Details'}
+              </h1>
+              {run && <StatusBadge status={run.status} />}
+            </div>
+            <div className="flex items-center gap-4 text-sm text-zinc-500 ml-[88px]">
+              <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {run ? new Date(run.createdAt).toLocaleString() : 'Loading...'}</span>
+              <span className="flex items-center gap-1.5"><Fingerprint className="w-4 h-4" /> <span className="font-mono text-xs">{id}</span></span>
+            </div>
+          </div>
+        </div>
 
         {loading && (
-          <div className="flex items-center justify-center gap-3 py-20 text-zinc-500">
-            <Loader2 className="w-5 h-5 animate-spin text-violet-400" />
-            <span className="text-sm">Loading trace…</span>
+          <div className="flex items-center justify-center py-20 text-zinc-500 gap-3">
+            <Loader2 className="w-5 h-5 animate-spin text-violet-500" />
+            <span className="text-sm">Loading trace data…</span>
           </div>
         )}
 
         {error && (
-          <div className="flex items-center justify-center py-20 text-red-400 text-sm gap-2">
+          <div className="flex items-center justify-center py-20 text-red-500 text-sm gap-2">
             <AlertTriangle className="w-4 h-4" /> {error}
           </div>
         )}
 
         {run && (
-          <>
-            {/* Run Header */}
-            <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-6 mb-6">
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-3 mb-1.5">
-                    <div className="p-2 rounded-xl bg-violet-500/10 border border-violet-500/20">
-                      <Activity className="w-4 h-4 text-violet-400" />
-                    </div>
-                    <h1 className="text-xl font-bold text-white">{run.agentName}</h1>
-                    <StatusBadge status={run.status} />
-                  </div>
-                  <p className="text-xs text-zinc-500 font-mono ml-10">{run.id}</p>
-                </div>
-              </div>
-
-              {/* Run metrics */}
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mt-6">
-                {[
-                  { icon: <Zap className="w-4 h-4" />, label: 'Steps', value: String(run.steps.length) },
-                  { icon: <Clock className="w-4 h-4" />, label: 'Duration', value: run.totalMs ? `${(run.totalMs / 1000).toFixed(2)}s` : '—' },
-                  { icon: <Hash className="w-4 h-4" />, label: 'Total Tokens', value: totalTokens > 0 ? totalTokens.toLocaleString() : '—' },
-                  { icon: <DollarSign className="w-4 h-4" />, label: 'Est. Cost', value: formatCost(totalCost) },
-                  { icon: <AlertTriangle className="w-4 h-4" />, label: 'Errors', value: String(errorSteps) },
-                ].map(({ icon, label, value }) => (
-                  <div key={label} className="bg-black/20 rounded-xl p-3 border border-white/5">
-                    <div className="flex items-center gap-2 text-zinc-500 mb-1">
-                      {icon}
-                      <span className="text-xs">{label}</span>
-                    </div>
-                    <p className="text-lg font-bold text-white">{value}</p>
-                  </div>
-                ))}
-              </div>
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <StatBox icon={<Layers className="w-4 h-4" />} label="Steps" value={String(run.steps.length)} />
+              <StatBox icon={<Zap className="w-4 h-4" />} label="Total Tokens" value={String(totalTokens)} />
+              <StatBox icon={<DollarSign className="w-4 h-4" />} label="Est. Cost" value={formatCost(totalCost)} />
+              <StatBox icon={<Clock className="w-4 h-4" />} label="Total Duration" value={run.totalMs ? `${(run.totalMs / 1000).toFixed(2)}s` : 'Running...'} />
             </div>
 
-            {/* Waterfall Steps */}
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Zap className="w-4 h-4 text-violet-400" />
-                <h2 className="text-sm font-semibold text-white">Trace Waterfall</h2>
+            <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm dark:shadow-none">
+              <div className="px-6 py-4 border-b border-black/5 dark:border-white/10 flex items-center gap-2">
+                <Box className="w-4 h-4 text-violet-600 dark:text-violet-400" />
+                <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">Trace Waterfall</h2>
                 <span className="text-xs text-zinc-500">({run.steps.length} steps, chronological)</span>
               </div>
 
@@ -326,7 +352,7 @@ export default function TraceDetailPage() {
                 <div className="text-center py-16 text-zinc-600 text-sm">No steps recorded for this run.</div>
               ) : (
                 <div className="relative">
-                  <div className="space-y-3">
+                  <div className="divide-y divide-black/5 dark:divide-white/5">
                     {run.steps.map((step, i) => (
                       <StepCard key={step.id} step={step} index={i} />
                     ))}
@@ -334,7 +360,7 @@ export default function TraceDetailPage() {
                 </div>
               )}
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

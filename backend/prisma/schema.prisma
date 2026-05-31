@@ -19,7 +19,18 @@ model User {
   password            String
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
-  runs                Run[]    
+  runs                Run[]
+  apiKeys             ApiKey[]
+}
+
+model ApiKey {
+  id                  String         @id @default(cuid())
+  userId              String
+  user                User           @relation(fields: [userId], references: [id])
+  name                String
+  key                 String         @unique
+  lastUsedAt          DateTime?
+  createdAt           DateTime       @default(now())
 }
 
 model Run {

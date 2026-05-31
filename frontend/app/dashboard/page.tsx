@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   Activity,
   Clock,
@@ -14,8 +15,11 @@ import {
   BarChart3,
   DollarSign,
   Filter,
+  TrendingUp,
+  Key,
 } from 'lucide-react';
 import { calculateStepCost, formatCost } from '@/utils/pricing';
+import { connectSocket, getSocket } from '@/utils/socket';
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
 
@@ -63,16 +67,16 @@ function StatusBadge({ status }: { status: Run['status'] }) {
   );
 }
 
-function StatCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub?: string }) {
+function StatCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub: string }) {
   return (
-    <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-5 flex items-start gap-4">
-      <div className="p-2.5 rounded-xl bg-violet-500/10 text-violet-400 border border-violet-500/20 shrink-0">
+    <div className="p-5 rounded-2xl bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 flex items-start gap-4 shadow-sm dark:shadow-none hover:-translate-y-0.5 transition-transform">
+      <div className="p-2.5 rounded-xl bg-violet-100 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400">
         {icon}
       </div>
       <div>
         <p className="text-xs text-zinc-500 font-medium mb-1">{label}</p>
-        <p className="text-2xl font-bold text-white">{value}</p>
-        {sub && <p className="text-xs text-zinc-500 mt-0.5">{sub}</p>}
+        <p className="text-2xl font-bold text-zinc-900 dark:text-white">{value}</p>
+        <p className="text-xs text-zinc-500 mt-0.5">{sub}</p>
       </div>
     </div>
   );
@@ -83,6 +87,7 @@ export default function DashboardPage() {
   const [runs, setRuns] = useState<Run[]>([]);
   const [agents, setAgents] = useState<string[]>([]);
   const [selectedAgent, setSelectedAgent] = useState<string>('');
+  const [selectedStatus, setSelectedStatus] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -97,19 +102,64 @@ export default function DashboardPage() {
 
   useEffect(() => {
     setLoading(true);
-    const url = selectedAgent 
-      ? `${BACKEND}/runs?agentName=${encodeURIComponent(selectedAgent)}` 
-      : `${BACKEND}/runs`;
+    
+    const query = new URLSearchParams();
+    if (selectedAgent) query.append('agentName', selectedAgent);
+    if (selectedStatus) query.append('status', selectedStatus);
+    const qs = query.toString();
+    const url = `${BACKEND}/runs${qs ? `?${qs}` : ''}`;
 
     fetch(url, { credentials: 'include' })
-      .then((r) => r.json())
+      .then(async (r) => {
+        if (r.status === 401 || r.status === 403) {
+          window.location.href = '/auth/login';
+          throw new Error('Unauthorized');
+        }
+        return r.json();
+      })
       .then((data) => {
         if (Array.isArray(data)) setRuns(data);
         else setError('Failed to load runs.');
       })
       .catch(() => setError('Could not reach the server.'))
       .finally(() => setLoading(false));
-  }, [selectedAgent]);
+
+    const socket = connectSocket();
+    
+    const handleRunStarted = ({ run }: { run: Run }) => {
+      if (selectedAgent && run.agentName !== selectedAgent) return;
+      if (selectedStatus && run.status !== selectedStatus) return;
+      
+      setRuns(prev => {
+        if (prev.some(r => r.id === run.id)) return prev;
+        return [{ ...run, steps: [] }, ...prev];
+      });
+    };
+
+    const handleRunEnded = ({ run }: { run: Run }) => {
+      setRuns(prev => prev.map(r => r.id === run.id ? { ...r, status: run.status, totalMs: run.totalMs } : r));
+    };
+
+    const handleStepAdded = ({ step }: { step: any }) => {
+      setRuns(prev => prev.map(r => {
+        if (r.id === step.runId) {
+          const steps = r.steps || [];
+          return { ...r, steps: [...steps, step] };
+        }
+        return r;
+      }));
+    };
+
+    socket.on("run_started", handleRunStarted);
+    socket.on("run_ended", handleRunEnded);
+    socket.on("step_added", handleStepAdded);
+
+    return () => {
+      socket.off("run_started", handleRunStarted);
+      socket.off("run_ended", handleRunEnded);
+      socket.off("step_added", handleStepAdded);
+    };
+  }, [selectedAgent, selectedStatus]);
 
   const stats: Stats = {
     totalRuns: runs.length,
@@ -124,45 +174,65 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#030305] text-white font-sans">
-      {/* Ambient glows */}
-      <div className="fixed top-0 left-1/4 w-[600px] h-[400px] bg-violet-600/10 rounded-full filter blur-[120px] pointer-events-none" />
-      <div className="fixed bottom-0 right-1/4 w-[500px] h-[300px] bg-indigo-600/10 rounded-full filter blur-[120px] pointer-events-none" />
+    <div className="min-h-screen bg-zinc-50 dark:bg-[#030305] text-zinc-900 dark:text-white font-sans transition-colors duration-300">
+      <div className="fixed top-0 left-1/4 w-[600px] h-[400px] bg-violet-600/10 rounded-full filter blur-[120px] pointer-events-none mix-blend-multiply dark:mix-blend-screen" />
+      <div className="fixed bottom-0 right-1/4 w-[500px] h-[300px] bg-indigo-600/10 rounded-full filter blur-[120px] pointer-events-none mix-blend-multiply dark:mix-blend-screen" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-10">
-        {/* Header */}
         <div className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-3 mb-2">
               <div className="p-2 rounded-xl bg-violet-500/10 border border-violet-500/20">
                 <Activity className="w-5 h-5 text-violet-400" />
               </div>
-              <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60">
+              <h1 className="text-2xl font-bold text-zinc-900 dark:text-white">
                 Rackle Dashboard
               </h1>
             </div>
-            <p className="text-sm text-zinc-500 ml-11">Monitor and inspect your AI agent runs in real-time.</p>
+            <p className="text-sm text-zinc-500 ml-11">Real-time observability for your AI agents.</p>
+            <div className="flex items-center gap-2 ml-11 mt-3">
+              <Link href="/dashboard/analytics" className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300 transition-colors shadow-sm dark:shadow-none">
+                <TrendingUp className="w-3.5 h-3.5" /> Analytics
+              </Link>
+              <Link href="/dashboard/settings" className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300 transition-colors shadow-sm dark:shadow-none">
+                <Key className="w-3.5 h-3.5" /> API Keys
+              </Link>
+            </div>
           </div>
           
-          {/* Agent Filter */}
-          {agents.length > 0 && (
-            <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg p-1">
-              <Filter className="w-4 h-4 text-zinc-400 ml-2 shrink-0" />
+          <div className="flex flex-wrap items-center gap-3">
+            {agents.length > 0 && (
+              <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 shadow-sm dark:shadow-none">
+                <Filter className="w-4 h-4 text-zinc-400 ml-2 shrink-0" />
+                <select 
+                  value={selectedAgent}
+                  onChange={(e) => setSelectedAgent(e.target.value)}
+                  className="bg-transparent text-sm text-zinc-900 dark:text-zinc-300 outline-none pr-4 py-1.5 min-w-[120px]"
+                >
+                  <option value="" className="bg-white dark:bg-[#111]">All Agents</option>
+                  {agents.map(a => (
+                    <option key={a} value={a} className="bg-white dark:bg-[#111]">{a}</option>
+                  ))}
+                </select>
+              </div>
+            )}
+            
+            <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 shadow-sm dark:shadow-none">
+              <Activity className="w-4 h-4 text-zinc-400 ml-2 shrink-0" />
               <select 
-                value={selectedAgent}
-                onChange={(e) => setSelectedAgent(e.target.value)}
-                className="bg-transparent text-sm text-zinc-300 outline-none pr-4 py-1.5 min-w-[140px]"
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="bg-transparent text-sm text-zinc-900 dark:text-zinc-300 outline-none pr-4 py-1.5 min-w-[120px]"
               >
-                <option value="" className="bg-[#111]">All Agents</option>
-                {agents.map(a => (
-                  <option key={a} value={a} className="bg-[#111]">{a}</option>
-                ))}
+                <option value="" className="bg-white dark:bg-[#111]">All Statuses</option>
+                <option value="completed" className="bg-white dark:bg-[#111]">Completed</option>
+                <option value="failed" className="bg-white dark:bg-[#111]">Failed</option>
+                <option value="running" className="bg-white dark:bg-[#111]">Running</option>
               </select>
             </div>
-          )}
+          </div>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           <StatCard
             icon={<BarChart3 className="w-5 h-5" />}
@@ -190,51 +260,52 @@ export default function DashboardPage() {
           />
         </div>
 
-        {/* Run List */}
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-white/10 flex items-center gap-2">
-            <Zap className="w-4 h-4 text-violet-400" />
-            <h2 className="text-sm font-semibold text-white">Recent Runs</h2>
+        <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm dark:shadow-none">
+          <div className="px-6 py-4 border-b border-black/5 dark:border-white/10 flex items-center gap-2">
+            <Zap className="w-4 h-4 text-violet-500" />
+            <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">Recent Runs</h2>
           </div>
 
           {loading && (
             <div className="flex items-center justify-center gap-3 py-20 text-zinc-500">
-              <Loader2 className="w-5 h-5 animate-spin text-violet-400" />
+              <Loader2 className="w-5 h-5 animate-spin text-violet-500" />
               <span className="text-sm">Loading runs…</span>
             </div>
           )}
 
           {error && (
-            <div className="flex items-center justify-center py-20 text-red-400 text-sm gap-2">
+            <div className="flex items-center justify-center py-20 text-red-500 text-sm gap-2">
               <AlertTriangle className="w-4 h-4" /> {error}
             </div>
           )}
 
           {!loading && !error && runs.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-20 text-zinc-600 gap-3">
+            <div className="flex flex-col items-center justify-center py-20 text-zinc-500 gap-3">
               <Cpu className="w-8 h-8" />
               <p className="text-sm">No runs yet. Instrument your agent with the Rackle SDK to start tracing.</p>
             </div>
           )}
 
           {!loading && runs.length > 0 && (
-            <div className="divide-y divide-white/5">
+            <div className="divide-y divide-black/5 dark:divide-white/5">
               {runs.map((run) => (
-                <button
+                <Link
                   key={run.id}
-                  id={`run-${run.id}`}
-                  onClick={() => router.push(`/dashboard/runs/${run.id}`)}
-                  className="w-full flex items-center gap-4 px-6 py-4 hover:bg-white/5 transition-colors text-left group"
+                  href={`/dashboard/runs/${run.id}`}
+                  className="w-full flex items-center gap-4 px-6 py-4 hover:bg-zinc-50 dark:hover:bg-white/5 transition-colors text-left group"
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
-                      <span className="text-sm font-semibold text-white truncate">{run.agentName}</span>
+                      <span className="text-sm font-semibold text-zinc-900 dark:text-white truncate">{run.agentName}</span>
                       <StatusBadge status={run.status} />
                     </div>
                     <div className="flex items-center gap-4 text-xs text-zinc-500">
                       <span className="flex items-center gap-1">
                         <Zap className="w-3 h-3" />
-                        {run._count.steps} step{run._count.steps !== 1 ? 's' : ''}
+                        {(() => {
+                          const count = run.steps ? run.steps.length : (run._count?.steps ?? 0);
+                          return `${count} step${count !== 1 ? 's' : ''}`;
+                        })()}
                       </span>
                       {run.totalMs && (
                         <span className="flex items-center gap-1">
@@ -246,7 +317,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-violet-400 transition-colors shrink-0" />
-                </button>
+                </Link>
               ))}
             </div>
           )}

@@ -96,26 +96,26 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#030305] relative overflow-hidden font-sans selection:bg-violet-500/30">
+    <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-[#030305] text-zinc-900 dark:text-white relative overflow-hidden font-sans selection:bg-violet-500/30 transition-colors duration-300">
       
       {/* Animated Background Orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/30 rounded-full mix-blend-screen filter blur-[100px] opacity-70 animate-blob pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-fuchsia-600/20 rounded-full mix-blend-screen filter blur-[100px] opacity-70 animate-blob animation-delay-2000 pointer-events-none" />
-      <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-indigo-600/30 rounded-full mix-blend-screen filter blur-[100px] opacity-70 animate-blob animation-delay-4000 pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-600/20 dark:bg-violet-600/30 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-fuchsia-600/10 dark:bg-fuchsia-600/20 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob animation-delay-2000 pointer-events-none" />
+      <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-indigo-600/20 dark:bg-indigo-600/30 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-[100px] opacity-70 animate-blob animation-delay-4000 pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-md px-4 sm:px-0">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60 mb-2">
+          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:to-white/60 mb-2">
             Rackle
           </h1>
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
             {tab === 'login' ? 'Sign in to continue your journey.' : 'Join us and start your journey.'}
           </p>
         </div>
 
-        <div className="backdrop-blur-2xl bg-white/5 border border-white/10 rounded-3xl p-8 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)]">
+        <div className="backdrop-blur-2xl bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-3xl p-8 shadow-xl dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.36)]">
           {/* Tab Switcher */}
-          <div className="flex bg-black/20 rounded-full p-1 mb-8 border border-white/5">
+          <div className="flex bg-zinc-100 dark:bg-black/20 rounded-full p-1 mb-8 border border-black/5 dark:border-white/5">
             {(['login', 'signup'] as Tab[]).map((t) => (
               <button
                 key={t}
@@ -124,8 +124,8 @@ export default function AuthPage() {
                 onClick={() => switchTab(t)}
                 className={`flex-1 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 cursor-pointer ${
                   tab === t
-                    ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-900/40'
-                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/30 dark:shadow-violet-900/40'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                 }`}
               >
                 {t === 'login' ? 'Log In' : 'Sign Up'}
@@ -136,11 +136,11 @@ export default function AuthPage() {
           <form id="auth-form" onSubmit={handleSubmit} className="space-y-5">
             {tab === 'signup' && (
               <div className="space-y-1.5">
-                <label className="block text-xs font-medium text-zinc-400 ml-1">
-                  Name <span className="text-zinc-600">(optional)</span>
+                <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 ml-1">
+                  Name <span className="text-zinc-400 dark:text-zinc-600">(optional)</span>
                 </label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-violet-400 transition-colors">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-500 group-focus-within:text-violet-500 dark:group-focus-within:text-violet-400 transition-colors">
                     <User className="w-5 h-5" />
                   </div>
                   <input
@@ -151,18 +151,18 @@ export default function AuthPage() {
                     placeholder="John Doe"
                     value={form.name}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 focus:bg-white/10 transition-all"
+                    className="w-full pl-11 pr-4 py-3 rounded-xl bg-zinc-50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 focus:bg-white dark:focus:bg-white/10 transition-all"
                   />
                 </div>
               </div>
             )}
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-zinc-400 ml-1">
+              <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 ml-1">
                 Email
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-violet-400 transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-500 group-focus-within:text-violet-500 dark:group-focus-within:text-violet-400 transition-colors">
                   <Mail className="w-5 h-5" />
                 </div>
                 <input
@@ -174,17 +174,17 @@ export default function AuthPage() {
                   value={form.email}
                   onChange={handleChange}
                   required
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 focus:bg-white/10 transition-all"
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-zinc-50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 focus:bg-white dark:focus:bg-white/10 transition-all"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-zinc-400 ml-1">
+              <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 ml-1">
                 Password
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500 group-focus-within:text-violet-400 transition-colors">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-500 group-focus-within:text-violet-500 dark:group-focus-within:text-violet-400 transition-colors">
                   <Lock className="w-5 h-5" />
                 </div>
                 <input
@@ -197,12 +197,12 @@ export default function AuthPage() {
                   onChange={handleChange}
                   required
                   minLength={6}
-                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 focus:bg-white/10 transition-all"
+                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-zinc-50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/50 focus:bg-white dark:focus:bg-white/10 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-zinc-500 hover:text-zinc-300 focus:outline-none focus:text-violet-400 transition-colors cursor-pointer"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 focus:outline-none focus:text-violet-500 dark:focus:text-violet-400 transition-colors cursor-pointer"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? (
@@ -269,7 +269,7 @@ export default function AuthPage() {
                 <button
                   type="button"
                   onClick={() => switchTab('signup')}
-                  className="font-medium text-violet-400 hover:text-violet-300 hover:underline underline-offset-4 cursor-pointer transition-all"
+                  className="font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 hover:underline underline-offset-4 cursor-pointer transition-all"
                 >
                   Create an account
                 </button>
@@ -280,7 +280,7 @@ export default function AuthPage() {
                 <button
                   type="button"
                   onClick={() => switchTab('login')}
-                  className="font-medium text-violet-400 hover:text-violet-300 hover:underline underline-offset-4 cursor-pointer transition-all"
+                  className="font-medium text-violet-600 dark:text-violet-400 hover:text-violet-700 dark:hover:text-violet-300 hover:underline underline-offset-4 cursor-pointer transition-all"
                 >
                   Log in
                 </button>

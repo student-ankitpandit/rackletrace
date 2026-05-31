@@ -1,5 +1,6 @@
-import { Router }  from "express"
+import { Router } from "express"
 import prisma from "../lib/prisma"
+import { getIO } from "../socket"
 
 const router = Router()
 
@@ -23,6 +24,10 @@ router.post("/run/start", async (req, res) => {
       status: "running"
     }
   })
+
+  try {
+    getIO().to(`user_${userId}`).emit("run_started", { run });
+  } catch (err) {} // ignore if io not ready
 
   return res.json(run)
 })
@@ -61,6 +66,10 @@ router.post("/step", async (req, res) => {
     }
   })
 
+  try {
+    getIO().to(`user_${userId}`).emit("step_added", { step });
+  } catch (err) {}
+
   return res.json(step)
 })
 
@@ -89,6 +98,10 @@ router.post("/run/end", async (req, res) => {
       totalMs: totalMs ?? null
     }
   })
+
+  try {
+    getIO().to(`user_${userId}`).emit("run_ended", { run: updated });
+  } catch (err) {}
 
   return res.json(updated)
 })

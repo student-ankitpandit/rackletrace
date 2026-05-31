@@ -9,6 +9,7 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.ts'
+export type * from './models/ApiKey.ts'
 export type * from './models/Run.ts'
 export type * from './models/Step.ts'
 export type * from './commonInputTypes.ts'

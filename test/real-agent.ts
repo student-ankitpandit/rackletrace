@@ -1,18 +1,14 @@
 import { Tracer } from "@ankit/rackle-sdk"
 import { GoogleGenAI } from "@google/genai"
 
-// We initialize the Google Gen AI client. 
-// It will look for GEMINI_API_KEY in your environment variables.
-const ai = new GoogleGenAI({ apiKey: "your-api-key" })
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
 
 async function main() {
-  // 1. Initialize Rackle Tracer
   const tracer = new Tracer({
-    secret : "your-secret", 
+    secret : process.env.RACKLE_SECRET ?? "your-secret", 
     baseUrl: "http://localhost:8000"
   })
 
-  // 2. Start the Trace Run
   const run = await tracer.startRun({ agentName: "Gemini-Assistant" })
   console.log("🚀 Rackle trace started for real agent...")
 
@@ -22,7 +18,6 @@ async function main() {
     console.log("🧠 Sending request to Gemini...")
     const startTime = Date.now()
 
-    // Make the REAL LLM call
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-lite",
       contents: prompt,

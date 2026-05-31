@@ -22,12 +22,13 @@ router.get("/", async (req, res) => {
   const userId = req.userId
   if (!userId) return res.status(401).json({ error: "Unauthorized" })
 
-  const { agentName } = req.query
+  const { agentName, status } = req.query
 
   const runs = await prisma.run.findMany({
     where: { 
       userId,
-      ...(agentName ? { agentName: String(agentName) } : {})
+      ...(agentName ? { agentName: String(agentName) } : {}),
+      ...(status ? { status: String(status) } : {})
     },
     orderBy: { createdAt: "desc" },
     include: {
