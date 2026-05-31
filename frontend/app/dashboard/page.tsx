@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   Activity,
   Clock,
@@ -17,16 +17,16 @@ import {
   Filter,
   TrendingUp,
   Key,
-} from 'lucide-react';
-import { calculateStepCost, formatCost } from '@/utils/pricing';
-import { connectSocket, getSocket } from '@/utils/socket';
+} from "lucide-react";
+import { calculateStepCost, formatCost } from "@/utils/pricing";
+import { connectSocket, getSocket } from "@/utils/socket";
 
-const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
+const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
 
 interface Run {
   id: string;
   agentName: string;
-  status: 'running' | 'completed' | 'failed';
+  status: "running" | "completed" | "failed";
   totalMs: number | null;
   createdAt: string;
   steps?: { tokens: number | null; model: string | null }[];
@@ -40,34 +40,49 @@ interface Stats {
   totalCost: number;
 }
 
-function StatusBadge({ status }: { status: Run['status'] }) {
-  const styles: Record<Run['status'], { cls: string; icon: React.ReactNode; label: string }> = {
+function StatusBadge({ status }: { status: Run["status"] }) {
+  const styles: Record<
+    Run["status"],
+    { cls: string; icon: React.ReactNode; label: string }
+  > = {
     completed: {
-      cls: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
+      cls: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
       icon: <CheckCircle2 className="w-3.5 h-3.5" />,
-      label: 'Completed',
+      label: "Completed",
     },
     failed: {
-      cls: 'bg-red-500/10 text-red-400 border-red-500/20',
+      cls: "bg-red-500/10 text-red-400 border-red-500/20",
       icon: <AlertTriangle className="w-3.5 h-3.5" />,
-      label: 'Failed',
+      label: "Failed",
     },
     running: {
-      cls: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+      cls: "bg-blue-500/10 text-blue-400 border-blue-500/20",
       icon: <Loader2 className="w-3.5 h-3.5 animate-spin" />,
-      label: 'Running',
+      label: "Running",
     },
   };
   const s = styles[status] ?? styles.running;
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${s.cls}`}>
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${s.cls}`}
+    >
       {s.icon}
       {s.label}
     </span>
   );
 }
 
-function StatCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub: string }) {
+function StatCard({
+  icon,
+  label,
+  value,
+  sub,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  sub: string;
+}) {
   return (
     <div className="p-5 rounded-2xl bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 flex items-start gap-4 shadow-sm dark:shadow-none hover:-translate-y-0.5 transition-transform">
       <div className="p-2.5 rounded-xl bg-violet-100 dark:bg-violet-500/10 text-violet-600 dark:text-violet-400">
@@ -75,7 +90,9 @@ function StatCard({ icon, label, value, sub }: { icon: React.ReactNode; label: s
       </div>
       <div>
         <p className="text-xs text-zinc-500 font-medium mb-1">{label}</p>
-        <p className="text-2xl font-bold text-zinc-900 dark:text-white">{value}</p>
+        <p className="text-2xl font-bold text-zinc-900 dark:text-white">
+          {value}
+        </p>
         <p className="text-xs text-zinc-500 mt-0.5">{sub}</p>
       </div>
     </div>
@@ -86,15 +103,15 @@ export default function DashboardPage() {
   const router = useRouter();
   const [runs, setRuns] = useState<Run[]>([]);
   const [agents, setAgents] = useState<string[]>([]);
-  const [selectedAgent, setSelectedAgent] = useState<string>('');
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const [selectedAgent, setSelectedAgent] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`${BACKEND}/runs/agents`, { credentials: 'include' })
-      .then(r => r.json())
-      .then(data => {
+    fetch(`${BACKEND}/runs/agents`, { credentials: "include" })
+      .then((r) => r.json())
+      .then((data) => {
         if (Array.isArray(data)) setAgents(data);
       })
       .catch(console.error);
@@ -102,52 +119,60 @@ export default function DashboardPage() {
 
   useEffect(() => {
     setLoading(true);
-    
-    const query = new URLSearchParams();
-    if (selectedAgent) query.append('agentName', selectedAgent);
-    if (selectedStatus) query.append('status', selectedStatus);
-    const qs = query.toString();
-    const url = `${BACKEND}/runs${qs ? `?${qs}` : ''}`;
 
-    fetch(url, { credentials: 'include' })
+    const query = new URLSearchParams();
+    if (selectedAgent) query.append("agentName", selectedAgent);
+    if (selectedStatus) query.append("status", selectedStatus);
+    const qs = query.toString();
+    const url = `${BACKEND}/runs${qs ? `?${qs}` : ""}`;
+
+    fetch(url, { credentials: "include" })
       .then(async (r) => {
         if (r.status === 401 || r.status === 403) {
-          window.location.href = '/auth/login';
-          throw new Error('Unauthorized');
+          window.location.href = "/auth/login";
+          throw new Error("Unauthorized");
         }
         return r.json();
       })
       .then((data) => {
         if (Array.isArray(data)) setRuns(data);
-        else setError('Failed to load runs.');
+        else setError("Failed to load runs.");
       })
-      .catch(() => setError('Could not reach the server.'))
+      .catch(() => setError("Could not reach the server."))
       .finally(() => setLoading(false));
 
     const socket = connectSocket();
-    
+
     const handleRunStarted = ({ run }: { run: Run }) => {
       if (selectedAgent && run.agentName !== selectedAgent) return;
       if (selectedStatus && run.status !== selectedStatus) return;
-      
-      setRuns(prev => {
-        if (prev.some(r => r.id === run.id)) return prev;
+
+      setRuns((prev) => {
+        if (prev.some((r) => r.id === run.id)) return prev;
         return [{ ...run, steps: [] }, ...prev];
       });
     };
 
     const handleRunEnded = ({ run }: { run: Run }) => {
-      setRuns(prev => prev.map(r => r.id === run.id ? { ...r, status: run.status, totalMs: run.totalMs } : r));
+      setRuns((prev) =>
+        prev.map((r) =>
+          r.id === run.id
+            ? { ...r, status: run.status, totalMs: run.totalMs }
+            : r,
+        ),
+      );
     };
 
     const handleStepAdded = ({ step }: { step: any }) => {
-      setRuns(prev => prev.map(r => {
-        if (r.id === step.runId) {
-          const steps = r.steps || [];
-          return { ...r, steps: [...steps, step] };
-        }
-        return r;
-      }));
+      setRuns((prev) =>
+        prev.map((r) => {
+          if (r.id === step.runId) {
+            const steps = r.steps || [];
+            return { ...r, steps: [...steps, step] };
+          }
+          return r;
+        }),
+      );
     };
 
     socket.on("run_started", handleRunStarted);
@@ -164,11 +189,19 @@ export default function DashboardPage() {
   const stats: Stats = {
     totalRuns: runs.length,
     avgLatencyMs: runs.length
-      ? Math.round(runs.filter((r) => r.totalMs).reduce((s, r) => s + (r.totalMs ?? 0), 0) / (runs.filter((r) => r.totalMs).length || 1))
+      ? Math.round(
+          runs
+            .filter((r) => r.totalMs)
+            .reduce((s, r) => s + (r.totalMs ?? 0), 0) /
+            (runs.filter((r) => r.totalMs).length || 1),
+        )
       : 0,
-    failedRuns: runs.filter((r) => r.status === 'failed').length,
+    failedRuns: runs.filter((r) => r.status === "failed").length,
     totalCost: runs.reduce((total, run) => {
-      const runCost = (run.steps || []).reduce((sum, step) => sum + calculateStepCost(step.model, step.tokens), 0);
+      const runCost = (run.steps || []).reduce(
+        (sum, step) => sum + calculateStepCost(step.model, step.tokens),
+        0,
+      );
       return total + runCost;
     }, 0),
   };
@@ -189,45 +222,69 @@ export default function DashboardPage() {
                 Rackle Dashboard
               </h1>
             </div>
-            <p className="text-sm text-zinc-500 ml-11">Real-time observability for your AI agents.</p>
+            <p className="text-sm text-zinc-500 ml-11">
+              Real-time observability for your AI agents.
+            </p>
             <div className="flex items-center gap-2 ml-11 mt-3">
-              <Link href="/dashboard/analytics" className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300 transition-colors shadow-sm dark:shadow-none">
+              <Link
+                href="/dashboard/analytics"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300 transition-colors shadow-sm dark:shadow-none"
+              >
                 <TrendingUp className="w-3.5 h-3.5" /> Analytics
               </Link>
-              <Link href="/dashboard/settings" className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300 transition-colors shadow-sm dark:shadow-none">
+              <Link
+                href="/dashboard/settings"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-violet-600 dark:hover:text-violet-300 transition-colors shadow-sm dark:shadow-none"
+              >
                 <Key className="w-3.5 h-3.5" /> API Keys
               </Link>
             </div>
           </div>
-          
+
           <div className="flex flex-wrap items-center gap-3">
             {agents.length > 0 && (
               <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 shadow-sm dark:shadow-none">
                 <Filter className="w-4 h-4 text-zinc-400 ml-2 shrink-0" />
-                <select 
+                <select
                   value={selectedAgent}
                   onChange={(e) => setSelectedAgent(e.target.value)}
                   className="bg-transparent text-sm text-zinc-900 dark:text-zinc-300 outline-none pr-4 py-1.5 min-w-[120px]"
                 >
-                  <option value="" className="bg-white dark:bg-[#111]">All Agents</option>
-                  {agents.map(a => (
-                    <option key={a} value={a} className="bg-white dark:bg-[#111]">{a}</option>
+                  <option value="" className="bg-white dark:bg-[#111]">
+                    All Agents
+                  </option>
+                  {agents.map((a) => (
+                    <option
+                      key={a}
+                      value={a}
+                      className="bg-white dark:bg-[#111]"
+                    >
+                      {a}
+                    </option>
                   ))}
                 </select>
               </div>
             )}
-            
+
             <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 shadow-sm dark:shadow-none">
               <Activity className="w-4 h-4 text-zinc-400 ml-2 shrink-0" />
-              <select 
+              <select
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
                 className="bg-transparent text-sm text-zinc-900 dark:text-zinc-300 outline-none pr-4 py-1.5 min-w-[120px]"
               >
-                <option value="" className="bg-white dark:bg-[#111]">All Statuses</option>
-                <option value="completed" className="bg-white dark:bg-[#111]">Completed</option>
-                <option value="failed" className="bg-white dark:bg-[#111]">Failed</option>
-                <option value="running" className="bg-white dark:bg-[#111]">Running</option>
+                <option value="" className="bg-white dark:bg-[#111]">
+                  All Statuses
+                </option>
+                <option value="completed" className="bg-white dark:bg-[#111]">
+                  Completed
+                </option>
+                <option value="failed" className="bg-white dark:bg-[#111]">
+                  Failed
+                </option>
+                <option value="running" className="bg-white dark:bg-[#111]">
+                  Running
+                </option>
               </select>
             </div>
           </div>
@@ -249,7 +306,11 @@ export default function DashboardPage() {
           <StatCard
             icon={<Clock className="w-5 h-5" />}
             label="Avg Latency"
-            value={stats.avgLatencyMs ? `${(stats.avgLatencyMs / 1000).toFixed(2)}s` : '—'}
+            value={
+              stats.avgLatencyMs
+                ? `${(stats.avgLatencyMs / 1000).toFixed(2)}s`
+                : "—"
+            }
             sub="Per completed run"
           />
           <StatCard
@@ -263,7 +324,9 @@ export default function DashboardPage() {
         <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm dark:shadow-none">
           <div className="px-6 py-4 border-b border-black/5 dark:border-white/10 flex items-center gap-2">
             <Zap className="w-4 h-4 text-violet-500" />
-            <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">Recent Runs</h2>
+            <h2 className="text-sm font-semibold text-zinc-900 dark:text-white">
+              Recent Runs
+            </h2>
           </div>
 
           {loading && (
@@ -282,7 +345,10 @@ export default function DashboardPage() {
           {!loading && !error && runs.length === 0 && (
             <div className="flex flex-col items-center justify-center py-20 text-zinc-500 gap-3">
               <Cpu className="w-8 h-8" />
-              <p className="text-sm">No runs yet. Instrument your agent with the Rackle SDK to start tracing.</p>
+              <p className="text-sm">
+                No runs yet. Instrument your agent with the Rackle SDK to start
+                tracing.
+              </p>
             </div>
           )}
 
@@ -296,15 +362,19 @@ export default function DashboardPage() {
                 >
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-1">
-                      <span className="text-sm font-semibold text-zinc-900 dark:text-white truncate">{run.agentName}</span>
+                      <span className="text-sm font-semibold text-zinc-900 dark:text-white truncate">
+                        {run.agentName}
+                      </span>
                       <StatusBadge status={run.status} />
                     </div>
                     <div className="flex items-center gap-4 text-xs text-zinc-500">
                       <span className="flex items-center gap-1">
                         <Zap className="w-3 h-3" />
                         {(() => {
-                          const count = run.steps ? run.steps.length : (run._count?.steps ?? 0);
-                          return `${count} step${count !== 1 ? 's' : ''}`;
+                          const count = run.steps
+                            ? run.steps.length
+                            : (run._count?.steps ?? 0);
+                          return `${count} step${count !== 1 ? "s" : ""}`;
                         })()}
                       </span>
                       {run.totalMs && (
