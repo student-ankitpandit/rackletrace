@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link"
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
@@ -184,7 +184,7 @@ export default function Home() {
                 <span className="block">
                   <span className="text-violet-400">import</span> {"{"} Tracer{" "}
                   {"}"} <span className="text-violet-400">from</span>{" "}
-                  <span className="text-emerald-400">"@rackle/rackle-sdk"</span>
+                  <span className="text-emerald-400">"@rackle-labs/sdk"</span>
                   ;
                 </span>
                 <span className="block">&nbsp;</span>
@@ -253,9 +253,15 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-black/5 dark:border-white/5 bg-white dark:bg-black/20 text-center">
-        <p className="text-sm text-zinc-500">
-          © {new Date().getFullYear()} Rackle.
+      <footer className="py-8 border-t border-black/5 dark:border-white/5 bg-white dark:bg-black/20 text-center flex flex-col items-center gap-1">
+        <p className="text-sm text-zinc-500 font-sans">
+          © {new Date().getFullYear()} Rackle AI.
+        </p>
+        <p className="text-sm text-zinc-500 font-sans">
+          Built by{" "}
+          <Link className="text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300 transition-colors font-medium" href="https://x.com/ankitpanditdev" target="_blank" rel="noopener noreferrer">
+            @ankitpanditdev
+          </Link>
         </p>
       </footer>
     </div>

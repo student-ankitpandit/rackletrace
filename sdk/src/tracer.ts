@@ -6,7 +6,10 @@ export class Tracer {
   private options: TracerOptions
 
   constructor(options: TracerOptions) {
-    this.options = options
+    this.options = {
+      ...options,
+      baseUrl: options.baseUrl ?? "https://api.rackle.com" // Default to your future production URL
+    }
   }
 
   async startRun(runOptions: RunOptions): Promise<Run> {

@@ -17,6 +17,7 @@ import {
   Filter,
   TrendingUp,
   Key,
+  Search,
 } from "lucide-react";
 import { calculateStepCost, formatCost } from "@/utils/pricing";
 import { connectSocket, getSocket } from "@/utils/socket";
@@ -105,8 +106,15 @@ export default function DashboardPage() {
   const [agents, setAgents] = useState<string[]>([]);
   const [selectedAgent, setSelectedAgent] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debouncedSearch, setDebouncedSearch] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(searchQuery), 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   useEffect(() => {
     fetch(`${BACKEND}/runs/agents`, { credentials: "include" })
@@ -123,6 +131,7 @@ export default function DashboardPage() {
     const query = new URLSearchParams();
     if (selectedAgent) query.append("agentName", selectedAgent);
     if (selectedStatus) query.append("status", selectedStatus);
+    if (debouncedSearch) query.append("search", debouncedSearch);
     const qs = query.toString();
     const url = `${BACKEND}/runs${qs ? `?${qs}` : ""}`;
 
@@ -184,7 +193,7 @@ export default function DashboardPage() {
       socket.off("run_ended", handleRunEnded);
       socket.off("step_added", handleStepAdded);
     };
-  }, [selectedAgent, selectedStatus]);
+  }, [selectedAgent, selectedStatus, debouncedSearch]);
 
   const stats: Stats = {
     totalRuns: runs.length,
@@ -266,6 +275,7 @@ export default function DashboardPage() {
               </div>
             )}
 
+
             <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 shadow-sm dark:shadow-none">
               <Activity className="w-4 h-4 text-zinc-400 ml-2 shrink-0" />
               <select
@@ -286,6 +296,17 @@ export default function DashboardPage() {
                   Running
                 </option>
               </select>
+            </div>
+
+            <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 px-3 shadow-sm dark:shadow-none min-w-[200px] ml-auto">
+              <Search className="w-4 h-4 text-zinc-400 shrink-0" />
+              <input 
+                type="text" 
+                placeholder="Search runs e.g. 'hallucination'..." 
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="bg-transparent text-sm text-zinc-900 dark:text-zinc-300 outline-none w-full py-1.5"
+              />
             </div>
           </div>
         </div>

@@ -1,20 +1,33 @@
 {
-  "name": "@ankit/rackle-sdk",
+  "name": "@rackle-labs/sdk",
   "version": "1.0.0",
-  "description": "SDK for observing AI agents",
+  "description": "Lightweight SDK for observing and tracing AI agents — track LLM calls, tool use, errors, and hallucinations.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist"],
   "scripts": {
     "build": "tsc",
-    "dev"  : "tsc --watch"
+    "dev": "tsc --watch",
+    "prepublishOnly": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["ai", "agents", "observability", "tracing", "llm", "hallucination", "sdk"],
+  "author": "Ankit Pandit",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/student-ankitpandit/Rackle"
+  },
+  "homepage": "https://rackle.com",
   "packageManager": "pnpm@10.28.1",
   "devDependencies": {
     "@types/node": "^22.0.0",
-    "typescript" : "^5.0.0"
+    "typescript": "^5.0.0"
   }
 }

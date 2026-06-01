@@ -22,15 +22,15 @@ export class Run {
     this.startedAt = Date.now()
   }
 
-  log(payload: StepPayload): void {
-    this.send("/api/ingest/step", {
+  async log(payload: StepPayload): Promise<void> {
+    await this.send("/api/ingest/step", {
       runId: this.runId,
       ...payload
     })
   }
 
-  end(options: RunEndOptions): void {
-    this.send("/api/ingest/run/end", {
+  async end(options: RunEndOptions): Promise<void> {
+    await this.send("/api/ingest/run/end", {
       runId: this.runId,
       status: options.status,
       totalMs: Date.now() - this.startedAt

@@ -25,10 +25,20 @@ import {
   ChevronUp,
   Terminal,
 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import { calculateStepCost, formatCost } from '@/utils/pricing';
 import { connectSocket } from '@/utils/socket';
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
+
+/** Renders a JSON value cleanly:
+ *  - plain strings are shown as-is (so \n becomes a real newline, no wrapping quotes)
+ *  - objects/arrays are pretty-printed JSON
+ */
+function formatJsonValue(value: unknown): string {
+  if (typeof value === 'string') return value;
+  return JSON.stringify(value, null, 2);
+}
 
 type StepType = 'LLM_CALL' | 'TOOL_CALL' | 'ERROR';
 
@@ -195,23 +205,29 @@ function StepCard({ step, index }: { step: Step; index: number }) {
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Input</h3>
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <CopyButton text={JSON.stringify(step.input, null, 2)} />
+                  <CopyButton text={formatJsonValue(step.input)} />
                 </div>
               </div>
               <pre className="p-4 rounded-xl bg-white dark:bg-black/40 border border-black/5 dark:border-white/5 text-xs text-zinc-800 dark:text-zinc-300 font-mono overflow-x-auto whitespace-pre-wrap shadow-sm dark:shadow-none max-h-64 overflow-y-auto">
-                {JSON.stringify(step.input, null, 2)}
+                {formatJsonValue(step.input)}
               </pre>
             </div>
             <div className="relative group">
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider">Output</h3>
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                  <CopyButton text={JSON.stringify(step.output, null, 2)} />
+                  <CopyButton text={formatJsonValue(step.output)} />
                 </div>
               </div>
-              <pre className="p-4 rounded-xl bg-white dark:bg-black/40 border border-black/5 dark:border-white/5 text-xs text-zinc-800 dark:text-zinc-300 font-mono overflow-x-auto whitespace-pre-wrap shadow-sm dark:shadow-none max-h-64 overflow-y-auto">
-                {JSON.stringify(step.output, null, 2)}
-              </pre>
+              {typeof step.output === 'string' ? (
+                <div className="p-4 rounded-xl bg-white dark:bg-black/40 border border-black/5 dark:border-white/5 shadow-sm dark:shadow-none max-h-96 overflow-y-auto prose prose-sm prose-zinc dark:prose-invert max-w-none text-xs text-zinc-800 dark:text-zinc-300 [&_*]:font-mono [&_p]:text-xs [&_li]:text-xs [&_strong]:font-bold [&_p]:leading-relaxed [&>p]:!mb-4 [&>ul]:!mb-4 [&>h1]:!mt-4 [&>h2]:!mt-4 [&>h3]:!mt-4 last:[&>p]:!mb-0">
+                  <ReactMarkdown>{step.output}</ReactMarkdown>
+                </div>
+              ) : (
+                <pre className="p-4 rounded-xl bg-white dark:bg-black/40 border border-black/5 dark:border-white/5 text-xs text-zinc-800 dark:text-zinc-300 font-mono overflow-x-auto whitespace-pre-wrap shadow-sm dark:shadow-none max-h-64 overflow-y-auto">
+                  {formatJsonValue(step.output)}
+                </pre>
+              )}
             </div>
           </div>
         </div>

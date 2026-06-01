@@ -1,4 +1,4 @@
-import { Tracer } from "@ankit/rackle-sdk"
+import { Tracer } from "@rackle-labs/sdk"
 import { GoogleGenAI } from "@google/genai"
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
@@ -9,11 +9,10 @@ async function main() {
     baseUrl: "http://localhost:8000"
   })
 
-  const run = await tracer.startRun({ agentName: "Gemini-Assistant" })
+  const run = await tracer.startRun({ agentName: "My Agent" })
   console.log("🚀 Rackle trace started for real agent...")
 
-  const prompt = "Explain what AI observability platform is in exactly one simple sentence."
-
+  const prompt = "hi, am ankit, can you explain how linear regression works"
   try {
     console.log("🧠 Sending request to Gemini...")
     const startTime = Date.now()
@@ -29,7 +28,7 @@ async function main() {
       type     : "llm_call",
       input    : prompt,
       output   : response.text ?? "",
-      model    : "gemini-2.0-flash",
+      model    : "gemini-2.5-flash-lite",
       tokens   : response.usageMetadata?.totalTokenCount ?? 0,
       latencyMs: latencyMs
     })

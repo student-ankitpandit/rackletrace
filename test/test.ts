@@ -1,13 +1,13 @@
-import { Tracer } from "@ankit/rackle-sdk"
+import { Tracer } from "@rackle-labs/sdk"
 
 async function main() {
   const tracer = new Tracer({
     secret : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbXBubDljczQwMDAwMjhnMDhxNzFwYmx2IiwiaWF0IjoxNzgwMDU5MTAxfQ.cdJFXka_S1y0Rkm1BrBl9UAYBI2V7t3HjJn37dz4DOk",
-    baseUrl: "http://localhost:8000"
+    
   })
 
   const run = await tracer.startRun({ agentName: "test-agent" })
-  console.log("Run started")
+  console.log("Run started", run)
 
   await run.log({
     type     : "llm_call",
