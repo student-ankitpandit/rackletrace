@@ -1,12 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   Activity,
-  Terminal,
-  Shield,
   Sparkles,
   Zap,
   Layers,
@@ -173,16 +170,6 @@ export default function Home() {
               Bun, or Edge environment. Generate a secure API key and start
               tracing instantly.
             </p>
-            {/* <ul className="space-y-4 text-zinc-600 dark:text-zinc-400">
-              <li className="flex items-center gap-3">
-                <div className="p-1 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400"><Shield className="w-4 h-4" /></div>
-                Secure rk_ prefixed API keys
-              </li>
-              <li className="flex items-center gap-3">
-                <div className="p-1 rounded-full bg-violet-500/20 text-violet-600 dark:text-violet-400"><Terminal className="w-4 h-4" /></div>
-                Fully typed TypeScript SDK
-              </li>
-            </ul> */}
           </div>
 
           <div className="relative group">
