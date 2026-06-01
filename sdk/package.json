@@ -1,6 +1,6 @@
 {
   "name": "@rackle-labs/sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight SDK for observing and tracing AI agents — track LLM calls, tool use, errors, and hallucinations.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -34,7 +34,7 @@
     "type": "git",
     "url": "git+https://github.com/student-ankitpandit/Rackle.git"
   },
-  "homepage": "https://rackle.com",
+  "homepage": "https://rackleai.vercel.app",
   "packageManager": "pnpm@10.28.1",
   "devDependencies": {
     "@types/node": "^22.0.0",
