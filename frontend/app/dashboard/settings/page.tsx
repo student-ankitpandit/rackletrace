@@ -144,14 +144,6 @@ export default function SettingsPage() {
           </div>
         )}
 
-        {/* How to use hint */}
-        <div className="mb-6 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl p-5 shadow-sm dark:shadow-none">
-          <p className="text-xs text-zinc-500 font-medium mb-2">Usage in your SDK</p>
-          <code className="block bg-zinc-100 dark:bg-black/30 rounded-lg px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 font-mono border border-black/5 dark:border-white/5 overflow-x-auto">
-            {`const tracer = new Tracer({ secret: "rk_your_api_key", baseUrl: "${BACKEND}" })`}
-          </code>
-        </div>
-
         {/* Keys List */}
         <div className="bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-2xl overflow-hidden shadow-sm dark:shadow-none">
           <div className="px-6 py-4 border-b border-black/5 dark:border-white/10 flex items-center justify-between">
