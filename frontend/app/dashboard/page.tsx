@@ -18,6 +18,7 @@ import {
   TrendingUp,
   Key,
   Search,
+  LogOut,
 } from "lucide-react";
 import { calculateStepCost, formatCost } from "@/utils/pricing";
 import { connectSocket, getSocket } from "@/utils/socket";
@@ -110,6 +111,8 @@ export default function DashboardPage() {
   const [debouncedSearch, setDebouncedSearch] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchQuery), 500);
@@ -195,6 +198,26 @@ export default function DashboardPage() {
     };
   }, [selectedAgent, selectedStatus, debouncedSearch]);
 
+  const handleLogout = async () => {
+    setLogoutError(null);
+    setLoggingOut(true);
+    try {
+      const res = await fetch(`${BACKEND}/auth/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (res.ok) {
+        window.location.href = "/auth/login";
+        return;
+      }
+      setLogoutError("Could not log out. Please try again.");
+    } catch {
+      setLogoutError("Could not reach the server.");
+    } finally {
+      setLoggingOut(false);
+    }
+  };
+
   const stats: Stats = {
     totalRuns: runs.length,
     avgLatencyMs: runs.length
@@ -250,7 +273,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-end gap-3">
             {agents.length > 0 && (
               <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 shadow-sm dark:shadow-none">
                 <Filter className="w-4 h-4 text-zinc-400 ml-2 shrink-0" />
@@ -275,7 +298,6 @@ export default function DashboardPage() {
               </div>
             )}
 
-
             <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 shadow-sm dark:shadow-none">
               <Activity className="w-4 h-4 text-zinc-400 ml-2 shrink-0" />
               <select
@@ -298,18 +320,39 @@ export default function DashboardPage() {
               </select>
             </div>
 
-            <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 px-3 shadow-sm dark:shadow-none min-w-[200px] ml-auto">
-              <Search className="w-4 h-4 text-zinc-400 shrink-0" />
-              <input 
-                type="text" 
-                placeholder="Search runs e.g. 'hallucination'..." 
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="bg-transparent text-sm text-zinc-900 dark:text-zinc-300 outline-none w-full py-1.5"
-              />
+            <div className="ml-auto flex flex-col items-end gap-2 w-full sm:w-auto">
+              <button
+                onClick={handleLogout}
+                disabled={loggingOut}
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-white/5 border border-red-200/80 dark:border-red-500/30 rounded-lg text-red-600 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors shadow-sm dark:shadow-none disabled:opacity-60 disabled:cursor-not-allowed w-full sm:w-auto"
+              >
+                {loggingOut ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <LogOut className="w-3.5 h-3.5" />
+                )}
+                {loggingOut ? "Logging out..." : "Logout"}
+              </button>
+              <div className="flex items-center gap-2 bg-white dark:bg-white/5 border border-black/5 dark:border-white/10 rounded-lg p-1 px-3 shadow-sm dark:shadow-none min-w-[200px] w-full sm:w-auto">
+                <Search className="w-4 h-4 text-zinc-400 shrink-0" />
+                <input
+                  type="text"
+                  placeholder="Search runs e.g. 'hallucination'..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-transparent text-sm text-zinc-900 dark:text-zinc-300 outline-none w-full py-1.5"
+                />
+              </div>
             </div>
           </div>
         </div>
+
+        {logoutError && (
+          <div className="mb-6 flex items-center gap-3 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+            <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-red-500" />
+            <span>{logoutError}</span>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
           <StatCard

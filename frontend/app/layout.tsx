@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Frontend App',
-  description: 'Next.js app',
+  title: 'Rackle',
+  description: 'Rackle helps you observe, debug, and control your AI Agents',
 }
 
 export default function RootLayout({

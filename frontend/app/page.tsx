@@ -1,5 +1,6 @@
 "use client";
-import Link from "next/link"
+import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
@@ -9,6 +10,8 @@ import {
   Layers,
   BarChart3,
   Code,
+  Copy,
+  Check,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -16,6 +19,35 @@ const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
 
 export default function Home() {
   const router = useRouter();
+  const [copied, setCopied] = useState(false);
+
+  const snippet = `import { Tracer } from "@rackle-labs/sdk";
+
+  const tracer = new Tracer({
+    apiKey: process.env.RACKLE_API_KEY,
+  });
+
+  const run = await tracer.startRun({ agentName: "Customer-Bot" });
+
+  await run.log({
+    type: "llm_call",
+    model: "gpt-4o",
+    tokens: 350,
+    input: "Help me reset my password.",
+  });
+
+  await run.end({ status: "completed" });
+  `;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(snippet);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   const handleDashboardClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -175,17 +207,30 @@ export default function Home() {
           <div className="relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
             <div className="relative rounded-2xl bg-[#0d0d12] border border-white/10 p-6 shadow-2xl">
-              <div className="flex gap-2 mb-4">
-                <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                  <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                </div>
+                <button
+                  onClick={handleCopy}
+                  className="inline-flex items-center gap-1.5 text-xs text-zinc-300 hover:text-white bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 transition-colors"
+                  aria-label="Copy code snippet"
+                >
+                  {copied ? (
+                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5" />
+                  )}
+                  {copied ? "Copied" : "Copy"}
+                </button>
               </div>
               <pre className="text-sm font-mono text-zinc-300 overflow-x-auto whitespace-pre-wrap leading-relaxed">
                 <span className="block">
                   <span className="text-violet-400">import</span> {"{"} Tracer{" "}
                   {"}"} <span className="text-violet-400">from</span>{" "}
-                  <span className="text-emerald-400">"@rackle-labs/sdk"</span>
-                  ;
+                  <span className="text-emerald-400">"@rackle-labs/sdk"</span>;
                 </span>
                 <span className="block">&nbsp;</span>
                 <span className="block">
@@ -199,8 +244,8 @@ export default function Home() {
                   <span className="text-yellow-200">Tracer</span>({"{"}
                 </span>
                 <span className="block">
-                  {"  "}secret: process.env.
-                  <span className="text-sky-300">RACKLE_SECRET</span>
+                  {"  "}apiKey: process.env.
+                  <span className="text-sky-300">RACKLE_API_KEY</span>
                 </span>
                 <span className="block">{"}"});</span>
                 <span className="block">&nbsp;</span>
@@ -259,7 +304,12 @@ export default function Home() {
         </p>
         <p className="text-sm text-zinc-500 font-sans">
           Built by{" "}
-          <Link className="text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300 transition-colors font-medium" href="https://x.com/ankitpanditdev" target="_blank" rel="noopener noreferrer">
+          <Link
+            className="text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300 transition-colors font-medium"
+            href="https://x.com/ankitpanditdev"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             @ankitpanditdev
           </Link>
         </p>
