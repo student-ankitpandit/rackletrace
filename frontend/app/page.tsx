@@ -297,12 +297,12 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="py-8 border-t border-black/5 dark:border-white/5 bg-white dark:bg-black/20 text-center flex flex-col items-center gap-1">
+      <footer className="relative py-8 border-t border-black/5 dark:border-white/5 bg-white dark:bg-black/20 text-center flex flex-col items-center justify-center gap-1">
         <p className="text-sm text-zinc-500 font-sans">
-          © {new Date().getFullYear()} Rackle AI.
+          © {new Date().getFullYear()} Rackle.
         </p>
-        <p className="text-sm text-zinc-500 font-sans">
+        <p className="text-sm text-zinc-500 font-sans">All rights reserved.</p>
+        <p className="text-sm text-zinc-500 font-sans sm:absolute sm:right-8 sm:bottom-8">
           Built by{" "}
           <Link
             className="text-violet-500 hover:text-violet-600 dark:text-violet-400 dark:hover:text-violet-300 transition-colors font-medium"
