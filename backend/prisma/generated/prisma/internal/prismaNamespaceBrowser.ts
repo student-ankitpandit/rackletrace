@@ -122,6 +122,7 @@ export const StepScalarFieldEnum = {
   latencyMs: 'latencyMs',
   message: 'message',
   stack: 'stack',
+  state: 'state',
   createdAt: 'createdAt'
 } as const
 
@@ -141,6 +142,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

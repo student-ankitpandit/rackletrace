@@ -13,56 +13,64 @@ datasource db {
 }
 
 model User {
-  id                  String         @id @default(cuid())
-  email               String         @unique
-  name                String?
-  password            String
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
-  runs                Run[]
-  apiKeys             ApiKey[]
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  runs      Run[]
+  apiKeys   ApiKey[]
 }
 
 model ApiKey {
-  id                  String         @id @default(cuid())
-  userId              String
-  user                User           @relation(fields: [userId], references: [id])
-  name                String
-  key                 String         @unique
-  lastUsedAt          DateTime?
-  createdAt           DateTime       @default(now())
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  name       String
+  key        String    @unique
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
 }
 
 model Run {
-  id                  String         @id @default(cuid())
-  userId              String
-  user                User           @relation(fields: [userId], references: [id])
-  agentName           String
-  status              String         @default("running")
-  totalMs             Int?
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt 
-  steps               Step[]
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  agentName String
+  status    String   @default("running")
+  totalMs   Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  steps     Step[]
 }
 
 enum StepType {
   LLM_CALL
   TOOL_CALL
   ERROR
+  RETRIEVAL
+  MEMORY_READ
+  MEMORY_WRITE
+  AGENT_HANDOFF
+  GUARDRAIL
+  PLANNING
+  LOOP_DETECTED
 }
 
 model Step {
-  id                  String         @id @default(cuid())
-  runId               String
-  run                 Run            @relation(fields: [runId], references: [id])
-  type                StepType
-  input               Json
-  output              Json
-  model               String?
-  tool                String?
-  tokens              Int?
-  latencyMs           Int?
-  message             String?
-  stack               String? 
-  createdAt           DateTime       @default(now())
+  id        String   @id @default(cuid())
+  runId     String
+  run       Run      @relation(fields: [runId], references: [id])
+  type      StepType
+  input     Json
+  output    Json
+  model     String?
+  tool      String?
+  tokens    Int?
+  latencyMs Int?
+  message   String?
+  stack     String?
+  state     Json?
+  createdAt DateTime @default(now())
 }

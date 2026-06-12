@@ -8,7 +8,7 @@ export class Tracer {
   constructor(options: TracerOptions) {
     this.options = {
       ...options,
-      baseUrl: options.baseUrl ?? "https://rackle-fx56.onrender.com" // Default to your future production URL
+      baseUrl: options.baseUrl ?? "http://localhost:8000" // Default to your future production URL like "https://rackle-fx56.onrender.com"
     }
   }
 

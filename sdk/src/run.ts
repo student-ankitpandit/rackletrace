@@ -23,10 +23,29 @@ export class Run {
   }
 
   async log(payload: StepPayload): Promise<void> {
-    await this.send("/api/ingest/step", {
+    const body: any = {
       runId: this.runId,
       ...payload
+    }
+
+    await this.send("/api/ingest/step", body)
+  }
+
+  /**
+   * Convenience method: captures an error as a step and marks the run as failed.
+   * Call this in your catch blocks instead of manually calling log() + end().
+   * @param error - The caught Error object
+   * @param state - Optional snapshot of local variables / agent memory at the time of failure
+   */
+  async catch(error: unknown, state?: unknown): Promise<void> {
+    const err = error instanceof Error ? error : new Error(String(error))
+    await this.log({
+      type: "error",
+      message: err.message,
+      stack: err.stack,
+      state,
     })
+    await this.end({ status: "failed" })
   }
 
   async end(options: RunEndOptions): Promise<void> {
@@ -47,13 +66,23 @@ export class Run {
         },
         body: JSON.stringify(body)
       })
-      
+
       if (!res.ok) {
-        console.warn(`Rackle SDK Warning: Ingest returned status ${res.status}`)
+        const msg = `Rackle SDK Warning: Ingest returned status ${res.status} for ${path}`
+        if (this.options.onError) {
+          this.options.onError(new Error(msg), path)
+        } else {
+          console.warn(msg)
+        }
       }
 
     } catch (error) {
-      console.error("Rackle SDK Error: Failed to ingest trace", error)
+      const msg = `Rackle SDK Error: Failed to ingest trace at ${path}`
+      if (this.options.onError) {
+        this.options.onError(error, path)
+      } else {
+        console.error(msg, error)
+      }
     }
   }
 }

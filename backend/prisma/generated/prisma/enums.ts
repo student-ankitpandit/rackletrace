@@ -12,7 +12,14 @@
 export const StepType = {
   LLM_CALL: 'LLM_CALL',
   TOOL_CALL: 'TOOL_CALL',
-  ERROR: 'ERROR'
+  ERROR: 'ERROR',
+  RETRIEVAL: 'RETRIEVAL',
+  MEMORY_READ: 'MEMORY_READ',
+  MEMORY_WRITE: 'MEMORY_WRITE',
+  AGENT_HANDOFF: 'AGENT_HANDOFF',
+  GUARDRAIL: 'GUARDRAIL',
+  PLANNING: 'PLANNING',
+  LOOP_DETECTED: 'LOOP_DETECTED'
 } as const
 
 export type StepType = (typeof StepType)[keyof typeof StepType]

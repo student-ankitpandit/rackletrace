@@ -74,6 +74,7 @@ export type StepCountAggregateOutputType = {
   latencyMs: number
   message: number
   stack: number
+  state: number
   createdAt: number
   _all: number
 }
@@ -127,6 +128,7 @@ export type StepCountAggregateInputType = {
   latencyMs?: true
   message?: true
   stack?: true
+  state?: true
   createdAt?: true
   _all?: true
 }
@@ -229,6 +231,7 @@ export type StepGroupByOutputType = {
   latencyMs: number | null
   message: string | null
   stack: string | null
+  state: runtime.JsonValue | null
   createdAt: Date
   _count: StepCountAggregateOutputType | null
   _avg: StepAvgAggregateOutputType | null
@@ -267,6 +270,7 @@ export type StepWhereInput = {
   latencyMs?: Prisma.IntNullableFilter<"Step"> | number | null
   message?: Prisma.StringNullableFilter<"Step"> | string | null
   stack?: Prisma.StringNullableFilter<"Step"> | string | null
+  state?: Prisma.JsonNullableFilter<"Step">
   createdAt?: Prisma.DateTimeFilter<"Step"> | Date | string
   run?: Prisma.XOR<Prisma.RunScalarRelationFilter, Prisma.RunWhereInput>
 }
@@ -283,6 +287,7 @@ export type StepOrderByWithRelationInput = {
   latencyMs?: Prisma.SortOrderInput | Prisma.SortOrder
   message?: Prisma.SortOrderInput | Prisma.SortOrder
   stack?: Prisma.SortOrderInput | Prisma.SortOrder
+  state?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   run?: Prisma.RunOrderByWithRelationInput
 }
@@ -302,6 +307,7 @@ export type StepWhereUniqueInput = Prisma.AtLeast<{
   latencyMs?: Prisma.IntNullableFilter<"Step"> | number | null
   message?: Prisma.StringNullableFilter<"Step"> | string | null
   stack?: Prisma.StringNullableFilter<"Step"> | string | null
+  state?: Prisma.JsonNullableFilter<"Step">
   createdAt?: Prisma.DateTimeFilter<"Step"> | Date | string
   run?: Prisma.XOR<Prisma.RunScalarRelationFilter, Prisma.RunWhereInput>
 }, "id">
@@ -318,6 +324,7 @@ export type StepOrderByWithAggregationInput = {
   latencyMs?: Prisma.SortOrderInput | Prisma.SortOrder
   message?: Prisma.SortOrderInput | Prisma.SortOrder
   stack?: Prisma.SortOrderInput | Prisma.SortOrder
+  state?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.StepCountOrderByAggregateInput
   _avg?: Prisma.StepAvgOrderByAggregateInput
@@ -341,6 +348,7 @@ export type StepScalarWhereWithAggregatesInput = {
   latencyMs?: Prisma.IntNullableWithAggregatesFilter<"Step"> | number | null
   message?: Prisma.StringNullableWithAggregatesFilter<"Step"> | string | null
   stack?: Prisma.StringNullableWithAggregatesFilter<"Step"> | string | null
+  state?: Prisma.JsonNullableWithAggregatesFilter<"Step">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Step"> | Date | string
 }
 
@@ -355,6 +363,7 @@ export type StepCreateInput = {
   latencyMs?: number | null
   message?: string | null
   stack?: string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   run: Prisma.RunCreateNestedOneWithoutStepsInput
 }
@@ -371,6 +380,7 @@ export type StepUncheckedCreateInput = {
   latencyMs?: number | null
   message?: string | null
   stack?: string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
@@ -385,6 +395,7 @@ export type StepUpdateInput = {
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   run?: Prisma.RunUpdateOneRequiredWithoutStepsNestedInput
 }
@@ -401,6 +412,7 @@ export type StepUncheckedUpdateInput = {
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -416,6 +428,7 @@ export type StepCreateManyInput = {
   latencyMs?: number | null
   message?: string | null
   stack?: string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
@@ -430,6 +443,7 @@ export type StepUpdateManyMutationInput = {
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -445,6 +459,7 @@ export type StepUncheckedUpdateManyInput = {
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -470,6 +485,7 @@ export type StepCountOrderByAggregateInput = {
   latencyMs?: Prisma.SortOrder
   message?: Prisma.SortOrder
   stack?: Prisma.SortOrder
+  state?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -566,6 +582,7 @@ export type StepCreateWithoutRunInput = {
   latencyMs?: number | null
   message?: string | null
   stack?: string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
@@ -580,6 +597,7 @@ export type StepUncheckedCreateWithoutRunInput = {
   latencyMs?: number | null
   message?: string | null
   stack?: string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
@@ -624,6 +642,7 @@ export type StepScalarWhereInput = {
   latencyMs?: Prisma.IntNullableFilter<"Step"> | number | null
   message?: Prisma.StringNullableFilter<"Step"> | string | null
   stack?: Prisma.StringNullableFilter<"Step"> | string | null
+  state?: Prisma.JsonNullableFilter<"Step">
   createdAt?: Prisma.DateTimeFilter<"Step"> | Date | string
 }
 
@@ -638,6 +657,7 @@ export type StepCreateManyRunInput = {
   latencyMs?: number | null
   message?: string | null
   stack?: string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
@@ -652,6 +672,7 @@ export type StepUpdateWithoutRunInput = {
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -666,6 +687,7 @@ export type StepUncheckedUpdateWithoutRunInput = {
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -680,6 +702,7 @@ export type StepUncheckedUpdateManyWithoutRunInput = {
   latencyMs?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   message?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stack?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  state?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -697,6 +720,7 @@ export type StepSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   latencyMs?: boolean
   message?: boolean
   stack?: boolean
+  state?: boolean
   createdAt?: boolean
   run?: boolean | Prisma.RunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["step"]>
@@ -713,6 +737,7 @@ export type StepSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   latencyMs?: boolean
   message?: boolean
   stack?: boolean
+  state?: boolean
   createdAt?: boolean
   run?: boolean | Prisma.RunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["step"]>
@@ -729,6 +754,7 @@ export type StepSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   latencyMs?: boolean
   message?: boolean
   stack?: boolean
+  state?: boolean
   createdAt?: boolean
   run?: boolean | Prisma.RunDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["step"]>
@@ -745,10 +771,11 @@ export type StepSelectScalar = {
   latencyMs?: boolean
   message?: boolean
   stack?: boolean
+  state?: boolean
   createdAt?: boolean
 }
 
-export type StepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "runId" | "type" | "input" | "output" | "model" | "tool" | "tokens" | "latencyMs" | "message" | "stack" | "createdAt", ExtArgs["result"]["step"]>
+export type StepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "runId" | "type" | "input" | "output" | "model" | "tool" | "tokens" | "latencyMs" | "message" | "stack" | "state" | "createdAt", ExtArgs["result"]["step"]>
 export type StepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   run?: boolean | Prisma.RunDefaultArgs<ExtArgs>
 }
@@ -776,6 +803,7 @@ export type $StepPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     latencyMs: number | null
     message: string | null
     stack: string | null
+    state: runtime.JsonValue | null
     createdAt: Date
   }, ExtArgs["result"]["step"]>
   composites: {}
@@ -1212,6 +1240,7 @@ export interface StepFieldRefs {
   readonly latencyMs: Prisma.FieldRef<"Step", 'Int'>
   readonly message: Prisma.FieldRef<"Step", 'String'>
   readonly stack: Prisma.FieldRef<"Step", 'String'>
+  readonly state: Prisma.FieldRef<"Step", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Step", 'DateTime'>
 }
     

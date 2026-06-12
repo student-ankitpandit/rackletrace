@@ -12,6 +12,7 @@ router.get("/", async (req, res) => {
   const since = new Date()
   since.setDate(since.getDate() - Number(days))
 
+  try {
   // Fetch all runs with steps in the time window
   const runs = await prisma.run.findMany({
     where: { userId, createdAt: { gte: since } },
@@ -67,8 +68,12 @@ router.get("/", async (req, res) => {
     }
   }
 
-  // === 5. Step type breakdown ===
-  const stepTypes: Record<string, number> = { LLM_CALL: 0, TOOL_CALL: 0, ERROR: 0 }
+  // === 5. Step type breakdown — seeds ALL known step types ===
+  const stepTypes: Record<string, number> = {
+    LLM_CALL: 0, TOOL_CALL: 0, ERROR: 0,
+    PLANNING: 0, RETRIEVAL: 0, MEMORY_READ: 0, MEMORY_WRITE: 0,
+    AGENT_HANDOFF: 0, GUARDRAIL: 0, LOOP_DETECTED: 0
+  }
   for (const run of runs) {
     for (const step of run.steps) {
       stepTypes[step.type] = (stepTypes[step.type] ?? 0) + 1
@@ -113,6 +118,11 @@ router.get("/", async (req, res) => {
         : 0
     }
   })
+
+  } catch (err: any) {
+    console.error("analytics DB error:", err)
+    return res.status(500).json({ error: "Failed to fetch analytics" })
+  }
 })
 
 export default router
