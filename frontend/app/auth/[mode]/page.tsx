@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Mail, Lock, User, Loader2, ArrowRight, Eye, EyeOff, Activity} from 'lucide-react';
+import { Mail, Lock, User, Loader2, ArrowRight, Eye, EyeOff, Activity, AlertTriangle, Check } from 'lucide-react';
 import Link from 'next/link';
 
 type Tab = 'login' | 'signup';
