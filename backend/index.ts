@@ -22,7 +22,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(cors({
-    origin: "rackleai.vercel.app",
+    origin: "https://rackleai.vercel.app", //"http://localhost:3000" for local development
     credentials: true
 }))
 
