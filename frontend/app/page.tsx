@@ -406,7 +406,7 @@ export default function Home() {
                 <ul className="space-y-4 text-sm text-zinc-600 dark:text-zinc-400">
                   <li><Link href="https://x.com/racklelabs" target="_blank" className="hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors">Twitter / X</Link></li>
                   <li><Link href="https://github.com/student-ankitpandit/Rackle" target="_blank" className="hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors">GitHub</Link></li>
-                  <li><Link href="https://linkedin.com/racklelabs" className="hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors">LinkedIn</Link></li>
+                  <li><Link href="https://www.linkedin.com/company/racklelabs" className="hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors">LinkedIn</Link></li>
                 </ul>
               </div>
               <div>
