@@ -37,3 +37,8 @@ export type Run = Prisma.RunModel
  * 
  */
 export type Step = Prisma.StepModel
+/**
+ * Model Eval
+ * 
+ */
+export type Eval = Prisma.EvalModel

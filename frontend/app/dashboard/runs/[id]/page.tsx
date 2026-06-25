@@ -5,10 +5,14 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   ArrowLeft, CheckCircle2, AlertTriangle, Loader2, Clock,
-  Terminal, Activity, Play, ChevronDown, ChevronUp, Check, X, Box
+  Activity, Play, Check, Sparkles, ClipboardList, BarChart3,
 } from 'lucide-react';
 import { connectSocket } from '@/utils/socket';
 import WorkflowNode, { type Step } from '@/components/WorkflowNode';
+import DetectionTab from '@/components/DetectionTab';
+import EvalsTab from '@/components/EvalsTab';
+import AnalyticsTab from '@/components/AnalyticsTab';
+import ChatPanel from '@/components/ChatPanel';
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
 
@@ -22,6 +26,15 @@ interface Run {
   steps: Step[];
 }
 
+type TabKey = 'workflow' | 'analytics' | 'detection' | 'evals';
+
+const TABS: { key: TabKey; label: string; icon: any }[] = [
+  { key: 'workflow', label: 'Workflow', icon: Activity },
+  { key: 'analytics', label: 'Analytics', icon: BarChart3 },
+  { key: 'detection', label: 'Detection', icon: Sparkles },
+  { key: 'evals', label: 'Evals', icon: ClipboardList },
+];
+
 export default function TraceDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [run, setRun] = useState<Run | null>(null);
@@ -29,6 +42,7 @@ export default function TraceDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [expandedSteps, setExpandedSteps] = useState<Set<string>>(new Set());
   const [allExpanded, setAllExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabKey>('workflow');
 
   useEffect(() => {
     fetch(`${BACKEND}/runs/${id}`, { credentials: 'include' })
@@ -67,17 +81,12 @@ export default function TraceDetailPage() {
 
   const toggleAll = () => {
     if (!run) return;
-    if (allExpanded) {
-      setExpandedSteps(new Set());
-      setAllExpanded(false);
-    } else {
-      setExpandedSteps(new Set(run.steps.map(s => s.id)));
-      setAllExpanded(true);
-    }
+    if (allExpanded) { setExpandedSteps(new Set()); setAllExpanded(false); }
+    else { setExpandedSteps(new Set(run.steps.map(s => s.id))); setAllExpanded(true); }
   };
 
   const getStatusIcon = (status: string) => {
-    switch(status.toUpperCase()) {
+    switch(status?.toUpperCase()) {
       case 'FAILED': return <AlertTriangle className="w-3 h-3 text-white" />;
       case 'RUNNING': return <Loader2 className="w-3 h-3 animate-spin text-white" />;
       default: return <Check className="w-3 h-3 text-white" />;
@@ -85,7 +94,7 @@ export default function TraceDetailPage() {
   };
 
   const getStatusBg = (status: string) => {
-    switch(status.toUpperCase()) {
+    switch(status?.toUpperCase()) {
       case 'FAILED': return 'bg-red-500 border-red-400';
       case 'RUNNING': return 'bg-blue-500 border-blue-400';
       default: return 'bg-emerald-500 border-emerald-400';
@@ -94,13 +103,12 @@ export default function TraceDetailPage() {
 
   return (
     <div className="min-h-screen bg-[#000] text-zinc-100 font-sans selection:bg-violet-500/30">
-      {/* Super subtle background gradient to mimic the light theme's clean feel */}
       <div className="fixed inset-0 bg-gradient-to-b from-[#0a0a0a] to-[#000] pointer-events-none" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-12">
         
         {/* Title & Info Bar */}
-        <div className="flex items-center justify-between mb-8 pb-6 border-b border-zinc-800">
+        <div className="flex items-center justify-between mb-6 pb-6 border-b border-zinc-800">
           <div className="flex items-center gap-4">
             <Link href="/dashboard" className="p-2 rounded hover:bg-zinc-800 transition-colors text-zinc-400">
               <ArrowLeft className="w-4 h-4" />
@@ -125,14 +133,32 @@ export default function TraceDetailPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          {activeTab === 'workflow' && (
             <button 
               onClick={toggleAll}
               className="px-3 py-1.5 text-[11px] font-medium text-zinc-400 hover:text-zinc-200 bg-zinc-800 hover:bg-zinc-700 rounded transition-colors"
             >
               {allExpanded ? 'Collapse all' : 'Expand all'}
             </button>
-          </div>
+          )}
+        </div>
+
+        {/* Tabs */}
+        <div className="flex items-center gap-1 mb-6">
+          {TABS.map(({ key, label, icon: Icon }) => (
+            <button
+              key={key}
+              onClick={() => setActiveTab(key)}
+              className={`flex items-center gap-2 px-4 py-2.5 text-xs font-medium rounded-lg border transition-all ${
+                activeTab === key
+                  ? 'bg-zinc-800 border-zinc-700 text-zinc-100 shadow-sm'
+                  : 'bg-transparent border-transparent text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50'
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              {label}
+            </button>
+          ))}
         </div>
 
         {/* Loading / Error States */}
@@ -150,19 +176,16 @@ export default function TraceDetailPage() {
           </div>
         )}
 
-        {/* Main Pipeline View */}
-        {run && (
+        {/* Tab Content */}
+        {run && activeTab === 'workflow' && (
           <div className="max-w-3xl">
-            {run.steps.length === 0 ? (
+            {run.steps?.length === 0 ? (
               <div className="text-center py-16 text-zinc-600 text-sm">No steps recorded.</div>
             ) : (
               <div className="relative">
-                
-                {/* Global left connector line */}
                 <div className="absolute left-[15px] top-[24px] bottom-[24px] w-[1px] bg-zinc-800" />
-
                 <div className="space-y-6">
-                  {/* Pipeline Start Indicator */}
+                  {/* Pipeline Start */}
                   <div className="flex items-center gap-4 relative z-10">
                     <div className="w-[30px] h-[30px] rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400">
                       <Play className="w-3 h-3 ml-0.5" />
@@ -172,7 +195,7 @@ export default function TraceDetailPage() {
 
                   {/* Steps */}
                   <div className="space-y-4">
-                    {run.steps.map((step, i) => {
+                    {run.steps?.map((step, i) => {
                       const hasError = run.steps.some(s => s.type === 'ERROR');
                       const isDimmed = hasError && step.type !== 'ERROR';
                       return (
@@ -195,28 +218,42 @@ export default function TraceDetailPage() {
                     })}
                   </div>
 
-                  {/* Pipeline End Indicator */}
+                  {/* Pipeline End */}
                   <div className="flex items-center gap-4 relative z-10">
                     <div className={`w-[30px] h-[30px] rounded-full border flex items-center justify-center shadow-sm ${getStatusBg(run.status)}`}>
                       {getStatusIcon(run.status)}
                     </div>
                     <span className={`text-xs font-medium uppercase tracking-wide ${
-                      run.status.toUpperCase() === 'FAILED' ? 'text-red-400' :
-                      run.status.toUpperCase() === 'RUNNING' ? 'text-blue-400' :
+                      run.status?.toUpperCase() === 'FAILED' ? 'text-red-400' :
+                      run.status?.toUpperCase() === 'RUNNING' ? 'text-blue-400' :
                       'text-emerald-400'
                     }`}>
-                      {run.status.toUpperCase() === 'FAILED' ? 'Workflow Failed' :
-                       run.status.toUpperCase() === 'RUNNING' ? 'In Progress' :
+                      {run.status?.toUpperCase() === 'FAILED' ? 'Workflow Failed' :
+                       run.status?.toUpperCase() === 'RUNNING' ? 'In Progress' :
                        'Workflow Completed'}
                     </span>
                   </div>
                 </div>
-
               </div>
             )}
           </div>
         )}
+
+        {run && activeTab === 'analytics' && (
+          <AnalyticsTab agentName={run.agentName} />
+        )}
+
+        {run && activeTab === 'detection' && (
+          <DetectionTab runId={run.id} />
+        )}
+
+        {run && activeTab === 'evals' && (
+          <EvalsTab agentName={run.agentName} runId={run.id} />
+        )}
       </div>
+
+      {/* Floating Chat Button */}
+      {run && <ChatPanel runId={run.id} agentName={run.agentName} />}
     </div>
   );
 }

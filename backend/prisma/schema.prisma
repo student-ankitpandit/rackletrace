@@ -21,6 +21,7 @@ model User {
   updatedAt DateTime @updatedAt
   runs      Run[]
   apiKeys   ApiKey[]
+  evals     Eval[]
 }
 
 model ApiKey {
@@ -63,6 +64,7 @@ model Step {
   runId     String
   run       Run      @relation(fields: [runId], references: [id])
   type      StepType
+  error     String? 
   input     Json
   output    Json
   model     String?
@@ -73,4 +75,31 @@ model Step {
   stack     String?
   state     Json?
   createdAt DateTime @default(now())
+}
+
+enum EvalStatus {
+  COLLECTING
+  IN_REVIEW
+  OVERDUE
+  COMPLETED
+  ARCHIVED
+  SCHEDULED
+  DRAFT
+}
+
+model Eval {
+  id          String     @id @default(cuid())
+  userId      String
+  user        User       @relation(fields: [userId], references: [id])
+  title       String
+  description String?
+  status      EvalStatus @default(DRAFT)
+  assignee    String?
+  dueDate     DateTime?
+  agentName   String?
+  criteria    Json?
+  score       Float?
+  notes       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }

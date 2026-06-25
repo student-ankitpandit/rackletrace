@@ -40,6 +40,7 @@ export type StepMinAggregateOutputType = {
   id: string | null
   runId: string | null
   type: $Enums.StepType | null
+  error: string | null
   model: string | null
   tool: string | null
   tokens: number | null
@@ -53,6 +54,7 @@ export type StepMaxAggregateOutputType = {
   id: string | null
   runId: string | null
   type: $Enums.StepType | null
+  error: string | null
   model: string | null
   tool: string | null
   tokens: number | null
@@ -66,6 +68,7 @@ export type StepCountAggregateOutputType = {
   id: number
   runId: number
   type: number
+  error: number
   input: number
   output: number
   model: number
@@ -94,6 +97,7 @@ export type StepMinAggregateInputType = {
   id?: true
   runId?: true
   type?: true
+  error?: true
   model?: true
   tool?: true
   tokens?: true
@@ -107,6 +111,7 @@ export type StepMaxAggregateInputType = {
   id?: true
   runId?: true
   type?: true
+  error?: true
   model?: true
   tool?: true
   tokens?: true
@@ -120,6 +125,7 @@ export type StepCountAggregateInputType = {
   id?: true
   runId?: true
   type?: true
+  error?: true
   input?: true
   output?: true
   model?: true
@@ -223,6 +229,7 @@ export type StepGroupByOutputType = {
   id: string
   runId: string
   type: $Enums.StepType
+  error: string | null
   input: runtime.JsonValue
   output: runtime.JsonValue
   model: string | null
@@ -262,6 +269,7 @@ export type StepWhereInput = {
   id?: Prisma.StringFilter<"Step"> | string
   runId?: Prisma.StringFilter<"Step"> | string
   type?: Prisma.EnumStepTypeFilter<"Step"> | $Enums.StepType
+  error?: Prisma.StringNullableFilter<"Step"> | string | null
   input?: Prisma.JsonFilter<"Step">
   output?: Prisma.JsonFilter<"Step">
   model?: Prisma.StringNullableFilter<"Step"> | string | null
@@ -279,6 +287,7 @@ export type StepOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  error?: Prisma.SortOrderInput | Prisma.SortOrder
   input?: Prisma.SortOrder
   output?: Prisma.SortOrder
   model?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -299,6 +308,7 @@ export type StepWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.StepWhereInput | Prisma.StepWhereInput[]
   runId?: Prisma.StringFilter<"Step"> | string
   type?: Prisma.EnumStepTypeFilter<"Step"> | $Enums.StepType
+  error?: Prisma.StringNullableFilter<"Step"> | string | null
   input?: Prisma.JsonFilter<"Step">
   output?: Prisma.JsonFilter<"Step">
   model?: Prisma.StringNullableFilter<"Step"> | string | null
@@ -316,6 +326,7 @@ export type StepOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  error?: Prisma.SortOrderInput | Prisma.SortOrder
   input?: Prisma.SortOrder
   output?: Prisma.SortOrder
   model?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -340,6 +351,7 @@ export type StepScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Step"> | string
   runId?: Prisma.StringWithAggregatesFilter<"Step"> | string
   type?: Prisma.EnumStepTypeWithAggregatesFilter<"Step"> | $Enums.StepType
+  error?: Prisma.StringNullableWithAggregatesFilter<"Step"> | string | null
   input?: Prisma.JsonWithAggregatesFilter<"Step">
   output?: Prisma.JsonWithAggregatesFilter<"Step">
   model?: Prisma.StringNullableWithAggregatesFilter<"Step"> | string | null
@@ -355,6 +367,7 @@ export type StepScalarWhereWithAggregatesInput = {
 export type StepCreateInput = {
   id?: string
   type: $Enums.StepType
+  error?: string | null
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: string | null
@@ -372,6 +385,7 @@ export type StepUncheckedCreateInput = {
   id?: string
   runId: string
   type: $Enums.StepType
+  error?: string | null
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: string | null
@@ -387,6 +401,7 @@ export type StepUncheckedCreateInput = {
 export type StepUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -404,6 +419,7 @@ export type StepUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   runId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -420,6 +436,7 @@ export type StepCreateManyInput = {
   id?: string
   runId: string
   type: $Enums.StepType
+  error?: string | null
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: string | null
@@ -435,6 +452,7 @@ export type StepCreateManyInput = {
 export type StepUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -451,6 +469,7 @@ export type StepUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   runId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -477,6 +496,7 @@ export type StepCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  error?: Prisma.SortOrder
   input?: Prisma.SortOrder
   output?: Prisma.SortOrder
   model?: Prisma.SortOrder
@@ -498,6 +518,7 @@ export type StepMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  error?: Prisma.SortOrder
   model?: Prisma.SortOrder
   tool?: Prisma.SortOrder
   tokens?: Prisma.SortOrder
@@ -511,6 +532,7 @@ export type StepMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   runId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  error?: Prisma.SortOrder
   model?: Prisma.SortOrder
   tool?: Prisma.SortOrder
   tokens?: Prisma.SortOrder
@@ -574,6 +596,7 @@ export type EnumStepTypeFieldUpdateOperationsInput = {
 export type StepCreateWithoutRunInput = {
   id?: string
   type: $Enums.StepType
+  error?: string | null
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: string | null
@@ -589,6 +612,7 @@ export type StepCreateWithoutRunInput = {
 export type StepUncheckedCreateWithoutRunInput = {
   id?: string
   type: $Enums.StepType
+  error?: string | null
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: string | null
@@ -634,6 +658,7 @@ export type StepScalarWhereInput = {
   id?: Prisma.StringFilter<"Step"> | string
   runId?: Prisma.StringFilter<"Step"> | string
   type?: Prisma.EnumStepTypeFilter<"Step"> | $Enums.StepType
+  error?: Prisma.StringNullableFilter<"Step"> | string | null
   input?: Prisma.JsonFilter<"Step">
   output?: Prisma.JsonFilter<"Step">
   model?: Prisma.StringNullableFilter<"Step"> | string | null
@@ -649,6 +674,7 @@ export type StepScalarWhereInput = {
 export type StepCreateManyRunInput = {
   id?: string
   type: $Enums.StepType
+  error?: string | null
   input: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: string | null
@@ -664,6 +690,7 @@ export type StepCreateManyRunInput = {
 export type StepUpdateWithoutRunInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -679,6 +706,7 @@ export type StepUpdateWithoutRunInput = {
 export type StepUncheckedUpdateWithoutRunInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -694,6 +722,7 @@ export type StepUncheckedUpdateWithoutRunInput = {
 export type StepUncheckedUpdateManyWithoutRunInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumStepTypeFieldUpdateOperationsInput | $Enums.StepType
+  error?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   input?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   output?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -712,6 +741,7 @@ export type StepSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   runId?: boolean
   type?: boolean
+  error?: boolean
   input?: boolean
   output?: boolean
   model?: boolean
@@ -729,6 +759,7 @@ export type StepSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   runId?: boolean
   type?: boolean
+  error?: boolean
   input?: boolean
   output?: boolean
   model?: boolean
@@ -746,6 +777,7 @@ export type StepSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   runId?: boolean
   type?: boolean
+  error?: boolean
   input?: boolean
   output?: boolean
   model?: boolean
@@ -763,6 +795,7 @@ export type StepSelectScalar = {
   id?: boolean
   runId?: boolean
   type?: boolean
+  error?: boolean
   input?: boolean
   output?: boolean
   model?: boolean
@@ -775,7 +808,7 @@ export type StepSelectScalar = {
   createdAt?: boolean
 }
 
-export type StepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "runId" | "type" | "input" | "output" | "model" | "tool" | "tokens" | "latencyMs" | "message" | "stack" | "state" | "createdAt", ExtArgs["result"]["step"]>
+export type StepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "runId" | "type" | "error" | "input" | "output" | "model" | "tool" | "tokens" | "latencyMs" | "message" | "stack" | "state" | "createdAt", ExtArgs["result"]["step"]>
 export type StepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   run?: boolean | Prisma.RunDefaultArgs<ExtArgs>
 }
@@ -795,6 +828,7 @@ export type $StepPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     runId: string
     type: $Enums.StepType
+    error: string | null
     input: runtime.JsonValue
     output: runtime.JsonValue
     model: string | null
@@ -1232,6 +1266,7 @@ export interface StepFieldRefs {
   readonly id: Prisma.FieldRef<"Step", 'String'>
   readonly runId: Prisma.FieldRef<"Step", 'String'>
   readonly type: Prisma.FieldRef<"Step", 'StepType'>
+  readonly error: Prisma.FieldRef<"Step", 'String'>
   readonly input: Prisma.FieldRef<"Step", 'Json'>
   readonly output: Prisma.FieldRef<"Step", 'Json'>
   readonly model: Prisma.FieldRef<"Step", 'String'>

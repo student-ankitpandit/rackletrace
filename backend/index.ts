@@ -10,6 +10,9 @@ import analyticsRoutes from "./routes/analytics"
 import apiKeyRoutes from "./routes/api-keys"
 import explainRoutes from "./routes/explain"
 import playgroundRoutes from "./routes/playground"
+import detectionRoutes from "./routes/detection"
+import evalsRoutes from "./routes/evals"
+import chatRoutes from "./routes/chat"
 import { authMiddleware } from "./auth-middleware"
 import { initSocket } from "./socket"
 import { rateLimit } from "express-rate-limit"
@@ -22,7 +25,7 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.use(cors({
-    origin: "https://rackleai.vercel.app", //"http://localhost:3000" for local development
+    origin: "https://rackleai.vercel.app", //"https://localhost:3000" for local development
     credentials: true
 }))
 
@@ -45,6 +48,9 @@ app.use("/runs", authMiddleware, runRoutes)
 app.use("/auth/api-keys", authMiddleware, apiKeyRoutes)
 app.use("/api/explain", authMiddleware, explainRoutes)
 app.use("/api/playground", authMiddleware, playgroundRoutes)
+app.use("/api/detection", authMiddleware, detectionRoutes)
+app.use("/api/evals", authMiddleware, evalsRoutes)
+app.use("/api/chat", authMiddleware, chatRoutes)
 
 httpServer.listen(PORT, () => {
     console.log("Server is Up and Listening on 8000")

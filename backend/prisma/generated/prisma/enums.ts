@@ -23,3 +23,16 @@ export const StepType = {
 } as const
 
 export type StepType = (typeof StepType)[keyof typeof StepType]
+
+
+export const EvalStatus = {
+  COLLECTING: 'COLLECTING',
+  IN_REVIEW: 'IN_REVIEW',
+  OVERDUE: 'OVERDUE',
+  COMPLETED: 'COMPLETED',
+  ARCHIVED: 'ARCHIVED',
+  SCHEDULED: 'SCHEDULED',
+  DRAFT: 'DRAFT'
+} as const
+
+export type EvalStatus = (typeof EvalStatus)[keyof typeof EvalStatus]

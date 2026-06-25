@@ -113,7 +113,6 @@ export default function SettingsPage() {
             <div className="h-4 w-px bg-zinc-800 mx-2" />
             <div className="flex items-center gap-1">
               <Link href="/dashboard" className="px-3 py-1.5 text-xs font-medium rounded text-zinc-400 hover:text-zinc-200 transition-colors">Runs</Link>
-              <Link href="/dashboard/analytics" className="px-3 py-1.5 text-xs font-medium rounded text-zinc-400 hover:text-zinc-200 transition-colors">Analytics</Link>
               <Link href="/dashboard/settings" className="px-3 py-1.5 text-xs font-medium rounded bg-zinc-800 text-zinc-200">API Keys</Link>
             </div>
           </div>

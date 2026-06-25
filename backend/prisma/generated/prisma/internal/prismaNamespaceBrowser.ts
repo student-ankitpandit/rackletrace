@@ -54,7 +54,8 @@ export const ModelName = {
   User: 'User',
   ApiKey: 'ApiKey',
   Run: 'Run',
-  Step: 'Step'
+  Step: 'Step',
+  Eval: 'Eval'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -114,6 +115,7 @@ export const StepScalarFieldEnum = {
   id: 'id',
   runId: 'runId',
   type: 'type',
+  error: 'error',
   input: 'input',
   output: 'output',
   model: 'model',
@@ -127,6 +129,25 @@ export const StepScalarFieldEnum = {
 } as const
 
 export type StepScalarFieldEnum = (typeof StepScalarFieldEnum)[keyof typeof StepScalarFieldEnum]
+
+
+export const EvalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  assignee: 'assignee',
+  dueDate: 'dueDate',
+  agentName: 'agentName',
+  criteria: 'criteria',
+  score: 'score',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EvalScalarFieldEnum = (typeof EvalScalarFieldEnum)[keyof typeof EvalScalarFieldEnum]
 
 
 export const SortOrder = {

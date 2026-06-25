@@ -126,7 +126,7 @@ export default function AuthPage() {
                     type="text"
                     name="name"
                     autoComplete="name"
-                    placeholder="John Doe"
+                    placeholder="name"
                     value={form.name}
                     onChange={handleChange}
                     className="w-full pl-9 pr-3 py-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200 placeholder-zinc-600 text-sm outline-none focus:border-zinc-600 transition-colors"

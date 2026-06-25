@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { calculateStepCost, formatCost } from "@/utils/pricing";
 import { connectSocket } from "@/utils/socket";
+import ChatPanel from "@/components/ChatPanel";
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
 
@@ -205,9 +206,6 @@ export default function DashboardPage() {
               <Link href="/dashboard" className="px-3 py-1.5 text-xs font-medium rounded bg-zinc-800 text-zinc-200">
                 Runs
               </Link>
-              <Link href="/dashboard/analytics" className="px-3 py-1.5 text-xs font-medium rounded text-zinc-400 hover:text-zinc-200 transition-colors">
-                Analytics
-              </Link>
               <Link href="/dashboard/settings" className="px-3 py-1.5 text-xs font-medium rounded text-zinc-400 hover:text-zinc-200 transition-colors">
                 API Keys
               </Link>
@@ -365,6 +363,9 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+
+      {/* Floating Chat */}
+      <ChatPanel />
     </div>
   );
 }

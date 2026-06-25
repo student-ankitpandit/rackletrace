@@ -8,14 +8,17 @@ router.get("/", async (req, res) => {
   const userId = req.userId
   if (!userId) return res.status(401).json({ error: "Unauthorized" })
 
-  const { days = "14" } = req.query
+  const { days = "14", agentName } = req.query
   const since = new Date()
   since.setDate(since.getDate() - Number(days))
 
   try {
+  const where: any = { userId, createdAt: { gte: since } }
+  if (agentName) where.agentName = String(agentName)
+
   // Fetch all runs with steps in the time window
   const runs = await prisma.run.findMany({
-    where: { userId, createdAt: { gte: since } },
+    where,
     include: {
       steps: { select: { type: true, tokens: true, model: true, latencyMs: true, createdAt: true } }
     },

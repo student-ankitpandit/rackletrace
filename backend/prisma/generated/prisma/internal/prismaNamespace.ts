@@ -387,7 +387,8 @@ export const ModelName = {
   User: 'User',
   ApiKey: 'ApiKey',
   Run: 'Run',
-  Step: 'Step'
+  Step: 'Step',
+  Eval: 'Eval'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,7 +404,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "apiKey" | "run" | "step"
+    modelProps: "user" | "apiKey" | "run" | "step" | "eval"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -703,6 +704,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Eval: {
+      payload: Prisma.$EvalPayload<ExtArgs>
+      fields: Prisma.EvalFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EvalFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EvalFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload>
+        }
+        findFirst: {
+          args: Prisma.EvalFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EvalFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload>
+        }
+        findMany: {
+          args: Prisma.EvalFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload>[]
+        }
+        create: {
+          args: Prisma.EvalCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload>
+        }
+        createMany: {
+          args: Prisma.EvalCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EvalCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload>[]
+        }
+        delete: {
+          args: Prisma.EvalDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload>
+        }
+        update: {
+          args: Prisma.EvalUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload>
+        }
+        deleteMany: {
+          args: Prisma.EvalDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EvalUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EvalUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload>[]
+        }
+        upsert: {
+          args: Prisma.EvalUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EvalPayload>
+        }
+        aggregate: {
+          args: Prisma.EvalAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEval>
+        }
+        groupBy: {
+          args: Prisma.EvalGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvalGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EvalCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EvalCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -783,6 +858,7 @@ export const StepScalarFieldEnum = {
   id: 'id',
   runId: 'runId',
   type: 'type',
+  error: 'error',
   input: 'input',
   output: 'output',
   model: 'model',
@@ -796,6 +872,25 @@ export const StepScalarFieldEnum = {
 } as const
 
 export type StepScalarFieldEnum = (typeof StepScalarFieldEnum)[keyof typeof StepScalarFieldEnum]
+
+
+export const EvalScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  assignee: 'assignee',
+  dueDate: 'dueDate',
+  agentName: 'agentName',
+  criteria: 'criteria',
+  score: 'score',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EvalScalarFieldEnum = (typeof EvalScalarFieldEnum)[keyof typeof EvalScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -919,6 +1014,20 @@ export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'J
  * Reference to a field of type 'QueryMode'
  */
 export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'EvalStatus'
+ */
+export type EnumEvalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EvalStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'EvalStatus[]'
+ */
+export type ListEnumEvalStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EvalStatus[]'>
     
 
 
@@ -1049,6 +1158,7 @@ export type GlobalOmitConfig = {
   apiKey?: Prisma.ApiKeyOmit
   run?: Prisma.RunOmit
   step?: Prisma.StepOmit
+  eval?: Prisma.EvalOmit
 }
 
 /* Types for Logging */
