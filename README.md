@@ -1,23 +1,14 @@
-<div align="left">
-  <img src="./rackle-dashboard.png" alt="Rackle Logo" width="100%" height="100%" />
-  <h1>Rackle</h1>
-  <p><strong>Open-source observability and telemetry platform for AI Agents.</strong></p>
-  <p>
-    Simple enough for domain experts. Detailed enough for developers.<br/>
-    Trace your AI agents with a visual workflow pipeline.
-  </p>
-  
-  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-  [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-  [![Bun](https://img.shields.io/badge/Bun-1.1-fbf0df)](https://bun.sh/)
-</div>
+# Rackle Labs
 
-<br/>
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Bun](https://img.shields.io/badge/Bun-1.1-fbf0df)](https://bun.sh/)
 
-<div align="left">
-  <!-- Place a high-quality screenshot of your landing page or dashboard here -->
-  <img src="./demo.webp" alt="Rackle Dashboard Preview" width="100%" style="border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
-</div>
+<img src="./rackle-dashboard.png" alt="Rackle Dashboard" width="100%" />
+
+**Open-source observability and telemetry platform for AI Agents.**
+
+Simple enough for domain experts. Detailed enough for developers. Trace your AI agents with a visual workflow pipeline.
 
 ## 🌟 Why Rackle?
 
