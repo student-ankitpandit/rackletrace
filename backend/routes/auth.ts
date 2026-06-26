@@ -9,7 +9,7 @@ import { authMiddleware } from '../auth-middleware';
 const router = Router();
 
 const signupSchema = z.object({
-    name: z.string().min(3, "Name must be at least 3 characters").optional(),
+    name: z.string().optional(),
     email: z.email({ error: "Invalid email address" }),
     password: z.string().min(6, "Password must be at least 6 characters"),
 });
@@ -28,7 +28,7 @@ router.post("/signup", async (req: Request, res: Response) => {
             return;
         }
 
-        const { name, email, password } = result.data;
+        const { name = "", email, password } = result.data;
 
         const existingUser = await prisma.user.findUnique({ where: { email } });
         if (existingUser) {

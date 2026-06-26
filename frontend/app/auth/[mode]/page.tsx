@@ -103,7 +103,7 @@ export default function AuthPage() {
             </div>
           </Link>
           <h1 className="text-xl font-medium tracking-tight text-zinc-100">
-            {tab === 'login' ? 'Welcome back' : 'Create your account'}
+            {tab === 'login' ? (form.email ? `Welcome back, ${form.email.split('@')[0]}` : 'Welcome back') : 'Create your account'}
           </h1>
           <p className="text-sm text-zinc-500 mt-2">
             {tab === 'login' ? 'Enter your details to sign in.' : 'Start tracing your AI agents.'}
