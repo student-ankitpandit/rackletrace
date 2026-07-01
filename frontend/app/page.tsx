@@ -13,7 +13,8 @@ import {
   Settings,
   AlertTriangle,
   Database,
-  ChevronDown
+  ChevronDown,
+  Loader2
 } from "lucide-react";
 
 function FAQItem({ q, a }: { q: string, a: string }) {
@@ -45,6 +46,7 @@ const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
 export default function Home() {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const snippet = `
   import { Tracer } from "@rackle-labs/sdk";
@@ -77,6 +79,9 @@ export default function Home() {
 
   const handleDashboardClick = async (e: React.MouseEvent) => {
     e.preventDefault();
+    if (isNavigating) return;
+    
+    setIsNavigating(true);
     try {
       const res = await fetch(`${BACKEND}/auth/me`, { credentials: "include" });
       if (res.ok) {
@@ -86,6 +91,8 @@ export default function Home() {
       }
     } catch (err) {
       router.push("/auth/login");
+    } finally {
+      setIsNavigating(false);
     }
   };
 
@@ -101,7 +108,7 @@ export default function Home() {
               <Activity className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
             </div>
             <span className="font-medium text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
-              Rackle.
+              Rackle
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -124,9 +131,11 @@ export default function Home() {
       {/* Hero Section */}
       <div className="relative pt-32 pb-20 overflow-hidden z-10">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h1 className="text-4xl sm:text-5xl font-medium tracking-tight mb-6 text-zinc-900 dark:text-zinc-100">
-            Simple enough for domain experts.<br/>
-            Detailed enough for developers.
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-2">
+            The <span className="relative inline-block px-1">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-600 dark:from-violet-400 dark:to-fuchsia-400">observability</span>
+              <span className="absolute left-1 right-1 -bottom-1 sm:-bottom-2 h-[4px] sm:h-[6px] bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full opacity-80" />
+            </span> stack for AI agents.
           </h1>
 
           <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -136,15 +145,16 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
               onClick={handleDashboardClick}
-              className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium rounded bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-colors min-w-[160px]"
+              disabled={isNavigating}
+              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] min-w-[160px] disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Start Tracing <ArrowRight className="w-4 h-4" />
+              {isNavigating ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Start Tracing <ArrowRight className="w-4 h-4" /></>}
             </button>
             <a
               href="https://github.com/student-ankitpandit/Rackle"
-              className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-colors min-w-[160px]"
+              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-all min-w-[160px]"
             >
-              <Code className="w-4 h-4" /> View on GitHub
+              <Code className="w-4 h-4" /> GitHub 
             </a>
           </div>
         </div>
@@ -152,10 +162,10 @@ export default function Home() {
 
       {/* UI Preview Section */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
-        <div className="rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] p-1 shadow-2xl transition-colors">
-          <div className="rounded border border-zinc-200 dark:border-zinc-800/50 bg-white dark:bg-[#000] overflow-hidden transition-colors">
+        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] p-1 shadow-2xl dark:shadow-[0_0_80px_-20px_rgba(139,92,246,0.15)] transition-all hover:dark:shadow-[0_0_100px_-20px_rgba(139,92,246,0.25)] duration-500">
+          <div className="rounded-lg border border-zinc-200 dark:border-zinc-800/50 bg-white dark:bg-black overflow-hidden transition-colors relative">
             {/* Fake Header */}
-            <div className="flex items-center gap-3 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 transition-colors">
+            <div className="flex items-center gap-3 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 backdrop-blur-md bg-white/80 dark:bg-black/50 sticky top-0 z-20 transition-colors">
               <div className="flex gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-colors" />
                 <div className="w-2.5 h-2.5 rounded-full bg-zinc-300 dark:bg-zinc-700 transition-colors" />
@@ -245,7 +255,7 @@ export default function Home() {
       <div className="py-24 relative z-10 bg-white dark:bg-[#000] transition-colors">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-medium mb-4 text-zinc-900 dark:text-zinc-100">Everything you need to debug AI</h2>
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-1">Everything you need to debug AI</h2>
             <p className="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">Rackle provides a complete suite of tools to monitor, analyze, and improve your AI agents in production.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -272,7 +282,7 @@ export default function Home() {
       <div className="py-24 relative z-10 bg-zinc-50 dark:bg-[#050505] border-y border-zinc-200 dark:border-zinc-800/50 transition-colors">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-medium mb-4 text-zinc-900 dark:text-zinc-100">How Rackle Works</h2>
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-1">How Rackle Works</h2>
             <p className="text-zinc-600 dark:text-zinc-400">From code to dashboard in three simple steps.</p>
           </div>
           <div className="space-y-12">
@@ -305,7 +315,7 @@ export default function Home() {
       <div className="py-24 relative overflow-hidden bg-white dark:bg-[#050505] border-b border-zinc-200 dark:border-zinc-800/50 z-10 transition-colors">
         <div className="max-w-5xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-2xl font-medium mb-4 text-zinc-900 dark:text-zinc-100">
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-1">
               Integrate in two lines of code.
             </h2>
             <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-8 leading-relaxed">
@@ -355,7 +365,7 @@ export default function Home() {
       <div className="py-24 relative z-10 bg-white dark:bg-[#000] transition-colors">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-medium mb-4 text-zinc-900 dark:text-zinc-100">Frequently Asked Questions</h2>
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-1">Frequently Asked Questions</h2>
           </div>
           <div className="space-y-4">
             {[

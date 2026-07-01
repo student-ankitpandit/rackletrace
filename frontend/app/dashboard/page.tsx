@@ -196,7 +196,7 @@ export default function DashboardPage() {
                 <Activity className="w-4 h-4 text-zinc-300" />
               </div>
               <span className="font-medium text-sm tracking-tight text-zinc-100">
-                Rackle.
+                Rackle
               </span>
             </Link>
             
