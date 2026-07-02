@@ -4,7 +4,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![Bun](https://img.shields.io/badge/Bun-1.1-fbf0df)](https://bun.sh/)
 
-<img src="./rackle-dashboard.png" alt="Rackle Dashboard" width="100%" />
+<img src="./dashboard.png" alt="Rackle Dashboard" width="100%" />
 
 **Open-source observability and telemetry platform for AI Agents.**
 
