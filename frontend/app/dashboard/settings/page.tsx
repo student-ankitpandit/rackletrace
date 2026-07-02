@@ -97,18 +97,18 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#000] text-zinc-100 font-sans selection:bg-zinc-800">
-      <div className="fixed inset-0 bg-gradient-to-b from-[#0a0a0a] to-[#000] pointer-events-none" />
+    <div className="min-h-screen bg-zinc-50 dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
+      <div className="fixed inset-0 bg-gradient-to-b from-white to-zinc-50 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-800/50 bg-[#000]/80 backdrop-blur-md">
+      <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-colors">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 100 100"
-                className="w-5 h-5 text-white fill-current"
+                className="w-5 h-5 text-zinc-900 dark:text-white fill-current transition-colors"
               >
                 {/* Left 'r' stem and arch */}
                 <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
@@ -117,12 +117,12 @@ export default function SettingsPage() {
                 {/* Center diagonal/loop connection */}
                 <path d="M34 75l25-25v9L46 75H34z" />
               </svg>
-              <span className="font-medium text-sm tracking-tight text-zinc-100">Rackle</span>
+              <span className="font-medium text-sm tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors">Rackle</span>
             </Link>
-            <div className="h-4 w-px bg-zinc-800 mx-2" />
+            <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800 mx-2 transition-colors" />
             <div className="flex items-center gap-1">
-              <Link href="/dashboard" className="px-3 py-1.5 text-xs font-medium rounded text-zinc-400 hover:text-zinc-200 transition-colors">Runs</Link>
-              <Link href="/dashboard/settings" className="px-3 py-1.5 text-xs font-medium rounded bg-zinc-800 text-zinc-200">API Keys</Link>
+              <Link href="/dashboard" className="px-3 py-1.5 text-xs font-medium rounded text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors">Runs</Link>
+              <Link href="/dashboard/settings" className="px-3 py-1.5 text-xs font-medium rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 transition-colors">API Keys</Link>
             </div>
           </div>
         </div>
@@ -130,32 +130,32 @@ export default function SettingsPage() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 pt-24 pb-12">
         <div className="mb-8 flex items-center gap-4 pb-6 border-b border-zinc-800">
-          <Link href="/dashboard" className="p-2 rounded hover:bg-zinc-800 transition-colors text-zinc-400">
+          <Link href="/dashboard" className="p-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-600 dark:text-zinc-400">
             <ArrowLeft className="w-4 h-4" />
           </Link>
-          <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-200 border border-zinc-700">
+          <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition-colors">
             <Key className="w-4 h-4" />
           </div>
           <div>
-            <h1 className="text-xl font-medium tracking-tight text-zinc-100">API Keys</h1>
+            <h1 className="text-xl font-medium tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors">API Keys</h1>
             <p className="text-xs text-zinc-500 mt-1 font-mono">Manage access for your SDK integration</p>
           </div>
         </div>
 
         {justCreatedKey && (
-          <div className="mb-6 bg-zinc-900 border border-zinc-700 rounded p-4 shadow-xl">
+          <div className="mb-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded p-4 shadow-sm transition-colors">
             <div className="flex items-start gap-3">
               <Shield className="w-4 h-4 text-zinc-300 mt-0.5 shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-zinc-200 mb-1">API Key Created Successfully</p>
+                <p className="text-sm font-medium text-zinc-900 dark:text-zinc-200 mb-1">API Key Created Successfully</p>
                 <p className="text-xs text-zinc-500 mb-3">Copy this key now — you won't be able to see the full key again.</p>
                 <div className="flex items-center gap-2">
-                  <code className="flex-1 bg-[#000] border border-zinc-800 rounded px-3 py-2 text-xs text-zinc-300 font-mono break-all select-all">
+                  <code className="flex-1 bg-zinc-50 dark:bg-[#000] border border-zinc-200 dark:border-zinc-800 rounded px-3 py-2 text-xs text-zinc-800 dark:text-zinc-300 font-mono break-all select-all transition-colors">
                     {justCreatedKey}
                   </code>
                   <button
                     onClick={() => copyToClipboard(justCreatedKey)}
-                    className="p-2 rounded bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 transition-colors shrink-0 shadow-sm"
+                    className="p-2 rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors shrink-0 shadow-sm"
                   >
                     {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4 text-zinc-400" />}
                   </button>
@@ -166,22 +166,22 @@ export default function SettingsPage() {
           </div>
         )}
 
-        <div className="rounded border border-zinc-800 bg-[#0a0a0a] shadow-xl overflow-hidden">
-          <div className="px-5 py-3 border-b border-zinc-800 bg-[#000] flex items-center justify-between">
+        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] shadow-sm overflow-hidden transition-colors">
+          <div className="px-5 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#000] flex items-center justify-between transition-colors">
             <div className="flex items-center gap-2">
               <Key className="w-4 h-4 text-zinc-400" />
-              <h2 className="text-sm font-medium text-zinc-200">Your Keys</h2>
+              <h2 className="text-sm font-medium text-zinc-900 dark:text-zinc-200">Your Keys</h2>
             </div>
             <button
               onClick={() => setShowCreate(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-zinc-200 text-zinc-900 rounded hover:bg-white transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-zinc-900 dark:bg-zinc-200 text-white dark:text-zinc-900 rounded hover:bg-zinc-800 dark:hover:bg-white transition-colors"
             >
               <Plus className="w-3.5 h-3.5" /> Create Key
             </button>
           </div>
 
           {showCreate && (
-            <div className="px-5 py-3 border-b border-zinc-800 bg-zinc-900/50">
+            <div className="px-5 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 transition-colors">
               <div className="flex items-center gap-3">
                 <input
                   type="text"
@@ -189,13 +189,13 @@ export default function SettingsPage() {
                   onChange={(e) => setNewKeyName(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && createKey()}
                   placeholder="Key name (e.g. Production)"
-                  className="flex-1 bg-[#000] border border-zinc-800 rounded px-3 py-1.5 text-xs text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-600 transition-colors"
+                  className="flex-1 bg-white dark:bg-[#000] border border-zinc-200 dark:border-zinc-800 rounded px-3 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
                   autoFocus
                 />
                 <button
                   onClick={createKey}
                   disabled={creating || !newKeyName.trim()}
-                  className="px-3 py-1.5 text-xs font-medium bg-zinc-200 text-zinc-900 rounded hover:bg-white disabled:opacity-50 transition-colors"
+                  className="px-3 py-1.5 text-xs font-medium bg-zinc-900 dark:bg-zinc-200 text-white dark:text-zinc-900 rounded hover:bg-zinc-800 dark:hover:bg-white disabled:opacity-50 transition-colors"
                 >
                   {creating ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Generate"}
                 </button>
@@ -224,17 +224,17 @@ export default function SettingsPage() {
           )}
 
           {!loading && keys.length > 0 && (
-            <div className="divide-y divide-zinc-800/50">
+            <div className="divide-y divide-zinc-200 dark:divide-zinc-800/50 transition-colors">
               {keys.map((k) => (
-                <div key={k.id} className="flex items-center justify-between px-5 py-4 hover:bg-zinc-900/50 transition-colors group">
+                <div key={k.id} className="flex items-center justify-between px-5 py-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors group">
                   <div className="flex items-center gap-4">
-                    <div className="p-2 rounded bg-zinc-800 border border-zinc-700 shrink-0">
+                    <div className="p-2 rounded bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shrink-0 transition-colors">
                       <Key className="w-4 h-4 text-zinc-400" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-zinc-200">{k.name}</p>
+                      <p className="text-sm font-medium text-zinc-900 dark:text-zinc-200">{k.name}</p>
                       <div className="flex items-center gap-3 text-[11px] text-zinc-500 mt-1">
-                        <code className="font-mono bg-zinc-800/50 px-1 rounded">{k.key}</code>
+                        <code className="font-mono bg-zinc-100 dark:bg-zinc-800/50 px-1 rounded transition-colors">{k.key}</code>
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           Created {new Date(k.createdAt).toLocaleDateString()}
@@ -259,8 +259,8 @@ export default function SettingsPage() {
           )}
         </div>
 
-        <div className="mt-6 flex items-start gap-2 text-[11px] text-zinc-500 border border-zinc-800/50 rounded bg-zinc-900/30 p-3">
-          <AlertTriangle className="w-4 h-4 shrink-0" />
+        <div className="mt-6 flex items-start gap-2 text-[11px] text-zinc-500 border border-zinc-200 dark:border-zinc-800/50 rounded bg-zinc-50 dark:bg-zinc-900/30 p-3 transition-colors">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-amber-500 dark:text-zinc-500" />
           <p>
             API keys grant full access to your account. Never share them publicly or commit them to version control. If a key is compromised, revoke it immediately.
           </p>

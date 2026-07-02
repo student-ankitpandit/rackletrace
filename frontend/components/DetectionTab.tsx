@@ -102,9 +102,8 @@ export default function DetectionTab({ runId }: { runId: string }) {
       <div className="flex items-center gap-2">
         {filterBtns.map(({ key, label, icon: Icon }) => (
           <button key={key} onClick={() => setFilter(key)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${
-              filter === key ? "bg-zinc-800 border-zinc-700 text-zinc-100" : "bg-transparent border-zinc-800/50 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700"
-            }`}>
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${filter === key ? "bg-zinc-800 border-zinc-700 text-zinc-100" : "bg-transparent border-zinc-800/50 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700"
+              }`}>
             <Icon className="w-3.5 h-3.5" />{label}
             {key !== "all" && <span className={`ml-1 px-1.5 py-0.5 rounded text-[9px] font-bold ${filter === key ? "bg-zinc-700 text-zinc-300" : "bg-zinc-800/50 text-zinc-600"}`}>
               {data.sentimentCounts[key as keyof typeof data.sentimentCounts]}

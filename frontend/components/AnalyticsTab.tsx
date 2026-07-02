@@ -25,11 +25,13 @@ const PIE_COLORS = ["#a1a1aa", "#71717a", "#52525b"];
 
 function SummaryCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub: string }) {
   return (
-    <div className="p-3 rounded-lg border border-zinc-800/80 bg-zinc-900/50 flex items-start gap-3">
-      <div className="p-1.5 rounded-lg bg-zinc-800/50 text-zinc-400">{icon}</div>
+    <div className="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/50 flex items-start gap-3 transition-colors">
+      <div className="p-2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 shrink-0 transition-colors">
+        {icon}
+      </div>
       <div>
         <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium mb-0.5">{label}</p>
-        <p className="text-lg font-semibold text-zinc-100">{value}</p>
+        <p className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 transition-colors">{value}</p>
         <p className="text-[10px] text-zinc-500 mt-0.5">{sub}</p>
       </div>
     </div>
@@ -38,8 +40,8 @@ function SummaryCard({ icon, label, value, sub }: { icon: React.ReactNode; label
 
 function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="p-4 rounded-lg border border-zinc-800/80 bg-zinc-900/50">
-      <h3 className="text-xs font-medium text-zinc-300 mb-4">{title}</h3>
+    <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/50 transition-colors">
+      <h3 className="text-xs font-medium text-zinc-900 dark:text-zinc-300 mb-4 transition-colors">{title}</h3>
       {children}
     </div>
   );
@@ -48,10 +50,10 @@ function ChartCard({ title, children }: { title: string; children: React.ReactNo
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-[#000] border border-zinc-800 rounded px-3 py-2 shadow-xl">
+    <div className="bg-white dark:bg-[#000] border border-zinc-200 dark:border-zinc-800 rounded px-3 py-2 shadow-xl transition-colors">
       <p className="text-[10px] uppercase tracking-wider text-zinc-500 mb-1.5">{label}</p>
       {payload.map((p: any, i: number) => (
-        <p key={i} className="text-xs font-medium" style={{ color: p.color || "#e4e4e7" }}>
+        <p key={i} className="text-xs font-medium text-zinc-900 dark:text-zinc-200" style={{ color: p.color }}>
           {p.name}: {typeof p.value === "number" ? p.value.toLocaleString() : p.value}
         </p>
       ))}
@@ -87,9 +89,8 @@ export default function AnalyticsTab({ agentName }: { agentName: string }) {
         <div className="flex items-center gap-1">
           {[7, 14, 30].map(d => (
             <button key={d} onClick={() => setDays(d)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${
-                days === d ? "bg-zinc-800 border-zinc-700 text-zinc-100" : "bg-transparent border-zinc-800/50 text-zinc-500 hover:text-zinc-300"
-              }`}>
+              className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${days === d ? "bg-zinc-900 dark:bg-zinc-800 border-zinc-900 dark:border-zinc-700 text-white dark:text-zinc-100" : "bg-transparent border-zinc-200 dark:border-zinc-800/50 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-300"
+                }`}>
               {d}d
             </button>
           ))}
@@ -179,27 +180,27 @@ export default function AnalyticsTab({ agentName }: { agentName: string }) {
 
       {/* Model Table */}
       {data.modelUsage.length > 0 && (
-        <div className="rounded-lg border border-zinc-800/80 bg-zinc-900/50 overflow-hidden">
-          <div className="px-4 py-2.5 border-b border-zinc-800/50 flex items-center gap-2">
+        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/50 overflow-hidden transition-colors">
+          <div className="px-4 py-2.5 border-b border-zinc-200 dark:border-zinc-800/50 flex items-center gap-2 transition-colors">
             <Cpu className="w-3.5 h-3.5 text-zinc-500" />
-            <span className="text-xs font-medium text-zinc-300">Model Usage</span>
+            <span className="text-xs font-medium text-zinc-900 dark:text-zinc-300 transition-colors">Model Usage</span>
           </div>
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-zinc-800/50 bg-zinc-900/30">
+              <tr className="border-b border-zinc-200 dark:border-zinc-800/50 bg-zinc-50 dark:bg-zinc-900/30 transition-colors">
                 <th className="text-left px-4 py-2 text-[10px] uppercase tracking-wider text-zinc-500 font-medium">Model</th>
                 <th className="text-right px-4 py-2 text-[10px] uppercase tracking-wider text-zinc-500 font-medium">Calls</th>
                 <th className="text-right px-4 py-2 text-[10px] uppercase tracking-wider text-zinc-500 font-medium">Total Tokens</th>
                 <th className="text-right px-4 py-2 text-[10px] uppercase tracking-wider text-zinc-500 font-medium">Avg/Call</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-800/30">
+            <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800/30 transition-colors">
               {data.modelUsage.map(m => (
-                <tr key={m.model} className="hover:bg-zinc-800/20 transition-colors">
-                  <td className="px-4 py-2 text-zinc-200 font-medium">{m.model}</td>
-                  <td className="px-4 py-2 text-right text-zinc-400">{m.count}</td>
-                  <td className="px-4 py-2 text-right text-zinc-400">{m.tokens.toLocaleString()}</td>
-                  <td className="px-4 py-2 text-right text-zinc-400 font-mono">{m.count > 0 ? Math.round(m.tokens / m.count).toLocaleString() : "—"}</td>
+                <tr key={m.model} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+                  <td className="px-4 py-2 text-zinc-900 dark:text-zinc-200 font-medium transition-colors">{m.model}</td>
+                  <td className="px-4 py-2 text-right text-zinc-600 dark:text-zinc-400 transition-colors">{m.count}</td>
+                  <td className="px-4 py-2 text-right text-zinc-600 dark:text-zinc-400 transition-colors">{m.tokens.toLocaleString()}</td>
+                  <td className="px-4 py-2 text-right text-zinc-600 dark:text-zinc-400 font-mono transition-colors">{m.count > 0 ? Math.round(m.tokens / m.count).toLocaleString() : "—"}</td>
                 </tr>
               ))}
             </tbody>

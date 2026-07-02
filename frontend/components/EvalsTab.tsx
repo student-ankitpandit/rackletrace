@@ -108,9 +108,8 @@ export default function EvalsTab({ agentName, runId }: { agentName: string; runI
           const Icon = TAB_ICONS[t]; const cnt = counts[t] ?? 0;
           return (
             <button key={t} onClick={() => setTab(t)}
-              className={`flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium rounded-lg border whitespace-nowrap transition-all ${
-                tab === t ? "bg-zinc-800 border-zinc-700 text-zinc-100" : "bg-transparent border-zinc-800/50 text-zinc-500 hover:text-zinc-300"
-              }`}>
+              className={`flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-medium rounded-lg border whitespace-nowrap transition-all ${tab === t ? "bg-zinc-800 border-zinc-700 text-zinc-100" : "bg-transparent border-zinc-800/50 text-zinc-500 hover:text-zinc-300"
+                }`}>
               <Icon className="w-3 h-3" />{TAB_LABELS[t]}
               <span className={`px-1 py-0.5 rounded text-[9px] font-bold ${tab === t ? "bg-zinc-700 text-zinc-300" : "bg-zinc-800/50 text-zinc-600"}`}>{cnt}</span>
             </button>

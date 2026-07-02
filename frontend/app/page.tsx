@@ -22,7 +22,7 @@ function FAQItem({ q, a }: { q: string, a: string }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] overflow-hidden transition-all">
-      <button 
+      <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
       >
@@ -31,10 +31,9 @@ function FAQItem({ q, a }: { q: string, a: string }) {
           <ChevronDown className="w-5 h-5" />
         </div>
       </button>
-      <div 
-        className={`px-6 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed transition-all duration-300 ease-in-out ${
-          open ? "max-h-40 pb-6 opacity-100" : "max-h-0 pb-0 opacity-0"
-        }`}
+      <div
+        className={`px-6 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed transition-all duration-300 ease-in-out ${open ? "max-h-40 pb-6 opacity-100" : "max-h-0 pb-0 opacity-0"
+          }`}
       >
         <p>{a}</p>
       </div>
@@ -90,7 +89,7 @@ export default function Home() {
   const handleDashboardClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (isNavigating) return;
-    
+
     setIsNavigating(true);
     try {
       const res = await fetch(`${BACKEND}/auth/me`, { credentials: "include" });
@@ -150,10 +149,12 @@ export default function Home() {
             </Link>
             <button
               onClick={handleDashboardClick}
-              className={`flex items-center gap-2 font-medium rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${
+              disabled={isNavigating}
+              className={`flex items-center gap-2 font-medium rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer ${
                 isScrolled ? "px-2.5 py-1 text-[11px]" : "px-3.5 py-1.5 text-xs"
               }`}
             >
+              {isNavigating && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               Dashboard
             </button>
           </div>
@@ -178,7 +179,7 @@ export default function Home() {
             <button
               onClick={handleDashboardClick}
               disabled={isNavigating}
-              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] min-w-[160px] disabled:opacity-70 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] min-w-[160px] disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
             >
               {isNavigating ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Start Tracing <ArrowRight className="w-4 h-4" /></>}
             </button>
@@ -205,11 +206,11 @@ export default function Home() {
               </div>
               <div className="text-[10px] text-zinc-500 font-mono tracking-wider uppercase ml-4">Support Access Workflow</div>
             </div>
-            
+
             {/* Fake Workflow UI */}
             <div className="p-6 relative">
               <div className="absolute left-[39px] top-[48px] bottom-[48px] w-[1px] bg-zinc-200 dark:bg-zinc-800 transition-colors" />
-              
+
               <div className="space-y-6">
                 <div className="flex items-start gap-4 relative z-10">
                   <div className="mt-1 bg-white dark:bg-[#000] py-1 transition-colors">
@@ -373,20 +374,20 @@ export default function Home() {
             </div>
             <pre className="text-[11px] font-mono text-zinc-800 dark:text-zinc-300 overflow-x-auto whitespace-pre-wrap leading-relaxed">
               <span className="text-zinc-500">import</span> {"{"} Tracer {"}"} <span className="text-zinc-500">from</span> <span className="text-emerald-600 dark:text-emerald-400/80">"@rackle-labs/sdk"</span>;
-              <br/><br/>
-              <span className="text-zinc-500">const</span> tracer = <span className="text-zinc-500">new</span> <span className="text-blue-600 dark:text-blue-400/80">Tracer</span>({"{"}<br/>
-              {"  "}apiKey: process.env.<span className="text-violet-600 dark:text-violet-400/80">RACKLE_API_KEY</span><br/>
-              {"}"});<br/>
-              <br/>
-              <span className="text-zinc-500">const</span> run = <span className="text-zinc-500">await</span> tracer.<span className="text-blue-600 dark:text-blue-400/80">startRun</span>({"{"} agentName: <span className="text-emerald-600 dark:text-emerald-400/80">"Customer-Bot"</span> {"}"});<br/>
-              <br/>
-              <span className="text-zinc-500">await</span> run.<span className="text-blue-600 dark:text-blue-400/80">log</span>({"{"}<br/>
-              {"  "}type: <span className="text-emerald-600 dark:text-emerald-400/80">"llm_call"</span>,<br/>
-              {"  "}model: <span className="text-emerald-600 dark:text-emerald-400/80">"gpt-4o"</span>,<br/>
-              {"  "}tokens: <span className="text-orange-600 dark:text-orange-400/80">350</span>,<br/>
-              {"  "}input: <span className="text-emerald-600 dark:text-emerald-400/80">"Help me reset my password."</span><br/>
-              {"}"});<br/>
-              <br/>
+              <br /><br />
+              <span className="text-zinc-500">const</span> tracer = <span className="text-zinc-500">new</span> <span className="text-blue-600 dark:text-blue-400/80">Tracer</span>({"{"}<br />
+              {"  "}apiKey: process.env.<span className="text-violet-600 dark:text-violet-400/80">RACKLE_API_KEY</span><br />
+              {"}"});<br />
+              <br />
+              <span className="text-zinc-500">const</span> run = <span className="text-zinc-500">await</span> tracer.<span className="text-blue-600 dark:text-blue-400/80">startRun</span>({"{"} agentName: <span className="text-emerald-600 dark:text-emerald-400/80">"Customer-Bot"</span> {"}"});<br />
+              <br />
+              <span className="text-zinc-500">await</span> run.<span className="text-blue-600 dark:text-blue-400/80">log</span>({"{"}<br />
+              {"  "}type: <span className="text-emerald-600 dark:text-emerald-400/80">"llm_call"</span>,<br />
+              {"  "}model: <span className="text-emerald-600 dark:text-emerald-400/80">"gpt-4o"</span>,<br />
+              {"  "}tokens: <span className="text-orange-600 dark:text-orange-400/80">350</span>,<br />
+              {"  "}input: <span className="text-emerald-600 dark:text-emerald-400/80">"Help me reset my password."</span><br />
+              {"}"});<br />
+              <br />
               <span className="text-zinc-500">await</span> run.<span className="text-blue-600 dark:text-blue-400/80">end</span>({"{"} status: <span className="text-emerald-600 dark:text-emerald-400/80">"completed"</span> {"}"});
             </pre>
           </div>
@@ -408,6 +409,29 @@ export default function Home() {
               <FAQItem key={i} q={faq.q} a={faq.a} />
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="py-24 sm:py-32 relative z-10 bg-white dark:bg-[#000] border-t border-zinc-200/50 dark:border-zinc-900/50 transition-colors">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl sm:text-6xl font-bold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-500 pb-1 leading-tight sm:leading-tight">
+            Stop Guessing.<br />Start Monitoring.
+          </h2>
+          <p className="text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto mb-10 text-sm sm:text-base leading-relaxed">
+            Get total observability into your AI agents in minutes. No complex setups, no agent overhead, just clean trace outputs.
+          </p>
+          <button
+            onClick={handleDashboardClick}
+            disabled={isNavigating}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed min-w-[180px]"
+          >
+            {isNavigating ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <>Start Tracing Now <ArrowRight className="w-4 h-4" /></>
+            )}
+          </button>
         </div>
       </div>
 

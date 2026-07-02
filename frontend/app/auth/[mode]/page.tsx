@@ -92,8 +92,8 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#000] text-zinc-100 font-sans selection:bg-zinc-800">
-      <div className="fixed inset-0 bg-gradient-to-b from-[#0a0a0a] to-[#000] pointer-events-none" />
+    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
+      <div className="fixed inset-0 bg-gradient-to-b from-zinc-50 to-white dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       <div className="relative z-10 w-full max-w-[400px] px-6 py-12">
         <div className="flex flex-col items-center mb-8">
@@ -101,7 +101,7 @@ export default function AuthPage() {
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 100 100"
-              className="w-8 h-8 text-white fill-current"
+              className="w-8 h-8 text-zinc-900 dark:text-white fill-current transition-colors"
             >
               {/* Left 'r' stem and arch */}
               <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
@@ -111,23 +111,23 @@ export default function AuthPage() {
               <path d="M34 75l25-25v9L46 75H34z" />
             </svg>
           </Link>
-          <h1 className="text-xl font-medium tracking-tight text-zinc-100">
+          <h1 className="text-xl font-medium tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors">
             {tab === 'login' ? (form.email ? `Welcome back, ${form.email.split('@')[0]}` : 'Welcome back') : 'Create your account'}
           </h1>
-          <p className="text-sm text-zinc-500 mt-2">
+          <p className="text-sm text-zinc-500 dark:text-zinc-500 mt-2 transition-colors">
             {tab === 'login' ? 'Enter your details to sign in.' : 'Start tracing your AI agents.'}
           </p>
         </div>
 
-        <div className="rounded border border-zinc-800 bg-[#0a0a0a] p-6 shadow-xl">
+        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] p-6 shadow-xl transition-colors">
           <form id="auth-form" onSubmit={handleSubmit} className="space-y-4">
             {tab === 'signup' && (
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-medium text-zinc-500 uppercase tracking-wider">
-                  Name <span className="text-zinc-600 normal-case tracking-normal">(optional)</span>
+                <label className="block text-[11px] font-medium text-zinc-600 dark:text-zinc-500 uppercase tracking-wider transition-colors">
+                  Name <span className="text-zinc-400 dark:text-zinc-600 normal-case tracking-normal">(optional)</span>
                 </label>
                 <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-600">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-600 transition-colors">
                     <User className="w-4 h-4" />
                   </div>
                   <input
@@ -138,18 +138,18 @@ export default function AuthPage() {
                     placeholder="name"
                     value={form.name}
                     onChange={handleChange}
-                    className="w-full pl-9 pr-3 py-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200 placeholder-zinc-600 text-sm outline-none focus:border-zinc-600 transition-colors"
+                    className="w-full pl-9 pr-3 py-2 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
                   />
                 </div>
               </div>
             )}
 
             <div className="space-y-1.5">
-              <label className="block text-[11px] font-medium text-zinc-500 uppercase tracking-wider">
+              <label className="block text-[11px] font-medium text-zinc-600 dark:text-zinc-500 uppercase tracking-wider transition-colors">
                 Email
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-600">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-600 transition-colors">
                   <Mail className="w-4 h-4" />
                 </div>
                 <input
@@ -161,17 +161,17 @@ export default function AuthPage() {
                   value={form.email}
                   onChange={handleChange}
                   required
-                  className="w-full pl-9 pr-3 py-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200 placeholder-zinc-600 text-sm outline-none focus:border-zinc-600 transition-colors"
+                  className="w-full pl-9 pr-3 py-2 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
                 />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-[11px] font-medium text-zinc-500 uppercase tracking-wider">
+              <label className="block text-[11px] font-medium text-zinc-600 dark:text-zinc-500 uppercase tracking-wider transition-colors">
                 Password
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-600">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-400 dark:text-zinc-600 transition-colors">
                   <Lock className="w-4 h-4" />
                 </div>
                 <input
@@ -184,12 +184,12 @@ export default function AuthPage() {
                   onChange={handleChange}
                   required
                   minLength={6}
-                  className="w-full pl-9 pr-10 py-2 rounded bg-zinc-900 border border-zinc-800 text-zinc-200 placeholder-zinc-600 text-sm outline-none focus:border-zinc-600 transition-colors"
+                  className="w-full pl-9 pr-10 py-2 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-600 hover:text-zinc-400 transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-400 dark:text-zinc-600 hover:text-zinc-600 dark:hover:text-zinc-400 transition-colors cursor-pointer"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -198,14 +198,14 @@ export default function AuthPage() {
             </div>
 
             {error && (
-              <div id="auth-error" className="flex items-center gap-2 px-3 py-2 rounded bg-red-500/10 border border-red-500/20 text-red-400 text-xs">
+              <div id="auth-error" className="flex items-center gap-2 px-3 py-2 rounded bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 text-xs transition-colors">
                 <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
             {success && (
-              <div id="auth-success" className="flex items-center gap-2 px-3 py-2 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs">
+              <div id="auth-success" className="flex items-center gap-2 px-3 py-2 rounded bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs transition-colors">
                 <Check className="w-3.5 h-3.5 shrink-0" />
                 <span>{success}</span>
               </div>
@@ -215,7 +215,7 @@ export default function AuthPage() {
               id="auth-submit"
               type="submit"
               disabled={isPending}
-              className="w-full mt-2 py-2 rounded bg-zinc-100 hover:bg-white text-zinc-900 text-sm font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full mt-2 py-2 rounded bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-white text-white dark:text-zinc-900 text-sm font-medium transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer shadow-sm"
             >
               {isPending ? (
                 <><Loader2 className="w-4 h-4 animate-spin" /> {tab === 'login' ? 'Authenticating…' : 'Creating account…'}</>
@@ -227,18 +227,18 @@ export default function AuthPage() {
             </button>
           </form>
 
-          <div className="mt-6 text-center text-xs text-zinc-500">
+          <div className="mt-6 text-center text-xs text-zinc-500 dark:text-zinc-500 transition-colors">
             {tab === 'login' ? (
               <>
                 New to Rackle?{' '}
-                <button type="button" onClick={() => switchTab('signup')} className="text-zinc-300 hover:text-white transition-colors">
+                <button type="button" onClick={() => switchTab('signup')} className="text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors font-medium cursor-pointer">
                   Create an account
                 </button>
               </>
             ) : (
               <>
                 Already have an account?{' '}
-                <button type="button" onClick={() => switchTab('login')} className="text-zinc-300 hover:text-white transition-colors">
+                <button type="button" onClick={() => switchTab('login')} className="text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors font-medium cursor-pointer">
                   Log in
                 </button>
               </>

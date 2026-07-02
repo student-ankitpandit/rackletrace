@@ -62,13 +62,13 @@ function StatusBadge({ status }: { status: Run["status"] }) {
 
 function StatCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub: string }) {
   return (
-    <div className="p-4 rounded border border-zinc-800 bg-[#0a0a0a] flex items-start gap-3 transition-colors hover:border-zinc-700">
-      <div className="p-1.5 rounded bg-zinc-800/50 text-zinc-400 border border-zinc-800">
+    <div className="p-4 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] flex items-start gap-3 transition-colors hover:border-zinc-300 dark:hover:border-zinc-700">
+      <div className="p-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400">
         {icon}
       </div>
       <div>
         <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium mb-1">{label}</p>
-        <p className="text-xl font-medium text-zinc-100">{value}</p>
+        <p className="text-xl font-medium text-zinc-900 dark:text-zinc-100">{value}</p>
         <p className="text-[10px] text-zinc-500 mt-1">{sub}</p>
       </div>
     </div>
@@ -184,52 +184,49 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#000] text-zinc-100 font-sans selection:bg-zinc-800">
-      <div className="fixed inset-0 bg-gradient-to-b from-[#0a0a0a] to-[#000] pointer-events-none" />
+    <div className="min-h-screen bg-zinc-50 dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
+      <div className="fixed inset-0 bg-gradient-to-b from-white to-zinc-50 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-800/50 bg-[#000]/80 backdrop-blur-md">
+      <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-colors">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 100 100"
-                className="w-5 h-5 text-white fill-current"
+                className="w-5 h-5 text-zinc-900 dark:text-white fill-current"
               >
-                {/* Left 'r' stem and arch */}
                 <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
-                {/* Right 'd' stem and base */}
                 <path d="M59 75V25l10-10v51h9v9H59z" />
-                {/* Center diagonal/loop connection */}
                 <path d="M34 75l25-25v9L46 75H34z" />
               </svg>
-              <span className="font-medium text-sm tracking-tight text-zinc-100">
+              <span className="font-medium text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
                 Rackle
               </span>
             </Link>
-            
-            <div className="h-4 w-px bg-zinc-800 mx-2" />
-            
+
+            <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800 mx-2" />
+
             <div className="flex items-center gap-1">
-              <Link href="/dashboard" className="px-3 py-1.5 text-xs font-medium rounded bg-zinc-800 text-zinc-200">
+              <Link href="/dashboard" className="px-3 py-1.5 text-xs font-medium rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 transition-colors">
                 Runs
               </Link>
-              <Link href="/dashboard/settings" className="px-3 py-1.5 text-xs font-medium rounded text-zinc-400 hover:text-zinc-200 transition-colors">
+              <Link href="/dashboard/settings" className="px-3 py-1.5 text-xs font-medium rounded text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors">
                 API Keys
               </Link>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-4">
-             <button
-                onClick={handleLogout}
-                disabled={loggingOut}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded text-zinc-400 hover:text-zinc-200 transition-colors disabled:opacity-50"
-              >
-                {loggingOut ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <LogOut className="w-3.5 h-3.5" />}
-                Logout
-              </button>
+            <button
+              onClick={handleLogout}
+              disabled={loggingOut}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors disabled:opacity-50"
+            >
+              {loggingOut ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <LogOut className="w-3.5 h-3.5" />}
+              Logout
+            </button>
           </div>
         </div>
       </nav>
@@ -238,44 +235,44 @@ export default function DashboardPage() {
         {/* Filters and Search Bar */}
         <div className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded px-2 shadow-sm">
+            <div className="flex items-center gap-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded px-2 shadow-sm transition-colors">
               <Search className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
               <input
                 type="text"
                 placeholder="Search runs..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent text-xs text-zinc-200 placeholder:text-zinc-600 outline-none w-48 py-1.5"
+                className="bg-transparent text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none w-48 py-1.5"
               />
             </div>
-            
+
             {agents.length > 0 && (
-               <div className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded px-2 shadow-sm">
-                 <Filter className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
-                 <select
-                   value={selectedAgent}
-                   onChange={(e) => setSelectedAgent(e.target.value)}
-                   className="bg-transparent text-xs text-zinc-200 outline-none py-1.5"
-                 >
-                   <option value="" className="bg-zinc-900 text-zinc-200">All Agents</option>
-                   {agents.map((a) => <option key={a} value={a} className="bg-zinc-900 text-zinc-200">{a}</option>)}
-                 </select>
-               </div>
+              <div className="flex items-center gap-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded px-2 shadow-sm transition-colors">
+                <Filter className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+                <select
+                  value={selectedAgent}
+                  onChange={(e) => setSelectedAgent(e.target.value)}
+                  className="bg-transparent text-xs text-zinc-900 dark:text-zinc-200 outline-none py-1.5"
+                >
+                  <option value="" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">All Agents</option>
+                  {agents.map((a) => <option key={a} value={a} className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">{a}</option>)}
+                </select>
+              </div>
             )}
 
-            <div className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded px-2 shadow-sm">
-               <Activity className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
-               <select
-                 value={selectedStatus}
-                 onChange={(e) => setSelectedStatus(e.target.value)}
-                 className="bg-transparent text-xs text-zinc-200 outline-none py-1.5"
-               >
-                 <option value="" className="bg-zinc-900 text-zinc-200">All Statuses</option>
-                 <option value="completed" className="bg-zinc-900 text-zinc-200">Completed</option>
-                 <option value="failed" className="bg-zinc-900 text-zinc-200">Failed</option>
-                 <option value="running" className="bg-zinc-900 text-zinc-200">Running</option>
-               </select>
-             </div>
+            <div className="flex items-center gap-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded px-2 shadow-sm transition-colors">
+              <Activity className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="bg-transparent text-xs text-zinc-900 dark:text-zinc-200 outline-none py-1.5"
+              >
+                <option value="" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">All Statuses</option>
+                <option value="completed" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Completed</option>
+                <option value="failed" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Failed</option>
+                <option value="running" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Running</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -300,18 +297,18 @@ export default function DashboardPage() {
             sub="Per completed run"
           />
           <StatCard
-            icon={<AlertTriangle className="w-4 h-4 text-red-400" />}
+            icon={<AlertTriangle className="w-4 h-4 text-red-500" />}
             label="Failed Runs"
             value={String(stats.failedRuns)}
             sub={`${stats.totalRuns ? Math.round((stats.failedRuns / stats.totalRuns) * 100) : 0}% failure rate`}
           />
         </div>
 
-        {/* Runs List Container */}
-        <div className="rounded border border-zinc-800 bg-[#0a0a0a] shadow-xl overflow-hidden">
-          <div className="px-5 py-3 border-b border-zinc-800 bg-[#000] flex items-center gap-2">
+        {/* List of Runs */}
+        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] shadow-sm transition-colors overflow-hidden">
+          <div className="px-5 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#000] flex items-center gap-2 transition-colors">
             <Activity className="w-4 h-4 text-zinc-400" />
-            <h2 className="text-sm font-medium text-zinc-200">Execution Traces</h2>
+            <h2 className="text-sm font-medium text-zinc-900 dark:text-zinc-200">Execution Traces</h2>
           </div>
 
           {loading && (
@@ -337,19 +334,19 @@ export default function DashboardPage() {
           )}
 
           {!loading && runs.length > 0 && (
-            <div className="divide-y divide-zinc-800/50">
+            <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
               {runs.map((run) => (
                 <Link
                   key={run.id}
                   href={`/dashboard/runs/${run.id}`}
-                  className="w-full flex items-center justify-between px-5 py-3 hover:bg-zinc-900/50 transition-colors group"
+                  className="group flex items-center justify-between px-5 py-4 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors"
                 >
                   <div className="flex items-center gap-6">
                     <div className="w-40 flex items-center gap-3">
-                       <StatusBadge status={run.status} />
-                       <span className="text-sm font-medium text-zinc-200 truncate">{run.agentName}</span>
+                      <StatusBadge status={run.status} />
+                      <span className="text-sm font-medium text-zinc-900 dark:text-zinc-200 truncate">{run.agentName}</span>
                     </div>
-                    
+
                     <div className="flex items-center gap-6 text-[11px] text-zinc-500 font-mono">
                       <span className="flex items-center gap-1.5 w-20">
                         <Layers className="w-3.5 h-3.5 text-zinc-600" />
@@ -364,7 +361,7 @@ export default function DashboardPage() {
                       </span>
                     </div>
                   </div>
-                  
+
                   <ChevronRight className="w-4 h-4 text-zinc-700 group-hover:text-zinc-400 transition-colors" />
                 </Link>
               ))}
