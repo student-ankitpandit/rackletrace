@@ -104,9 +104,6 @@ export default function Home() {
       <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-colors">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center transition-colors">
-              <Activity className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
-            </div>
             <span className="font-medium text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
               Rackle
             </span>

@@ -192,9 +192,6 @@ export default function DashboardPage() {
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded border border-zinc-700 bg-zinc-800 flex items-center justify-center">
-                <Activity className="w-4 h-4 text-zinc-300" />
-              </div>
               <span className="font-medium text-sm tracking-tight text-zinc-100">
                 Rackle
               </span>
