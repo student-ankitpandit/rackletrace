@@ -98,9 +98,18 @@ export default function AuthPage() {
       <div className="relative z-10 w-full max-w-[400px] px-6 py-12">
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center gap-2 mb-8">
-            <div className="w-8 h-8 rounded border border-zinc-700 bg-zinc-800 flex items-center justify-center">
-              <Activity className="w-4 h-4 text-zinc-300" />
-            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100 100"
+              className="w-8 h-8 text-white fill-current"
+            >
+              {/* Left 'r' stem and arch */}
+              <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
+              {/* Right 'd' stem and base */}
+              <path d="M59 75V25l10-10v51h9v9H59z" />
+              {/* Center diagonal/loop connection */}
+              <path d="M34 75l25-25v9L46 75H34z" />
+            </svg>
           </Link>
           <h1 className="text-xl font-medium tracking-tight text-zinc-100">
             {tab === 'login' ? (form.email ? `Welcome back, ${form.email.split('@')[0]}` : 'Welcome back') : 'Create your account'}

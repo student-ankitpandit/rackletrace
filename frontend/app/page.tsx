@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   ArrowRight,
   Activity,
@@ -47,6 +48,15 @@ export default function Home() {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const snippet = `
   import { Tracer } from "@rackle-labs/sdk";
@@ -101,14 +111,37 @@ export default function Home() {
       <div className="fixed inset-0 bg-gradient-to-b from-zinc-50 to-white dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       {/* Navbar */}
-      <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-colors">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+      <nav className={`fixed inset-x-4 mx-auto z-50 rounded-xl border border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) shadow-sm ${
+        isScrolled 
+          ? "top-3 max-w-4xl rounded-lg border-zinc-300 dark:border-zinc-700/50 shadow-md bg-white/90 dark:bg-[#000]/90" 
+          : "top-6 max-w-6xl"
+      }`}>
+        <div className={`px-6 flex items-center justify-between transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${
+          isScrolled ? "h-11" : "h-16"
+        }`}>
+          <div className={`flex items-center gap-1 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) origin-left ${
+            isScrolled ? "scale-90" : "scale-100"
+          }`}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 100 100"
+              className="w-5 h-5 text-zinc-900 dark:text-white fill-current"
+            >
+              {/* Left 'r' stem and arch */}
+              <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
+              {/* Right 'd' stem and base */}
+              <path d="M59 75V25l10-10v51h9v9H59z" />
+              {/* Center diagonal/loop connection */}
+              <path d="M34 75l25-25v9L46 75H34z" />
+            </svg>
             <span className="font-medium text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
               Rackle
             </span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className={`flex items-center gap-4 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) origin-right ${
+            isScrolled ? "scale-90" : "scale-100"
+          }`}>
+            <ThemeToggle />
             <Link
               href="/auth/login"
               className="text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
@@ -117,7 +150,9 @@ export default function Home() {
             </Link>
             <button
               onClick={handleDashboardClick}
-              className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+              className={`flex items-center gap-2 font-medium rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${
+                isScrolled ? "px-2.5 py-1 text-[11px]" : "px-3.5 py-1.5 text-xs"
+              }`}
             >
               Dashboard
             </button>
@@ -151,7 +186,7 @@ export default function Home() {
               href="https://github.com/student-ankitpandit/Rackle"
               className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-all min-w-[160px]"
             >
-              <Code className="w-4 h-4" /> GitHub 
+              <Code className="w-4 h-4" /> Star on Github
             </a>
           </div>
         </div>

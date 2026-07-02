@@ -14,8 +14,7 @@ export default function Icon() {
     (
       <div
         style={{
-          fontSize: 24,
-          background: '#18181b', // zinc-900
+          background: '#000000',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -23,22 +22,30 @@ export default function Icon() {
           justifyContent: 'center',
           color: 'white',
           borderRadius: '6px',
-          fontWeight: 800,
-          fontFamily: 'sans-serif',
         }}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
+          width="24"
+          height="24"
+          viewBox="0 0 100 100"
           fill="none"
-          stroke="white"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
         >
-          <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+          {/* Left 'r' stem and arch */}
+          <path
+            d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z"
+            fill="white"
+          />
+          {/* Right 'd' stem and base */}
+          <path
+            d="M59 75V25l10-10v51h9v9H59z"
+            fill="white"
+          />
+          {/* Center diagonal/loop connection */}
+          <path
+            d="M34 75l25-25v9L46 75H34z"
+            fill="white"
+          />
         </svg>
       </div>
     ),
