@@ -168,7 +168,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tighter mb-6 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-2">
             The <span className="relative inline-block px-1">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-600 dark:from-violet-400 dark:to-fuchsia-400">observability</span>
+              <span className="font-[family-name:var(--font-playfair)] italic pr-2 text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-fuchsia-600 dark:from-violet-400 dark:to-fuchsia-400">observability</span>
               <span className="absolute left-1 right-1 -bottom-1 sm:-bottom-2 h-[4px] sm:h-[6px] bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full opacity-80" />
             </span> stack for AI agents.
           </h1>
