@@ -102,8 +102,8 @@ export default function TraceDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-violet-500/30 transition-colors">
-      <div className="fixed inset-0 bg-gradient-to-b from-white to-zinc-50 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
+    <div className="min-h-screen bg-zinc-200 dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-violet-500/30 transition-colors">
+      <div className="fixed inset-0 bg-gradient-to-b from-zinc-100 to-zinc-200 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 py-12">
 
@@ -186,7 +186,7 @@ export default function TraceDetailPage() {
                 <div className="space-y-6">
                   {/* Pipeline Start */}
                   <div className="flex items-center gap-4 relative z-10">
-                    <div className="w-[30px] h-[30px] rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-400 transition-colors">
+                    <div className="w-[30px] h-[30px] rounded-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-400 transition-colors">
                       <Play className="w-3 h-3 ml-0.5" />
                     </div>
                     <span className="text-xs font-medium text-zinc-400 uppercase tracking-wide">Workflow Started</span>

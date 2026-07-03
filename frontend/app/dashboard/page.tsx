@@ -62,7 +62,7 @@ function StatusBadge({ status }: { status: Run["status"] }) {
 
 function StatCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub: string }) {
   return (
-    <div className="p-4 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] flex items-start gap-3 transition-colors hover:border-zinc-300 dark:hover:border-zinc-700">
+    <div className="p-4 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] flex items-start gap-3 transition-colors hover:border-zinc-300 dark:hover:border-zinc-700">
       <div className="p-1.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400">
         {icon}
       </div>
@@ -184,11 +184,11 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
+    <div className="min-h-screen bg-zinc-50 dark:bg-[#000] text-zinc-800 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
       <div className="fixed inset-0 bg-gradient-to-b from-white to-zinc-50 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-colors">
+      <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-200 dark:border-zinc-800/50 bg-zinc-50/80 dark:bg-[#000]/80 backdrop-blur-md transition-colors">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-1">
@@ -254,8 +254,8 @@ export default function DashboardPage() {
                   onChange={(e) => setSelectedAgent(e.target.value)}
                   className="bg-transparent text-xs text-zinc-900 dark:text-zinc-200 outline-none py-1.5"
                 >
-                  <option value="" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">All Agents</option>
-                  {agents.map((a) => <option key={a} value={a} className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">{a}</option>)}
+                  <option value="" className="bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">All Agents</option>
+                  {agents.map((a) => <option key={a} value={a} className="bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">{a}</option>)}
                 </select>
               </div>
             )}
@@ -267,10 +267,10 @@ export default function DashboardPage() {
                 onChange={(e) => setSelectedStatus(e.target.value)}
                 className="bg-transparent text-xs text-zinc-900 dark:text-zinc-200 outline-none py-1.5"
               >
-                <option value="" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">All Statuses</option>
-                <option value="completed" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Completed</option>
-                <option value="failed" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Failed</option>
-                <option value="running" className="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Running</option>
+                <option value="" className="bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">All Statuses</option>
+                <option value="completed" className="bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Completed</option>
+                <option value="failed" className="bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Failed</option>
+                <option value="running" className="bg-zinc-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-200">Running</option>
               </select>
             </div>
           </div>
@@ -306,7 +306,7 @@ export default function DashboardPage() {
 
         {/* List of Runs */}
         <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] shadow-sm transition-colors overflow-hidden">
-          <div className="px-5 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#000] flex items-center gap-2 transition-colors">
+          <div className="px-5 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-[#000] flex items-center gap-2 transition-colors">
             <Activity className="w-4 h-4 text-zinc-400" />
             <h2 className="text-sm font-medium text-zinc-900 dark:text-zinc-200">Execution Traces</h2>
           </div>

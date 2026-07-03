@@ -99,7 +99,7 @@ export default function ChatPanel({ runId, agentName }: { runId?: string; agentN
   // Minimized bar
   if (minimized) {
     return (
-      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-full pl-4 pr-2 py-2 shadow-xl shadow-black/10 dark:shadow-black/30 cursor-pointer hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors"
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-full pl-4 pr-2 py-2 shadow-xl shadow-black/10 dark:shadow-black/30 cursor-pointer hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors"
         onClick={() => setMinimized(false)}>
         <Sparkles className="w-3.5 h-3.5 text-violet-400" />
         <span className="text-xs font-medium text-zinc-900 dark:text-zinc-300">Rackle AI</span>
@@ -114,7 +114,7 @@ export default function ChatPanel({ runId, agentName }: { runId?: string; agentN
 
   // Full chat panel
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px] flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] shadow-2xl shadow-black/10 dark:shadow-black/40 overflow-hidden animate-in slide-in-from-bottom-4 duration-200 transition-colors">
+    <div className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px] flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] shadow-2xl shadow-black/10 dark:shadow-black/40 overflow-hidden animate-in slide-in-from-bottom-4 duration-200 transition-colors">
       
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-200 dark:border-zinc-800/80 bg-zinc-50 dark:bg-[#000] transition-colors">

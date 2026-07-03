@@ -97,11 +97,11 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
-      <div className="fixed inset-0 bg-gradient-to-b from-white to-zinc-50 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
+    <div className="min-h-screen bg-zinc-200 dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-300 dark:selection:bg-zinc-800 transition-colors">
+      <div className="fixed inset-0 bg-gradient-to-b from-zinc-100 to-zinc-200 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-colors">
+      <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-200 dark:border-zinc-800/50 bg-zinc-50/80 dark:bg-[#000]/80 backdrop-blur-md transition-colors">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-1">
@@ -143,7 +143,7 @@ export default function SettingsPage() {
         </div>
 
         {justCreatedKey && (
-          <div className="mb-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded p-4 shadow-sm transition-colors">
+          <div className="mb-6 bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded p-4 shadow-sm transition-colors">
             <div className="flex items-start gap-3">
               <Shield className="w-4 h-4 text-zinc-300 mt-0.5 shrink-0" />
               <div className="flex-1 min-w-0">
@@ -166,7 +166,7 @@ export default function SettingsPage() {
           </div>
         )}
 
-        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] shadow-sm overflow-hidden transition-colors">
+        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] shadow-sm overflow-hidden transition-colors">
           <div className="px-5 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#000] flex items-center justify-between transition-colors">
             <div className="flex items-center gap-2">
               <Key className="w-4 h-4 text-zinc-400" />
@@ -189,7 +189,7 @@ export default function SettingsPage() {
                   onChange={(e) => setNewKeyName(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && createKey()}
                   placeholder="Key name (e.g. Production)"
-                  className="flex-1 bg-white dark:bg-[#000] border border-zinc-200 dark:border-zinc-800 rounded px-3 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
+                  className="flex-1 bg-zinc-50 dark:bg-[#000] border border-zinc-200 dark:border-zinc-800 rounded px-3 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
                   autoFocus
                 />
                 <button

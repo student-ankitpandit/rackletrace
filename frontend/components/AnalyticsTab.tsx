@@ -25,7 +25,7 @@ const PIE_COLORS = ["#a1a1aa", "#71717a", "#52525b"];
 
 function SummaryCard({ icon, label, value, sub }: { icon: React.ReactNode; label: string; value: string; sub: string }) {
   return (
-    <div className="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/50 flex items-start gap-3 transition-colors">
+    <div className="p-3 rounded-lg border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900/50 flex items-start gap-3 transition-colors">
       <div className="p-2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 shrink-0 transition-colors">
         {icon}
       </div>
@@ -40,7 +40,7 @@ function SummaryCard({ icon, label, value, sub }: { icon: React.ReactNode; label
 
 function ChartCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/50 transition-colors">
+    <div className="p-4 rounded-lg border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900/50 transition-colors">
       <h3 className="text-xs font-medium text-zinc-900 dark:text-zinc-300 mb-4 transition-colors">{title}</h3>
       {children}
     </div>
@@ -50,7 +50,7 @@ function ChartCard({ title, children }: { title: string; children: React.ReactNo
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-white dark:bg-[#000] border border-zinc-200 dark:border-zinc-800 rounded px-3 py-2 shadow-xl transition-colors">
+    <div className="bg-zinc-50 dark:bg-[#000] border border-zinc-200 dark:border-zinc-800 rounded px-3 py-2 shadow-xl transition-colors">
       <p className="text-[10px] uppercase tracking-wider text-zinc-500 mb-1.5">{label}</p>
       {payload.map((p: any, i: number) => (
         <p key={i} className="text-xs font-medium text-zinc-900 dark:text-zinc-200" style={{ color: p.color }}>
@@ -180,7 +180,7 @@ export default function AnalyticsTab({ agentName }: { agentName: string }) {
 
       {/* Model Table */}
       {data.modelUsage.length > 0 && (
-        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/50 overflow-hidden transition-colors">
+        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50 dark:bg-zinc-900/50 overflow-hidden transition-colors">
           <div className="px-4 py-2.5 border-b border-zinc-200 dark:border-zinc-800/50 flex items-center gap-2 transition-colors">
             <Cpu className="w-3.5 h-3.5 text-zinc-500" />
             <span className="text-xs font-medium text-zinc-900 dark:text-zinc-300 transition-colors">Model Usage</span>

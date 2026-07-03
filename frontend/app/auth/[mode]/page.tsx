@@ -92,8 +92,9 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
-      <div className="fixed inset-0 bg-gradient-to-b from-zinc-50 to-white dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
+    <div className="min-h-screen flex items-center justify-center bg-zinc-50 dark:bg-[#000] text-zinc-800 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
+      <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+      <div className="fixed inset-0 bg-gradient-to-b from-transparent to-zinc-50/90 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       <div className="relative z-10 w-full max-w-[400px] px-6 py-12">
         <div className="flex flex-col items-center mb-8">
@@ -119,7 +120,7 @@ export default function AuthPage() {
           </p>
         </div>
 
-        <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] p-6 shadow-xl transition-colors">
+        <div className="relative rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] p-6 shadow-xl transition-colors">
           <form id="auth-form" onSubmit={handleSubmit} className="space-y-4">
             {tab === 'signup' && (
               <div className="space-y-1.5">
@@ -138,7 +139,7 @@ export default function AuthPage() {
                     placeholder="name"
                     value={form.name}
                     onChange={handleChange}
-                    className="w-full pl-9 pr-3 py-2 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
+                    className="w-full pl-9 pr-3 py-2 rounded bg-zinc-50/50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
                   />
                 </div>
               </div>
@@ -161,7 +162,7 @@ export default function AuthPage() {
                   value={form.email}
                   onChange={handleChange}
                   required
-                  className="w-full pl-9 pr-3 py-2 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
+                  className="w-full pl-9 pr-3 py-2 rounded bg-zinc-50/50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
                 />
               </div>
             </div>
@@ -184,7 +185,7 @@ export default function AuthPage() {
                   onChange={handleChange}
                   required
                   minLength={6}
-                  className="w-full pl-9 pr-10 py-2 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
+                  className="w-full pl-9 pr-10 py-2 rounded bg-zinc-50/50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-200 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 text-sm outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors"
                 />
                 <button
                   type="button"
