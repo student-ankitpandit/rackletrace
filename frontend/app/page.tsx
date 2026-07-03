@@ -21,7 +21,7 @@ import {
 function FAQItem({ q, a }: { q: string, a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] overflow-hidden transition-all">
+    <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-[#0a0a0a] overflow-hidden transition-all">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
@@ -46,7 +46,7 @@ const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
 export default function Home() {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
+  const [navigatingState, setNavigatingState] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -86,11 +86,11 @@ export default function Home() {
     }
   };
 
-  const handleDashboardClick = async (e: React.MouseEvent) => {
+  const handleDashboardClick = async (e: React.MouseEvent, source: string = "navbar") => {
     e.preventDefault();
-    if (isNavigating) return;
+    if (navigatingState) return;
 
-    setIsNavigating(true);
+    setNavigatingState(source);
     try {
       const res = await fetch(`${BACKEND}/auth/me`, { credentials: "include" });
       if (res.ok) {
@@ -101,18 +101,20 @@ export default function Home() {
     } catch (err) {
       router.push("/auth/login");
     } finally {
-      setIsNavigating(false);
+      setNavigatingState(null);
     }
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#000] text-zinc-900 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
-      <div className="fixed inset-0 bg-gradient-to-b from-zinc-50 to-white dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
+    <div className="min-h-screen bg-zinc-50 dark:bg-[#000] text-zinc-800 dark:text-zinc-100 font-sans selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors">
+      {/* Soft warm light mode grid + gradient */}
+      <div className="fixed inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+      <div className="fixed inset-0 bg-gradient-to-b from-transparent to-zinc-50/90 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       {/* Navbar */}
       <nav className={`fixed inset-x-4 mx-auto z-50 rounded-xl border border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) shadow-sm ${
         isScrolled 
-          ? "top-3 max-w-4xl rounded-lg border-zinc-300 dark:border-zinc-700/50 shadow-md bg-white/90 dark:bg-[#000]/90" 
+          ? "top-3 max-w-4xl rounded-lg border-zinc-200 dark:border-zinc-700/50 shadow-md bg-white/90 dark:bg-[#000]/90" 
           : "top-6 max-w-6xl"
       }`}>
         <div className={`px-6 flex items-center justify-between transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${
@@ -148,13 +150,13 @@ export default function Home() {
               Login
             </Link>
             <button
-              onClick={handleDashboardClick}
-              disabled={isNavigating}
+              onClick={(e) => handleDashboardClick(e, 'navbar')}
+              disabled={!!navigatingState}
               className={`flex items-center gap-2 font-medium rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer ${
                 isScrolled ? "px-2.5 py-1 text-[11px]" : "px-3.5 py-1.5 text-xs"
               }`}
             >
-              {isNavigating && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
+              {navigatingState === 'navbar' && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               Dashboard
             </button>
           </div>
@@ -177,15 +179,15 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
-              onClick={handleDashboardClick}
-              disabled={isNavigating}
-              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] min-w-[160px] disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+              onClick={(e) => handleDashboardClick(e, 'hero')}
+              disabled={!!navigatingState}
+              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-50 transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] min-w-[160px] disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
             >
-              {isNavigating ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Start Tracing <ArrowRight className="w-4 h-4" /></>}
+              {navigatingState === 'hero' ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Start Tracing <ArrowRight className="w-4 h-4" /></>}
             </button>
             <a
               href="https://github.com/student-ankitpandit/Rackle"
-              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-all min-w-[160px]"
+              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-all min-w-[160px]"
             >
               <Code className="w-4 h-4" /> Star on Github
             </a>
@@ -195,8 +197,8 @@ export default function Home() {
 
       {/* UI Preview Section */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] p-1 shadow-2xl dark:shadow-[0_0_80px_-20px_rgba(139,92,246,0.15)] transition-all hover:dark:shadow-[0_0_100px_-20px_rgba(139,92,246,0.25)] duration-500">
-          <div className="rounded-lg border border-zinc-200 dark:border-zinc-800/50 bg-white dark:bg-black overflow-hidden transition-colors relative">
+        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] p-1 shadow-2xl dark:shadow-[0_0_80px_-20px_rgba(139,92,246,0.15)] transition-all hover:dark:shadow-[0_0_100px_-20px_rgba(139,92,246,0.25)] duration-500">
+          <div className="rounded-lg border border-zinc-200 dark:border-zinc-800/50 bg-zinc-50 dark:bg-black overflow-hidden transition-colors relative">
             {/* Fake Header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 backdrop-blur-md bg-white/80 dark:bg-black/50 sticky top-0 z-20 transition-colors">
               <div className="flex gap-1.5">
@@ -214,7 +216,7 @@ export default function Home() {
               <div className="space-y-6">
                 <div className="flex items-start gap-4 relative z-10">
                   <div className="mt-1 bg-white dark:bg-[#000] py-1 transition-colors">
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition-colors">
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition-colors">
                       <MessageSquare className="w-3.5 h-3.5" />
                       <span className="text-[10px] font-medium uppercase tracking-wider">Prompt</span>
                     </div>
@@ -226,7 +228,7 @@ export default function Home() {
 
                 <div className="flex items-start gap-4 relative z-10">
                   <div className="mt-1 bg-white dark:bg-[#000] py-1 transition-colors">
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition-colors">
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition-colors">
                       <Database className="w-3.5 h-3.5" />
                       <span className="text-[10px] font-medium uppercase tracking-wider">Context</span>
                     </div>
@@ -238,7 +240,7 @@ export default function Home() {
 
                 <div className="flex items-start gap-4 relative z-10">
                   <div className="mt-1 bg-white dark:bg-[#000] py-1 transition-colors">
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition-colors">
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition-colors">
                       <Settings className="w-3.5 h-3.5" />
                       <span className="text-[10px] font-medium uppercase tracking-wider">Tool</span>
                     </div>
@@ -257,7 +259,7 @@ export default function Home() {
 
                 <div className="flex items-start gap-4 relative z-10">
                   <div className="mt-1 bg-white dark:bg-[#000] py-1 transition-colors">
-                    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition-colors">
+                    <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 transition-colors">
                       <Brain className="w-3.5 h-3.5" />
                       <span className="text-[10px] font-medium uppercase tracking-wider">Model</span>
                     </div>
@@ -268,7 +270,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-start gap-4 relative z-10">
-                  <div className="mt-1 bg-white dark:bg-[#000] py-1 transition-colors">
+                  <div className="mt-1 bg-zinc-100 dark:bg-[#000] py-1 transition-colors">
                     <div className="flex items-center gap-1.5 px-2 py-1 rounded border border-red-500/20 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 transition-colors">
                       <AlertTriangle className="w-3.5 h-3.5" />
                       <span className="text-[10px] font-medium uppercase tracking-wider">Error</span>
@@ -285,25 +287,25 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div className="py-24 relative z-10 bg-white dark:bg-[#000] transition-colors">
+      <div className="py-24 relative z-10 bg-transparent transition-colors">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-1">Everything you need to debug AI</h2>
             <p className="text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">Rackle provides a complete suite of tools to monitor, analyze, and improve your AI agents in production.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-              <div className="w-10 h-10 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center mb-4 transition-colors"><Activity className="w-5 h-5 text-violet-500 dark:text-violet-400" /></div>
+            <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-[#0a0a0a] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+              <div className="w-10 h-10 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center mb-4 transition-colors"><Activity className="w-5 h-5 text-violet-500 dark:text-violet-400" /></div>
               <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-200 mb-2">Real-time Tracing</h3>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">Watch your agents execute step-by-step. See prompts, tool calls, and latency instantly as they happen.</p>
             </div>
-            <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-              <div className="w-10 h-10 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center mb-4 transition-colors"><Brain className="w-5 h-5 text-emerald-500 dark:text-emerald-400" /></div>
+            <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-[#0a0a0a]/50 backdrop-blur-sm hover:bg-white dark:hover:bg-[#0a0a0a] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+              <div className="w-10 h-10 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center mb-4 transition-colors"><Brain className="w-5 h-5 text-emerald-500 dark:text-emerald-400" /></div>
               <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-200 mb-2">AI Copilot</h3>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">Ask Rackle AI to analyze traces, find bottlenecks, and explain errors using your actual execution data.</p>
             </div>
-            <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#0a0a0a] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
-              <div className="w-10 h-10 rounded bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center mb-4 transition-colors"><Database className="w-5 h-5 text-blue-500 dark:text-blue-400" /></div>
+            <div className="p-6 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-[#0a0a0a]/50 backdrop-blur-sm hover:bg-white dark:hover:bg-[#0a0a0a] hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+              <div className="w-10 h-10 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center mb-4 transition-colors"><Database className="w-5 h-5 text-blue-500 dark:text-blue-400" /></div>
               <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-200 mb-2">Cost & Tokens</h3>
               <p className="text-sm text-zinc-600 dark:text-zinc-400">Track token usage across all your models. Get detailed analytics on your spend and optimize your pipelines.</p>
             </div>
@@ -345,7 +347,7 @@ export default function Home() {
       </div>
 
       {/* Code Snippet Section */}
-      <div className="py-24 relative overflow-hidden bg-white dark:bg-[#050505] border-b border-zinc-200 dark:border-zinc-800/50 z-10 transition-colors">
+      <div className="py-24 relative overflow-hidden bg-zinc-50 dark:bg-[#050505] border-b border-zinc-200 dark:border-zinc-800/50 z-10 transition-colors">
         <div className="max-w-5xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-1">
@@ -360,7 +362,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#000] p-4 shadow-xl transition-colors">
+          <div className="rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#000] p-4 shadow-xl transition-colors">
             <div className="flex items-center justify-between mb-3 border-b border-zinc-200 dark:border-zinc-800/50 pb-3 transition-colors">
               <div className="text-xs font-mono text-zinc-500">agent.ts</div>
               <button
@@ -395,7 +397,7 @@ export default function Home() {
       </div>
 
       {/* FAQ Section */}
-      <div className="py-24 relative z-10 bg-white dark:bg-[#000] transition-colors">
+      <div className="py-24 relative z-10 bg-transparent transition-colors">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-1">Frequently Asked Questions</h2>
@@ -413,7 +415,7 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="py-24 sm:py-32 relative z-10 bg-white dark:bg-[#000] border-t border-zinc-200/50 dark:border-zinc-900/50 transition-colors">
+      <div className="py-24 sm:py-32 relative z-10 bg-transparent border-t border-zinc-200/50 dark:border-zinc-900/50 transition-colors">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl sm:text-6xl font-bold tracking-tight mb-6 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-500 pb-1 leading-tight sm:leading-tight">
             Stop Guessing.<br />Start Monitoring.
@@ -422,11 +424,11 @@ export default function Home() {
             Get total observability into your AI agents in minutes. No complex setups, no agent overhead, just clean trace outputs.
           </p>
           <button
-            onClick={handleDashboardClick}
-            disabled={isNavigating}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-white transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed min-w-[180px]"
+            onClick={(e) => handleDashboardClick(e, 'cta')}
+            disabled={!!navigatingState}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-50 transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed min-w-[180px]"
           >
-            {isNavigating ? (
+            {navigatingState === 'cta' ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
               <>Start Tracing Now <ArrowRight className="w-4 h-4" /></>
@@ -436,7 +438,7 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="relative bg-zinc-50 dark:bg-[#050505] border-t border-zinc-200 dark:border-zinc-800/50 pt-16 pb-32 md:pb-40 overflow-hidden z-10 transition-colors">
+      <footer className="relative bg-zinc-100 dark:bg-[#050505] border-t border-zinc-200 dark:border-zinc-800/50 pt-16 pb-32 md:pb-40 overflow-hidden z-10 transition-colors">
         <div className="max-w-6xl mx-auto px-6 relative z-20">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 md:mb-24">
             {/* Logo & Copyright */}
