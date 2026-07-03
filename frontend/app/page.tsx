@@ -197,7 +197,7 @@ export default function Home() {
 
       {/* UI Preview Section */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] p-1 shadow-2xl dark:shadow-[0_0_80px_-20px_rgba(139,92,246,0.15)] transition-all hover:dark:shadow-[0_0_100px_-20px_rgba(139,92,246,0.25)] duration-500">
+        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] p-1 shadow-2xl hover:shadow-[0_0_80px_-20px_rgba(139,92,246,0.5)] dark:bg-[#0a0a0a] p-1 shadow-2xl dark:shadow-[0_0_80px_-20px_rgba(139,92,246,0.30)] transition-all hover:dark:shadow-[0_0_100px_-20px_rgba(139,92,246,0.25)] duration-500">
           <div className="rounded-lg border border-zinc-200 dark:border-zinc-800/50 bg-zinc-50 dark:bg-black overflow-hidden transition-colors relative">
             {/* Fake Header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 backdrop-blur-md bg-white/80 dark:bg-black/50 sticky top-0 z-20 transition-colors">
@@ -443,19 +443,13 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 md:mb-24">
             {/* Logo & Copyright */}
             <div className="md:col-span-4">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-8 h-8 rounded bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black flex items-center justify-center font-bold transition-colors">
-                  R
-                </div>
-                <span className="font-semibold text-xl tracking-tight text-zinc-900 dark:text-zinc-100">
-                  Rackle.
-                </span>
-              </div>
+                <h3 className="font-semibold text-xl tracking-tight text-zinc-900 dark:text-zinc-100">
+                  Rackle.</h3>
               <p className="text-sm text-zinc-500 mb-2">
                 © copyright Rackle {new Date().getFullYear()}. All rights reserved.
               </p>
               <p className="text-xs text-zinc-500 dark:text-zinc-600">
-                Built by <Link href="https://x.com/ankitpanditdev" target="_blank" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">@ankitpanditdev</Link>
+                Built with ❤️ by <Link href="https://x.com/ankitpanditdev" target="_blank" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">@ankitpanditdev</Link>
               </p>
             </div>
 
