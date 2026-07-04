@@ -42,7 +42,7 @@ export default function PrivacyPolicy() {
 
           <h2>5. Contact Us</h2>
           <p>
-            If you have any questions about this Privacy Policy, please contact us at privacy@rackle.ai.
+            If you have any questions about this Privacy Policy, please contact us at devankitpanditio@gmail.com.
           </p>
         </article>
       </div>
