@@ -113,9 +113,6 @@ export default function TraceDetailPage() {
             <Link href="/dashboard" className="p-2 rounded hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-zinc-600 dark:text-zinc-400">
               <ArrowLeft className="w-4 h-4" />
             </Link>
-            <div className="w-8 h-8 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 transition-colors">
-              <Activity className="w-4 h-4" />
-            </div>
             <div>
               <div className="flex items-center gap-3 mb-0.5">
                 <h1 className="text-xl font-medium tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors">

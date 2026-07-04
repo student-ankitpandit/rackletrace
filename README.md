@@ -205,7 +205,7 @@ import { Tracer } from "@rackle-labs/sdk";
 
 // Initialize the tracer with your dashboard API key
 const tracer = new Tracer({
-  secret: process.env.RACKLE_API_KEY!,
+  apiKey: process.env.RACKLE_API_KEY!,
   // baseUrl: "http://localhost:8000" // point at a local/self-hosted backend
 });
 

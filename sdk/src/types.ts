@@ -116,7 +116,7 @@ export type StepPayload =
   | LoopDetectedPayload
 
 export interface TracerOptions {
-  secret   : string
+  apiKey   : string
   baseUrl? : string | undefined
   /** Called when a step fails to ingest (e.g. network error). Defaults to console.error. */
   onError? : (err: unknown, context: string) => void
@@ -131,6 +131,14 @@ export interface RunOptions {
    * @default false
    */
   rerun?: boolean
+  /**
+   * Like `rerun`, but only resets the last run if it has status "failed".
+   * If the last run completed successfully, it is left untouched and a
+   * brand-new run is created instead.
+   * Falls back to creating a new run if no previous run exists.
+   * @default false
+   */
+  rerunIfFailed?: boolean
 }
 
 export interface RunEndOptions {

@@ -37,11 +37,13 @@ router.post("/run/start", async (req, res) => {
 // POST /api/ingest/run/restart
 // Re-runs the most recent run for a given agentName instead of creating a new one.
 // Deletes old steps, resets status to "running", and returns the existing run.
+// If onlyIfFailed is true and the last run completed successfully, returns { skipped: true }
+// so the SDK knows to create a fresh new run instead.
 router.post("/run/restart", async (req, res) => {
   const userId = req.userId
   if (!userId) return res.status(401).json({ error: "Unauthorized" })
 
-  const { agentName } = req.body
+  const { agentName, onlyIfFailed } = req.body
 
   if (!agentName) {
     return res.status(400).json({ error: "agentName is required" })
@@ -56,6 +58,12 @@ router.post("/run/restart", async (req, res) => {
 
     if (!existingRun) {
       return res.status(404).json({ error: `No previous run found for agent "${agentName}"` })
+    }
+
+    // If onlyIfFailed is set and the last run didn't fail, leave it untouched.
+    // The SDK will fall through and create a fresh new run instead.
+    if (onlyIfFailed && existingRun.status !== "failed") {
+      return res.json({ skipped: true })
     }
 
     // Delete all old steps from this run

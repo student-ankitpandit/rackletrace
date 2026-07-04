@@ -62,7 +62,7 @@ export class Run {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${this.options.secret}`
+          "Authorization": `Bearer ${this.options.apiKey}`
         },
         body: JSON.stringify(body)
       })

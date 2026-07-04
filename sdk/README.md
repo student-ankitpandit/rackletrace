@@ -17,7 +17,7 @@ import { Tracer } from "@rackle-labs/sdk";
 
 // Initialize the tracer
 const tracer = new Tracer({
-  secret: process.env.RACKLE_SECRET, // Your API key
+  apiKey: process.env.RACKLE_API_KEY, // Your API key
 });
 
 async function runAgent() {
@@ -66,7 +66,7 @@ If you are running the Rackle dashboard locally or self-hosting the backend, you
 
 ```typescript
 const tracer = new Tracer({
-  secret: process.env.RACKLE_SECRET,
+  apiKey : process.env.RACKLE_API_KEY,
   baseUrl: "http://localhost:PORT_NUMBER" // Point to your local backend
 });
 ```

@@ -150,12 +150,24 @@ export default function DashboardPage() {
       }));
     };
 
+    const handleRunRestarted = ({ run }: { run: Run }) => {
+      setRuns((prev) =>
+        prev.map((r) =>
+          r.id === run.id
+            ? { ...r, status: "running", totalMs: null, steps: [] }
+            : r
+        )
+      );
+    };
+
     socket.on("run_started", handleRunStarted);
+    socket.on("run_restarted", handleRunRestarted);
     socket.on("run_ended", handleRunEnded);
     socket.on("step_added", handleStepAdded);
 
     return () => {
       socket.off("run_started", handleRunStarted);
+      socket.off("run_restarted", handleRunRestarted);
       socket.off("run_ended", handleRunEnded);
       socket.off("step_added", handleStepAdded);
     };
@@ -307,10 +319,8 @@ export default function DashboardPage() {
         {/* List of Runs */}
         <div className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] shadow-sm transition-colors overflow-hidden">
           <div className="px-5 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-[#000] flex items-center gap-2 transition-colors">
-            <Activity className="w-4 h-4 text-zinc-400" />
             <h2 className="text-sm font-medium text-zinc-900 dark:text-zinc-200">Execution Traces</h2>
           </div>
-
           {loading && (
             <div className="flex items-center justify-center gap-3 py-16 text-zinc-500">
               <Loader2 className="w-4 h-4 animate-spin" />
