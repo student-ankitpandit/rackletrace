@@ -197,7 +197,7 @@ export default function Home() {
 
       {/* UI Preview Section */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 pb-24">
-        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] p-1 shadow-2xl hover:shadow-[0_0_80px_-20px_rgba(139,92,246,0.5)] dark:bg-[#0a0a0a] p-1 shadow-2xl dark:shadow-[0_0_80px_-20px_rgba(139,92,246,0.30)] transition-all hover:dark:shadow-[0_0_100px_-20px_rgba(139,92,246,0.25)] duration-500">
+        <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0a0a0a] p-1 shadow-2xl hover:shadow-[0_0_80px_-20px_rgba(139,92,246,0.5)] dark:hover:shadow-[0_0_100px_-20px_rgba(139,92,246,0.3)] transition-all duration-500">
           <div className="rounded-lg border border-zinc-200 dark:border-zinc-800/50 bg-zinc-50 dark:bg-black overflow-hidden transition-colors relative">
             {/* Fake Header */}
             <div className="flex items-center gap-3 px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 backdrop-blur-md bg-white/80 dark:bg-black/50 sticky top-0 z-20 transition-colors">
