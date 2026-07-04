@@ -443,8 +443,21 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 md:mb-24">
             {/* Logo & Copyright */}
             <div className="md:col-span-4">
-                <h3 className="font-semibold text-xl tracking-tight text-zinc-900 dark:text-zinc-100">
-                  Rackle.</h3>
+              <div className="flex items-center gap-2 mb-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 100 100"
+                  className="w-5 h-5 text-zinc-900 dark:text-white fill-current"
+                >
+                  {/* Left 'r' stem and arch */}
+                  <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
+                  {/* Right 'd' stem and base */}
+                  <path d="M59 75V25l10-10v51h9v9H59z" />
+                  {/* Center diagonal/loop connection */}
+                  <path d="M34 75l25-25v9L46 75H34z" />
+                </svg>
+                <h3 className="font-semibold text-xl tracking-tight text-zinc-900 dark:text-zinc-100">Rackle</h3>
+              </div>
               <p className="text-sm text-zinc-500 mb-2">
                 © copyright Rackle {new Date().getFullYear()}. All rights reserved.
               </p>
