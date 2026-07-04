@@ -1,6 +1,6 @@
 {
   "name": "@rackle-labs/sdk",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Lightweight SDK for observing and tracing AI agents — track LLM calls, tool use, errors, and hallucinations.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
