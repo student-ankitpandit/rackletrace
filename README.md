@@ -86,7 +86,7 @@ Rackle/
 │   ├── prisma/                # Prisma schema + migrations (PostgreSQL)
 │   └── routes/
 │       ├── auth.ts            # signup / login / logout / me
-│       ├── ingest.ts          # run/start, step, run/end — telemetry ingestion
+│       ├── ingest.ts          # run/start, run/restart, step, run/end — telemetry ingestion
 │       ├── run.ts             # list/fetch runs, list agent names
 │       ├── analytics.ts       # aggregated run/token/latency analytics
 │       ├── api-keys.ts        # create/list/revoke project API keys
@@ -120,7 +120,7 @@ Defined in `backend/prisma/schema.prisma` (PostgreSQL):
 
 - **User** — account with hashed password; owns `Run`s, `ApiKey`s, and `Eval`s.
 - **ApiKey** — named, unique key per user, with `lastUsedAt` tracking.
-- **Run** — a single agent execution (`agentName`, `status: running | completed | failed`, `totalMs`), containing many `Step`s.
+- **Run** — a single agent execution (`agentName`, `status: running | completed | failed`, `totalMs`), containing many `Step`s. Re-running an agent with `rerun: true` resets the same record (clears steps, status → `running`) instead of creating a duplicate.
 - **Step** — one event within a run, typed by `StepType`:
   `LLM_CALL`, `TOOL_CALL`, `ERROR`, `RETRIEVAL`, `MEMORY_READ`, `MEMORY_WRITE`, `AGENT_HANDOFF`, `GUARDRAIL`, `PLANNING`, `LOOP_DETECTED` — with fields for `input`/`output` (JSON), `model`, `tool`, `tokens`, `latencyMs`, `error`/`message`/`stack`, and free-form `state`.
 - **Eval** — a review-board item (`title`, `description`, `status`, `assignee`, `dueDate`, `agentName`, `criteria`, `score`, `notes`) used to track human evaluation of agent behavior.
@@ -236,6 +236,27 @@ async function runAgent() {
 }
 ```
 
+### Re-running a Failed Agent
+
+When a run fails and you fix your code, pass `rerun: true` to reuse the same run entry instead of creating a new duplicate:
+
+```typescript
+// After fixing your code, just add rerun: true
+const run = await tracer.startRun({
+  agentName: "email_sender",
+  rerun: true,   // ← resets the last run for this agent instead of creating a new one
+});
+```
+
+**What happens under the hood:**
+- Finds the most recent run for `"email_sender"` in the database
+- Deletes all its old steps
+- Resets `status` → `"running"` and clears `totalMs`
+- Returns a `Run` instance tied to the **same run ID**
+- If no previous run exists, automatically falls back to creating a new one
+
+This keeps your dashboard clean — **one entry per agent**, not a graveyard of failed duplicates.
+
 ### Step Types
 
 The SDK is fully typed around ten step types, so `run.log(...)` gives you compile-time checking of the fields each step needs:
@@ -267,6 +288,7 @@ All backend routes are mounted from `backend/index.ts`. Routes other than `/auth
 | `GET` | `/auth/me` | Get the current authenticated user |
 | `GET`/`POST`/`DELETE` | `/auth/api-keys` | List, create, or revoke project API keys |
 | `POST` | `/api/ingest/run/start` | Start a new agent run (rate-limited: 300 req/min) |
+| `POST` | `/api/ingest/run/restart` | Reset the last run for an agent — clears old steps, status → `running` |
 | `POST` | `/api/ingest/step` | Log a step within a run |
 | `POST` | `/api/ingest/run/end` | Mark a run as completed/failed |
 | `GET` | `/runs` | List runs (filterable by agent, status, search) |
@@ -279,7 +301,7 @@ All backend routes are mounted from `backend/index.ts`. Routes other than `/auth
 | `GET`/`POST`/`PATCH`/`DELETE` | `/api/evals` | Manage the eval/review board |
 | `POST` | `/api/chat` | AI copilot chat, grounded in a run's trace data |
 
-Real-time updates (e.g. `run_started`, new steps) are pushed over Socket.IO to a per-user room (`user_<id>`).
+Real-time updates (e.g. `run_started`, `run_restarted`, new steps) are pushed over Socket.IO to a per-user room (`user_<id>`).
 
 ## Contributing
 

@@ -84,5 +84,24 @@ await run.log({
 });
 ```
 
+### Re-running a Failed Agent
+When your agent fails, you fix the code, and want to run it again — pass `rerun: true` to reuse the same run entry instead of creating a duplicate:
+
+```typescript
+const run = await tracer.startRun({
+  agentName: "email_sender",
+  rerun: true   // ← reuses the last run for "email_sender"
+});
+```
+
+**What happens under the hood:**
+- The SDK looks up the most recent run for `"email_sender"`
+- Clears all the old steps from that run
+- Resets the status back to `"running"`
+- Returns the same `Run` instance (same run ID)
+- If no previous run exists, it automatically creates a new one
+
+This way your dashboard shows **one entry per agent**, not a pile of failed duplicates.
+
 ## License
 MIT

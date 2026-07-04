@@ -124,6 +124,13 @@ export interface TracerOptions {
 
 export interface RunOptions {
   agentName: string
+  /**
+   * When true, re-runs the most recent run for this agent instead of creating
+   * a new one. The backend will clear old steps and reset the status to "running".
+   * Falls back to creating a new run if no previous run exists.
+   * @default false
+   */
+  rerun?: boolean
 }
 
 export interface RunEndOptions {

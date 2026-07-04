@@ -1,5 +1,6 @@
 import { Router } from "express"
 import prisma from "../lib/prisma"
+import type { $Enums } from "../prisma/generated/prisma/client"
 import { getIO } from "../socket"
 
 const router = Router()
@@ -30,6 +31,50 @@ router.post("/run/start", async (req, res) => {
   } catch (err: any) {
     console.error("ingest/run/start DB error:", err)
     return res.status(500).json({ error: "Failed to create run" })
+  }
+})
+
+// POST /api/ingest/run/restart
+// Re-runs the most recent run for a given agentName instead of creating a new one.
+// Deletes old steps, resets status to "running", and returns the existing run.
+router.post("/run/restart", async (req, res) => {
+  const userId = req.userId
+  if (!userId) return res.status(401).json({ error: "Unauthorized" })
+
+  const { agentName } = req.body
+
+  if (!agentName) {
+    return res.status(400).json({ error: "agentName is required" })
+  }
+
+  try {
+    // Find the most recent run for this agent
+    const existingRun = await prisma.run.findFirst({
+      where: { userId, agentName },
+      orderBy: { createdAt: "desc" }
+    })
+
+    if (!existingRun) {
+      return res.status(404).json({ error: `No previous run found for agent "${agentName}"` })
+    }
+
+    // Delete all old steps from this run
+    await prisma.step.deleteMany({ where: { runId: existingRun.id } })
+
+    // Reset the run back to "running"
+    const updated = await prisma.run.update({
+      where: { id: existingRun.id },
+      data: { status: "running", totalMs: null }
+    })
+
+    try {
+      getIO().to(`user_${userId}`).emit("run_restarted", { run: updated });
+    } catch (_) {}
+
+    return res.json(updated)
+  } catch (err: any) {
+    console.error("ingest/run/restart DB error:", err)
+    return res.status(500).json({ error: "Failed to restart run" })
   }
 })
 
@@ -78,7 +123,7 @@ router.post("/step", async (req, res) => {
     const step = await prisma.step.create({
       data: {
         runId,
-        type: upperType,
+        type: upperType as $Enums.StepType,
         input    : finalInput    ?? {},
         output   : finalOutput   ?? {},
         model    : model    ?? null,
