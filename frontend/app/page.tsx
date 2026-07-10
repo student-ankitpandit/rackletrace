@@ -136,7 +136,7 @@ export default function Home() {
               <path d="M34 75l25-25v9L46 75H34z" />
             </svg>
             <span className="font-medium text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
-              Rackle
+              rackletrace
             </span>
           </div>
           <div className={`flex items-center gap-4 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) origin-right ${
