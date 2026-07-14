@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
@@ -112,36 +113,27 @@ export default function Home() {
       <div className="fixed inset-0 bg-gradient-to-b from-transparent to-zinc-50/90 dark:from-[#0a0a0a] dark:to-[#000] pointer-events-none transition-colors" />
 
       {/* Navbar */}
-      <nav className={`fixed inset-x-4 mx-auto z-50 rounded-xl border border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) shadow-sm ${
-        isScrolled 
-          ? "top-3 max-w-4xl rounded-lg border-zinc-200 dark:border-zinc-700/50 shadow-md bg-white/90 dark:bg-[#000]/90" 
+      <nav className={`fixed inset-x-4 mx-auto z-50 rounded-xl border border-zinc-200 dark:border-zinc-800/50 bg-white/80 dark:bg-[#000]/80 backdrop-blur-md transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) shadow-sm ${isScrolled
+          ? "top-3 max-w-4xl rounded-lg border-zinc-200 dark:border-zinc-700/50 shadow-md bg-white/90 dark:bg-[#000]/90"
           : "top-6 max-w-6xl"
-      }`}>
-        <div className={`px-6 flex items-center justify-between transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${
-          isScrolled ? "h-11" : "h-16"
         }`}>
-          <div className={`flex items-center gap-1 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) origin-left ${
-            isScrolled ? "scale-90" : "scale-100"
+        <div className={`px-6 flex items-center justify-between transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) ${isScrolled ? "h-11" : "h-16"
           }`}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 100"
-              className="w-5 h-5 text-zinc-900 dark:text-white fill-current"
-            >
-              {/* Left 'r' stem and arch */}
-              <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
-              {/* Right 'd' stem and base */}
-              <path d="M59 75V25l10-10v51h9v9H59z" />
-              {/* Center diagonal/loop connection */}
-              <path d="M34 75l25-25v9L46 75H34z" />
-            </svg>
+          <div className={`flex items-center gap-1 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) origin-left ${isScrolled ? "scale-90" : "scale-100"
+            }`}>
+            <Image 
+              src="/logo.png" 
+              alt="rackletrace logo" 
+              width={20} 
+              height={20} 
+              className="w-5 h-5 object-contain invert mix-blend-multiply dark:invert-0 dark:mix-blend-screen"
+            />
             <span className="font-medium text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
               rackletrace
             </span>
           </div>
-          <div className={`flex items-center gap-4 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) origin-right ${
-            isScrolled ? "scale-90" : "scale-100"
-          }`}>
+          <div className={`flex items-center gap-4 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) origin-right ${isScrolled ? "scale-90" : "scale-100"
+            }`}>
             <ThemeToggle />
             <Link
               href="/auth/login"
@@ -152,9 +144,8 @@ export default function Home() {
             <button
               onClick={(e) => handleDashboardClick(e, 'navbar')}
               disabled={!!navigatingState}
-              className={`flex items-center gap-2 font-medium rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer ${
-                isScrolled ? "px-2.5 py-1 text-[11px]" : "px-3.5 py-1.5 text-xs"
-              }`}
+              className={`flex items-center gap-2 font-medium rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) disabled:opacity-75 disabled:cursor-not-allowed cursor-pointer ${isScrolled ? "px-2.5 py-1 text-[11px]" : "px-3.5 py-1.5 text-xs"
+                }`}
             >
               {navigatingState === 'navbar' && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               Dashboard
@@ -317,7 +308,7 @@ export default function Home() {
       <div className="py-24 relative z-10 bg-zinc-50 dark:bg-[#050505] border-y border-zinc-200 dark:border-zinc-800/50 transition-colors">
         <div className="max-w-4xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-1">How Rackle Works</h2>
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-b from-zinc-900 to-zinc-500 dark:from-white dark:to-zinc-500 pb-1">How It Works</h2>
             <p className="text-zinc-600 dark:text-zinc-400">From code to dashboard in three simple steps.</p>
           </div>
           <div className="space-y-12">
@@ -444,22 +435,17 @@ export default function Home() {
             {/* Logo & Copyright */}
             <div className="md:col-span-4">
               <div className="flex items-center gap-2 mb-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 100 100"
-                  className="w-5 h-5 text-zinc-900 dark:text-white fill-current"
-                >
-                  {/* Left 'r' stem and arch */}
-                  <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
-                  {/* Right 'd' stem and base */}
-                  <path d="M59 75V25l10-10v51h9v9H59z" />
-                  {/* Center diagonal/loop connection */}
-                  <path d="M34 75l25-25v9L46 75H34z" />
-                </svg>
-                <h3 className="font-semibold text-xl tracking-tight text-zinc-900 dark:text-zinc-100">Rackle</h3>
+                <Image 
+                  src="/logo.png" 
+                  alt="Rackletrace Logo" 
+                  width={20} 
+                  height={20} 
+                  className="w-5 h-5 object-contain  mix-blend-multiply dark:invert-0 dark:mix-blend-screen"
+                />
+                <h3 className="font-semibold text-xl tracking-tight text-zinc-900 dark:text-zinc-100">rackletrace</h3>
               </div>
               <p className="text-sm text-zinc-500 mb-2">
-                © copyright Rackle {new Date().getFullYear()}. All rights reserved.
+                © copyright rackletrace {new Date().getFullYear()}. All rights reserved.
               </p>
               <p className="text-xs text-zinc-500 dark:text-zinc-600">
                 Built with ❤️ by <Link href="https://x.com/ankitpanditdev" target="_blank" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">@ankitpanditdev</Link>

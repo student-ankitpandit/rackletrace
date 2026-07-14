@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 import { calculateStepCost, formatCost } from "@/utils/pricing";
 import { connectSocket } from "@/utils/socket";
+import { ThemeToggle } from "@/components/theme-toggle";
+import Image from "next/image";
 import ChatPanel from "@/components/ChatPanel";
 
 const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:8000";
@@ -204,15 +206,13 @@ export default function DashboardPage() {
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 100 100"
-                className="w-5 h-5 text-zinc-900 dark:text-white fill-current"
-              >
-                <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
-                <path d="M59 75V25l10-10v51h9v9H59z" />
-                <path d="M34 75l25-25v9L46 75H34z" />
-              </svg>
+              <Image 
+                src="/logo.png" 
+                alt="rackletrace logo" 
+                width={18} 
+                height={18} 
+                className="w-4.5 h-4.5 object-contain invert mix-blend-multiply dark:invert-0 dark:mix-blend-screen"
+              />
               <span className="font-medium text-sm tracking-tight text-zinc-900 dark:text-zinc-100">
                 Rackle
               </span>

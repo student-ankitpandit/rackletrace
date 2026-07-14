@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -105,18 +106,13 @@ export default function SettingsPage() {
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link href="/" className="flex items-center gap-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 100 100"
-                className="w-5 h-5 text-zinc-900 dark:text-white fill-current transition-colors"
-              >
-                {/* Left 'r' stem and arch */}
-                <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
-                {/* Right 'd' stem and base */}
-                <path d="M59 75V25l10-10v51h9v9H59z" />
-                {/* Center diagonal/loop connection */}
-                <path d="M34 75l25-25v9L46 75H34z" />
-              </svg>
+              <Image 
+                src="/logo.png" 
+                alt="rackletrace logo" 
+                width={18} 
+                height={18} 
+                className="w-4.5 h-4.5 object-contain invert mix-blend-multiply dark:invert-0 dark:mix-blend-screen transition-all"
+              />
               <span className="font-medium text-sm tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors">Rackle</span>
             </Link>
             <div className="h-4 w-px bg-zinc-200 dark:bg-zinc-800 mx-2 transition-colors" />

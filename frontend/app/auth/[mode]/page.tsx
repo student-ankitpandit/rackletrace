@@ -4,6 +4,7 @@ import { useState, useTransition, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Mail, Lock, User, Loader2, ArrowRight, Eye, EyeOff, Activity, AlertTriangle, Check } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type Tab = 'login' | 'signup';
 
@@ -23,7 +24,7 @@ const BACKEND = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
 export default function AuthPage() {
   const params = useParams();
   const router = useRouter();
-  
+
   const currentMode = params.mode === 'signup' ? 'signup' : 'login';
   const [tab, setTab] = useState<Tab>(currentMode);
 
@@ -52,8 +53,8 @@ export default function AuthPage() {
       try {
         const endpoint = tab === 'login' ? '/auth/login' : '/auth/signup';
         const body = tab === 'login'
-            ? { email: form.email, password: form.password }
-            : { name: form.name, email: form.email, password: form.password };
+          ? { email: form.email, password: form.password }
+          : { name: form.name, email: form.email, password: form.password };
 
         const res = await fetch(`${BACKEND}${endpoint}`, {
           method: 'POST',
@@ -73,9 +74,9 @@ export default function AuthPage() {
         setSuccess(tab === 'login' ? 'Logged in successfully!' : 'Account created! You can now log in.');
         setForm({ name: '', email: '', password: '' });
         if (tab === 'signup') {
-            switchTab('login');
+          switchTab('login');
         } else if (tab === 'login') {
-            router.push('/dashboard');
+          router.push('/dashboard');
         }
       } catch {
         setError('Could not reach the server.');
@@ -99,18 +100,13 @@ export default function AuthPage() {
       <div className="relative z-10 w-full max-w-[400px] px-6 py-12">
         <div className="flex flex-col items-center mb-8">
           <Link href="/" className="flex items-center gap-2 mb-8">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 100"
-              className="w-8 h-8 text-zinc-900 dark:text-white fill-current transition-colors"
-            >
-              {/* Left 'r' stem and arch */}
-              <path d="M25 75V43c0-8 6-11 13-11h12v9H38c-4 0-4 3-4 7v27H25z" />
-              {/* Right 'd' stem and base */}
-              <path d="M59 75V25l10-10v51h9v9H59z" />
-              {/* Center diagonal/loop connection */}
-              <path d="M34 75l25-25v9L46 75H34z" />
-            </svg>
+            <Image 
+              src="/logo.png" 
+              alt="rackletrace logo" 
+              width={24} 
+              height={24} 
+              className="w-6 h-6 object-contain invert mix-blend-multiply dark:invert-0 dark:mix-blend-screen transition-all"
+            />
           </Link>
           <h1 className="text-xl font-medium tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors">
             {tab === 'login' ? (form.email ? `Welcome back, ${form.email.split('@')[0]}` : 'Welcome back') : 'Create your account'}
