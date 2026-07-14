@@ -19,20 +19,11 @@
     "dev": "tsc --watch",
     "prepublishOnly": "tsc"
   },
-  "keywords": [
-    "ai",
-    "agents",
-    "observability",
-    "tracing",
-    "llm",
-    "hallucination",
-    "sdk"
-  ],
   "author": "Ankit Pandit",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/student-ankitpandit/Rackle.git"
+    "url": "git+https://github.com/student-ankitpandit/rackletrace.git"
   },
   "homepage": "https://rackleai.vercel.app",
   "packageManager": "pnpm@10.28.1",
