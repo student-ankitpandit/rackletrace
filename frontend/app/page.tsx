@@ -172,13 +172,13 @@ export default function Home() {
             <button
               onClick={(e) => handleDashboardClick(e, 'hero')}
               disabled={!!navigatingState}
-              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-50 transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] min-w-[160px] disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-50 transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] min-w-[160px] disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
             >
               {navigatingState === 'hero' ? <Loader2 className="w-4 h-4 animate-spin" /> : <>Start Tracing <ArrowRight className="w-4 h-4" /></>}
             </button>
             <a
               href="https://github.com/student-ankitpandit/Rackle"
-              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-all min-w-[160px]"
+              className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 transition-all min-w-[160px]"
             >
               <Code className="w-4 h-4" /> Star on Github
             </a>
@@ -417,7 +417,7 @@ export default function Home() {
           <button
             onClick={(e) => handleDashboardClick(e, 'cta')}
             disabled={!!navigatingState}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-50 transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed min-w-[180px]"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium rounded bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-50 transition-all shadow-lg hover:shadow-xl dark:shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed min-w-[180px]"
           >
             {navigatingState === 'cta' ? (
               <Loader2 className="w-4 h-4 animate-spin" />
